@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 HCBS Sponsored Activity Calendar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #006273 0%, #3a8297 50%, #58b0e2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #006273 0%, #3a8297 60%, #58b0e2 100%);
+            color: white;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background: white;
+            color: #006273;
+        }
+
+        .filter-section {
+            padding: 20px 40px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-group label {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .filter-group input {
+            padding: 8px 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border 0.3s;
+        }
+
+        .filter-group input:focus {
+            outline: none;
+            border-color: #58b0e2;
+        }
+
+        .legend {
+            display: flex;
+            gap: 20px;
+            margin-left: auto;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .sponsorship-filter {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            padding: 15px 40px;
+            background: #fff;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .sponsorship-filter label {
+            font-weight: 600;
+            color: #333;
+            margin-right: 10px;
+        }
+
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .filter-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .filter-checkbox span {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .calendar {
+            padding: 40px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .month-year {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background: #58b0e2;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: #3a8297;
+        }
+
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .weekday {
+            text-align: center;
+            font-weight: 600;
+            color: #666;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+
+        .day {
+            min-height: 500px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 10px;
+            background: white;
+            transition: all 0.3s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .day:hover {
+            border-color: #58b0e2;
+            box-shadow: 0 4px 12px rgba(88, 176, 226, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .day-number {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .event {
+            background: #667eea;
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .event:hover {
+            transform: scale(1.02);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .event.taken {
+            background: #dc3545;
+        }
+
+        .event.pending {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .event.available {
+            background: #28a745;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .modal-field {
+            margin-bottom: 15px;
+        }
+
+        .modal-field label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .modal-field input, .modal-field select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .modal-btn.primary {
+            background: #58b0e2;
+            color: white;
+        }
+
+        .modal-btn.primary:hover {
+            background: #3a8297;
+        }
+
+        .modal-btn.secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .modal-btn.secondary:hover {
+            background: #d0d0d0;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #666;
+            font-size: 18px;
+        }
+
+        .config-section {
+            padding: 20px 40px;
+            background: #e8f4f8;
+            border-bottom: 1px solid #58b0e2;
+        }
+
+        .config-form {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .config-field {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .config-field label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .config-field input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .error {
+            color: #dc3545;
+            padding: 20px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .all-week-section {
+            padding: 40px;
+            background: #f8f9fa;
+            border-top: 3px solid #58b0e2;
+        }
+
+        .all-week-header {
+            font-size: 22px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .all-week-header::before {
+            content: '📅';
+            font-size: 24px;
+        }
+
+        .all-week-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .all-week-event {
+            background: white;
+            border-left: 4px solid #58b0e2;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .all-week-event:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .all-week-event.available {
+            border-left-color: #28a745;
+        }
+
+        .all-week-event.taken {
+            border-left-color: #dc3545;
+        }
+
+        .all-week-event.pending {
+            border-left-color: #ffc107;
+        }
+
+        .all-week-event-name {
+            font-weight: 600;
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .all-week-event-org {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .all-week-event-level {
+            display: inline-block;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            background: #e0e0e0;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .all-week-empty {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>2026 HCBS Sponsored Activity Calendar</h1>
+            <div class="controls">
+                <button class="btn" onclick="refreshData()">Refresh</button>
+            </div>
+        </div>
+
+        <div class="config-section" id="configSection">
+            <div class="config-form">
+                <div class="config-field">
+                    <label>Monday.com API Token</label>
+                    <input type="password" id="apiToken" placeholder="Enter your API token">
+                </div>
+                <div class="config-field">
+                    <label>Board ID</label>
+                    <input type="text" id="boardId" placeholder="Enter board ID">
+                </div>
+                <div class="config-field">
+                    <label>Activity Column</label>
+                    <input type="text" id="activityColumn" value="activity" placeholder="e.g., activity">
+                </div>
+                <div class="config-field">
+                    <label>Date Column</label>
+                    <input type="text" id="dateColumn" value="date" placeholder="e.g., date">
+                </div>
+                <div class="config-field">
+                    <label>Status Column</label>
+                    <input type="text" id="statusColumn" value="status" placeholder="e.g., status">
+                </div>
+                <div class="config-field">
+                    <label>Time Column (optional)</label>
+                    <input type="text" id="timeColumn" value="hour_mkwgebfp" placeholder="e.g., hour">
+                </div>
+                <div class="config-field">
+                    <label>Auto-Refresh (minutes)</label>
+                    <input type="number" id="autoRefresh" value="5" min="1" max="60" placeholder="e.g., 5">
+                </div>
+                <button class="btn" onclick="loadBoard()">Load Board</button>
+            </div>
+        </div>
+
+        <div class="sponsorship-filter">
+            <label>Sponsorship Level:</label>
+            <div class="filter-checkbox">
+                <input type="checkbox" id="filterPlatinum" checked onchange="applyFilter()">
+                <span>Platinum</span>
+            </div>
+            <div class="filter-checkbox">
+                <input type="checkbox" id="filterDiamond" checked onchange="applyFilter()">
+                <span>Diamond</span>
+            </div>
+            <div class="filter-checkbox">
+                <input type="checkbox" id="filterEmerald" checked onchange="applyFilter()">
+                <span>Emerald</span>
+            </div>
+            <div class="filter-checkbox">
+                <input type="checkbox" id="filterSapphire" checked onchange="applyFilter()">
+                <span>Sapphire</span>
+            </div>
+            <div class="filter-checkbox">
+                <input type="checkbox" id="filterRuby" checked onchange="applyFilter()">
+                <span>Ruby</span>
+            </div>
+            <div class="filter-checkbox">
+                <input type="checkbox" id="filterGold" checked onchange="applyFilter()">
+                <span>Gold</span>
+            </div>
+            <div class="filter-checkbox">
+                <input type="checkbox" id="filterOther" checked onchange="applyFilter()">
+                <span>Other</span>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-group">
+                <label>Filter:</label>
+                <input type="date" id="startDate" placeholder="Start Date">
+                <input type="date" id="endDate" placeholder="End Date">
+                <button class="btn" onclick="applyFilter()">Apply Filter</button>
+                <button class="btn" onclick="clearFilter()">Clear</button>
+
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #28a745;"></div>
+                        <span>Available</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #dc3545;"></div>
+                        <span>Taken</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ffc107;"></div>
+                        <span>Pending/On Hold</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="calendar">
+            <div class="calendar-header">
+                <div class="month-year" id="monthYear"></div>
+                <div class="nav-buttons">
+                    <button class="nav-btn" onclick="previousMonth()">← Previous Week</button>
+                    <button class="nav-btn" onclick="today()">Aug 23 Week</button>
+                    <button class="nav-btn" onclick="nextMonth()">Next Week →</button>
+                </div>
+            </div>
+
+            <div class="weekdays">
+                <div class="weekday">Sunday</div>
+                <div class="weekday">Monday</div>
+                <div class="weekday">Tuesday</div>
+                <div class="weekday">Wednesday</div>
+                <div class="weekday">Thursday</div>
+                <div class="weekday">Friday</div>
+                <div class="weekday">Saturday</div>
+            </div>
+
+            <div class="days" id="calendarDays">
+                <div class="loading">Configure your Monday.com board settings above to get started</div>
+            </div>
+        </div>
+
+        <div class="all-week-section">
+            <div class="all-week-header">All-Week Events</div>
+            <div class="all-week-grid" id="allWeekEvents">
+                <div class="all-week-empty">No all-week events</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="eventModal">
+        <div class="modal-content">
+            <div class="modal-header">Event Details</div>
+            <div class="modal-body">
+                <div class="modal-field">
+                    <label>Activity</label>
+                    <input type="text" id="modalEventName" readonly>
+                </div>
+                <div class="modal-field">
+                    <label>Organization</label>
+                    <input type="text" id="modalOrganization" readonly>
+                </div>
+                <div class="modal-field">
+                    <label>Date</label>
+                    <input type="text" id="modalEventDate" readonly>
+                </div>
+                <div class="modal-field">
+                    <label>Time</label>
+                    <input type="text" id="modalEventTime" readonly>
+                </div>
+                <div class="modal-field">
+                    <label>Status</label>
+                    <select id="modalEventStatus">
+                        <option value="available">Available</option>
+                        <option value="taken">Taken</option>
+                        <option value="pending">Pending</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeModal()">Close</button>
+                <button class="modal-btn primary" onclick="updateEventStatus()">Update Status</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentDate = new Date(2026, 7, 23); // August 23, 2026 (month is 0-indexed)
+        let events = [];
+        let filteredEvents = [];
+        let allWeekEvents = [];
+        let filteredAllWeekEvents = [];
+        let currentEventId = null;
+        let refreshInterval = null;
+        let config = {
+            apiToken: '',
+            boardId: '',
+            activityColumn: 'activity',
+            dateColumn: 'date',
+            statusColumn: 'status',
+            timeColumn: 'hour_mkwgebfp',
+            sponsorshipColumn: 'color_mkwgq36e',
+            autoRefresh: 5
+        };
+
+        // Load saved configuration from localStorage
+        function loadConfig() {
+            const saved = localStorage.getItem('mondayConfig');
+            if (saved) {
+                const savedConfig = JSON.parse(saved);
+                // Merge saved config with defaults to ensure new fields are included
+                config = {
+                    ...config,
+                    ...savedConfig,
+                    sponsorshipColumn: savedConfig.sponsorshipColumn || 'color_mkwgq36e'
+                };
+                document.getElementById('apiToken').value = config.apiToken || '';
+                document.getElementById('boardId').value = config.boardId || '';
+                document.getElementById('activityColumn').value = config.activityColumn || 'activity';
+                document.getElementById('dateColumn').value = config.dateColumn || 'date';
+                document.getElementById('statusColumn').value = config.statusColumn || 'status';
+                document.getElementById('timeColumn').value = config.timeColumn || 'hour_mkwgebfp';
+                document.getElementById('autoRefresh').value = config.autoRefresh || 5;
+            }
+        }
+
+        // Save configuration to localStorage
+        function saveConfig() {
+            config.apiToken = document.getElementById('apiToken').value;
+            config.boardId = document.getElementById('boardId').value;
+            config.activityColumn = document.getElementById('activityColumn').value;
+            config.dateColumn = document.getElementById('dateColumn').value;
+            config.statusColumn = document.getElementById('statusColumn').value;
+            config.timeColumn = document.getElementById('timeColumn').value;
+            config.sponsorshipColumn = config.sponsorshipColumn || 'color_mkwgq36e'; // Keep existing or use default
+            config.autoRefresh = parseInt(document.getElementById('autoRefresh').value) || 5;
+            localStorage.setItem('mondayConfig', JSON.stringify(config));
+        }
+
+        // Load board from Monday.com
+        async function loadBoard(silent = false) {
+            saveConfig();
+
+            if (!config.apiToken || !config.boardId) {
+                alert('Please enter your API Token and Board ID');
+                return;
+            }
+
+            if (!silent) {
+                document.getElementById('calendarDays').innerHTML = '<div class="loading">Loading board data...</div>';
+            }
+
+            try {
+                // Fetch all items with pagination
+                let allItems = [];
+                let cursor = null;
+                let hasMore = true;
+
+                while (hasMore) {
+                    const query = `query {
+                        boards(ids: ${config.boardId}) {
+                            items_page(limit: 500${cursor ? `, cursor: "${cursor}"` : ''}) {
+                                cursor
+                                items {
+                                    id
+                                    name
+                                    column_values {
+                                        id
+                                        text
+                                        value
+                                    }
+                                }
+                            }
+                        }
+                    }`;
+
+                    const response = await fetch('https://api.monday.com/v2', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': config.apiToken
+                        },
+                        body: JSON.stringify({ query })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.errors) {
+                        throw new Error(data.errors[0].message);
+                    }
+
+                    const itemsPage = data.data.boards[0].items_page;
+                    allItems = allItems.concat(itemsPage.items);
+
+                    cursor = itemsPage.cursor;
+                    hasMore = itemsPage.items.length === 500;
+                }
+
+                const items = allItems;
+
+                console.log('=== MONDAY.COM DATA DEBUG ===');
+                console.log(`Total items received: ${items.length}`);
+
+                // Debug: Log all columns to console
+                if (items.length > 0) {
+                    console.log('Available columns in first item:');
+                    items[0].column_values.forEach(col => {
+                        console.log(`  ID: "${col.id}" | Text: "${col.text}" | Value: ${col.value}`);
+                    });
+                    console.log(`Current Activity Column: "${config.activityColumn}"`);
+                    console.log(`Current Time Column: "${config.timeColumn}"`);
+                }
+
+                const allParsedEvents = parseEvents(items);
+                console.log(`Events parsed successfully: ${allParsedEvents.length}`);
+
+                // Split into dated events and all-week events
+                events = allParsedEvents.filter(event => event.date && !isNaN(event.date));
+                allWeekEvents = allParsedEvents.filter(event =>
+                    (!event.date || isNaN(event.date)) && event.name && event.name.trim() !== ''
+                );
+
+                console.log(`Dated events: ${events.length}, All-week events: ${allWeekEvents.length}`);
+                console.log('Parsed events:', events);
+
+                filteredEvents = [...events];
+                filteredAllWeekEvents = [...allWeekEvents];
+                renderCalendar();
+                renderAllWeekEvents();
+
+                console.log('===============================');
+
+                // Start auto-refresh after successful load
+                startAutoRefresh();
+            } catch (error) {
+                document.getElementById('calendarDays').innerHTML =
+                    `<div class="error">Error loading board: ${error.message}<br>Please check your API token and Board ID</div>`;
+            }
+        }
+
+        // Start auto-refresh
+        function startAutoRefresh() {
+            // Clear any existing interval
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+            }
+
+            // Set up new interval if auto-refresh is enabled
+            if (config.autoRefresh > 0) {
+                refreshInterval = setInterval(() => {
+                    loadBoard(true); // Silent refresh
+                }, config.autoRefresh * 60 * 1000); // Convert minutes to milliseconds
+            }
+        }
+
+        // Stop auto-refresh
+        function stopAutoRefresh() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+                refreshInterval = null;
+            }
+        }
+
+        // Parse events from Monday.com items
+        function parseEvents(items) {
+            const parsed = items.map((item, index) => {
+                const activityColumn = item.column_values.find(col => col.id === config.activityColumn);
+                const dateColumn = item.column_values.find(col => col.id === config.dateColumn);
+                const statusColumn = item.column_values.find(col => col.id === config.statusColumn);
+                const timeColumn = item.column_values.find(col => col.id === config.timeColumn);
+                const sponsorshipColumn = item.column_values.find(col => col.id === config.sponsorshipColumn);
+
+                let activityName = activityColumn && activityColumn.text ? activityColumn.text : '';
+                let organizationName = item.name;
+
+                // Parse sponsorship level from column
+                let sponsorshipLevel = 'Other';
+                if (sponsorshipColumn) {
+                    // Debug: show what's in the column
+                    if (index < 3) {
+                        console.log(`${organizationName} - Sponsorship column:`, sponsorshipColumn);
+                    }
+
+                    // Try value field first (for status/dropdown columns)
+                    if (sponsorshipColumn.value) {
+                        try {
+                            const parsed = JSON.parse(sponsorshipColumn.value);
+                            if (parsed.label) {
+                                sponsorshipLevel = parsed.label.trim();
+                            } else if (parsed.text) {
+                                sponsorshipLevel = parsed.text.trim();
+                            }
+                        } catch (e) {
+                            // If not JSON, use value as-is
+                            sponsorshipLevel = sponsorshipColumn.value.trim();
+                        }
+                    }
+
+                    // Fallback to text field
+                    if (sponsorshipLevel === 'Other' && sponsorshipColumn.text) {
+                        sponsorshipLevel = sponsorshipColumn.text.trim();
+                    }
+
+                    if (index < 3) {
+                        console.log(`${organizationName} - Final sponsorship: "${sponsorshipLevel}"`);
+                    }
+                }
+
+                let dateValue = null;
+                if (dateColumn && dateColumn.value) {
+                    try {
+                        const parsed = JSON.parse(dateColumn.value);
+                        dateValue = parsed.date || dateColumn.text;
+                    } catch {
+                        dateValue = dateColumn.text;
+                    }
+                }
+
+                if (!dateValue && dateColumn && dateColumn.text) {
+                    dateValue = dateColumn.text;
+                }
+
+                // Parse date in local timezone to avoid off-by-one errors
+                let eventDate = null;
+                if (dateValue) {
+                    // Parse as local date instead of UTC
+                    const dateParts = dateValue.split('-');
+                    if (dateParts.length === 3) {
+                        eventDate = new Date(
+                            parseInt(dateParts[0]), // year
+                            parseInt(dateParts[1]) - 1, // month (0-indexed)
+                            parseInt(dateParts[2]) // day
+                        );
+                    } else {
+                        eventDate = new Date(dateValue);
+                    }
+                }
+
+                // Debug logging for dates
+                if (index < 5) {
+                    console.log(`Item ${index}: ${organizationName} | Date value: ${dateValue} | Date parsed: ${eventDate}`);
+                }
+
+                let timeValue = null;
+                let timeForSorting = null;
+                if (timeColumn) {
+                    if (index < 3) {
+                        console.log(`Time column for ${organizationName}:`, timeColumn);
+                    }
+
+                    // Try to parse the value field first (for hour columns)
+                    if (timeColumn.value) {
+                        try {
+                            const parsed = JSON.parse(timeColumn.value);
+                            if (index < 3) {
+                                console.log(`Parsed time value for ${organizationName}:`, parsed);
+                            }
+                            if (parsed.hour !== undefined && parsed.minute !== undefined) {
+                                const hours = parseInt(parsed.hour);
+                                const minutes = parseInt(parsed.minute);
+                                const period = hours >= 12 ? 'PM' : 'AM';
+                                const displayHours = hours > 12 ? hours - 12 : (hours === 0 ? 12 : hours);
+                                timeValue = `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+                                timeForSorting = hours * 60 + minutes;
+                            }
+                        } catch (e) {
+                            // Silent fail for non-JSON values
+                        }
+                    }
+
+                    // Fallback to text field
+                    if (!timeValue && timeColumn.text) {
+                        timeValue = timeColumn.text;
+                        // Parse time for sorting (convert to minutes since midnight)
+                        const timeMatch = timeValue.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
+                        if (timeMatch) {
+                            let hours = parseInt(timeMatch[1]);
+                            let minutes = parseInt(timeMatch[2]);
+                            const ampm = timeMatch[3] ? timeMatch[3].toUpperCase() : null;
+
+                            if (ampm === 'PM' && hours !== 12) hours += 12;
+                            if (ampm === 'AM' && hours === 12) hours = 0;
+
+                            timeForSorting = hours * 60 + minutes;
+                        }
+                    }
+                }
+
+                let status = 'available';
+                if (statusColumn && statusColumn.text) {
+                    const statusText = statusColumn.text.toLowerCase();
+                    if (statusText.includes('unassigned') || statusText.includes('available')) {
+                        status = 'available';
+                    } else if (statusText.includes('taken') || statusText.includes('assigned')) {
+                        status = 'taken';
+                    } else if (statusText.includes('pending') || statusText.includes('on hold')) {
+                        status = 'pending';
+                    }
+                }
+
+                return {
+                    id: item.id,
+                    name: activityName,
+                    organization: organizationName,
+                    date: eventDate, // Using the properly parsed local date from above
+                    time: timeValue,
+                    timeForSorting: timeForSorting !== null ? timeForSorting : 9999, // Events without time go last
+                    status: status,
+                    sponsorshipLevel: sponsorshipLevel
+                };
+            });
+
+            // Return all events (including those without dates)
+            return parsed;
+        }
+
+        // Render calendar (Week View)
+        function renderCalendar() {
+            // Get the start of the week (Sunday) for the current date
+            const startOfWeek = new Date(currentDate);
+            const day = startOfWeek.getDay();
+            startOfWeek.setDate(startOfWeek.getDate() - day);
+
+            // Get end of week (Saturday)
+            const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setDate(endOfWeek.getDate() + 6);
+
+            // Update header to show week range
+            const startMonth = startOfWeek.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+            const endMonth = endOfWeek.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            document.getElementById('monthYear').textContent = `${startMonth} - ${endMonth}`;
+
+            const days = [];
+
+            // Create array of 7 days for the week
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(startOfWeek);
+                date.setDate(date.getDate() + i);
+                days.push({
+                    number: date.getDate(),
+                    currentMonth: true,
+                    date: date
+                });
+            }
+
+            const calendarDays = document.getElementById('calendarDays');
+            calendarDays.innerHTML = '';
+
+            days.forEach(day => {
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'day';
+
+                const dayNumber = document.createElement('div');
+                dayNumber.className = 'day-number';
+                dayNumber.textContent = `${day.date.toLocaleDateString('en-US', { weekday: 'short' })} ${day.number}`;
+                dayNumber.style.fontSize = '16px';
+                dayNumber.style.fontWeight = '700';
+                dayNumber.style.marginBottom = '15px';
+                dayNumber.style.paddingBottom = '10px';
+                dayNumber.style.borderBottom = '2px solid #e0e0e0';
+                dayDiv.appendChild(dayNumber);
+
+                // Add events for this day
+                const dayEvents = filteredEvents.filter(event =>
+                    event.date.getDate() === day.date.getDate() &&
+                    event.date.getMonth() === day.date.getMonth() &&
+                    event.date.getFullYear() === day.date.getFullYear()
+                );
+
+                // Sort events by time
+                dayEvents.sort((a, b) => a.timeForSorting - b.timeForSorting);
+
+                dayEvents.forEach(event => {
+                    const eventDiv = document.createElement('div');
+                    eventDiv.className = `event ${event.status}`;
+
+                    // Create time + activity name element
+                    const activitySpan = document.createElement('div');
+                    activitySpan.style.fontWeight = '600';
+                    activitySpan.style.marginBottom = '4px';
+                    if (event.time) {
+                        activitySpan.textContent = `${event.time} - ${event.name}`;
+                    } else {
+                        activitySpan.textContent = event.name;
+                    }
+                    eventDiv.appendChild(activitySpan);
+
+                    // Create organization name element
+                    const orgSpan = document.createElement('div');
+                    orgSpan.style.fontSize = '11px';
+                    orgSpan.style.opacity = '0.9';
+                    orgSpan.style.marginTop = '2px';
+                    orgSpan.textContent = event.organization;
+                    eventDiv.appendChild(orgSpan);
+
+                    eventDiv.onclick = (e) => {
+                        e.stopPropagation();
+                        openEventModal(event);
+                    };
+                    dayDiv.appendChild(eventDiv);
+                });
+
+                calendarDays.appendChild(dayDiv);
+            });
+        }
+
+        // Render all-week events
+        function renderAllWeekEvents() {
+            const allWeekContainer = document.getElementById('allWeekEvents');
+            allWeekContainer.innerHTML = '';
+
+            if (filteredAllWeekEvents.length === 0) {
+                allWeekContainer.innerHTML = '<div class="all-week-empty">No all-week events</div>';
+                return;
+            }
+
+            // Sort by sponsorship level, then by name
+            const sortedEvents = [...filteredAllWeekEvents].sort((a, b) => {
+                const levelOrder = ['Platinum', 'Diamond', 'Emerald', 'Sapphire', 'Ruby', 'Gold', 'Other'];
+                const aIndex = levelOrder.indexOf(a.sponsorshipLevel);
+                const bIndex = levelOrder.indexOf(b.sponsorshipLevel);
+
+                if (aIndex !== bIndex) {
+                    return aIndex - bIndex;
+                }
+
+                return a.name.localeCompare(b.name);
+            });
+
+            sortedEvents.forEach(event => {
+                const eventDiv = document.createElement('div');
+                eventDiv.className = `all-week-event ${event.status}`;
+
+                const nameDiv = document.createElement('div');
+                nameDiv.className = 'all-week-event-name';
+                nameDiv.textContent = event.name;
+                eventDiv.appendChild(nameDiv);
+
+                const orgDiv = document.createElement('div');
+                orgDiv.className = 'all-week-event-org';
+                orgDiv.textContent = event.organization;
+                eventDiv.appendChild(orgDiv);
+
+                const levelDiv = document.createElement('div');
+                levelDiv.className = 'all-week-event-level';
+                levelDiv.textContent = event.sponsorshipLevel;
+                eventDiv.appendChild(levelDiv);
+
+                eventDiv.onclick = () => {
+                    openEventModal(event);
+                };
+
+                allWeekContainer.appendChild(eventDiv);
+            });
+        }
+
+        // Open event modal
+        function openEventModal(event) {
+            currentEventId = event.id;
+            document.getElementById('modalEventName').value = event.name;
+            document.getElementById('modalOrganization').value = event.organization;
+            document.getElementById('modalEventDate').value = event.date ? event.date.toLocaleDateString() : 'All Week';
+            document.getElementById('modalEventTime').value = event.time || 'Not specified';
+            document.getElementById('modalEventStatus').value = event.status;
+            document.getElementById('eventModal').classList.add('active');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('eventModal').classList.remove('active');
+            currentEventId = null;
+        }
+
+        // Update event status
+        function updateEventStatus() {
+            const newStatus = document.getElementById('modalEventStatus').value;
+            const eventIndex = events.findIndex(e => e.id === currentEventId);
+
+            if (eventIndex !== -1) {
+                events[eventIndex].status = newStatus;
+                filteredEvents = [...events];
+                renderCalendar();
+                closeModal();
+
+                // Here you would typically update Monday.com via API
+                // For now, we're just updating locally
+                alert('Status updated! Note: To persist changes to Monday.com, you would need to implement the update mutation.');
+            }
+        }
+
+        // Navigation functions
+        function previousMonth() {
+            currentDate.setDate(currentDate.getDate() - 7);
+            renderCalendar();
+        }
+
+        function nextMonth() {
+            currentDate.setDate(currentDate.getDate() + 7);
+            renderCalendar();
+        }
+
+        function today() {
+            currentDate = new Date(2026, 7, 23); // August 23, 2026
+            renderCalendar();
+        }
+
+        // Filter functions
+        function applyFilter() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+
+            // Get selected sponsorship levels
+            const selectedLevels = [];
+            if (document.getElementById('filterPlatinum').checked) selectedLevels.push('Platinum');
+            if (document.getElementById('filterDiamond').checked) selectedLevels.push('Diamond');
+            if (document.getElementById('filterEmerald').checked) selectedLevels.push('Emerald');
+            if (document.getElementById('filterSapphire').checked) selectedLevels.push('Sapphire');
+            if (document.getElementById('filterRuby').checked) selectedLevels.push('Ruby');
+            if (document.getElementById('filterGold').checked) selectedLevels.push('Gold');
+            if (document.getElementById('filterOther').checked) selectedLevels.push('Other');
+
+            filteredEvents = events.filter(event => {
+                // Filter by sponsorship level
+                if (selectedLevels.length > 0 && !selectedLevels.includes(event.sponsorshipLevel)) {
+                    return false;
+                }
+
+                // Filter by date range
+                if (startDate || endDate) {
+                    const eventDate = event.date;
+                    const start = startDate ? new Date(startDate) : null;
+                    const end = endDate ? new Date(endDate) : null;
+
+                    if (start && end) {
+                        return eventDate >= start && eventDate <= end;
+                    } else if (start) {
+                        return eventDate >= start;
+                    } else if (end) {
+                        return eventDate <= end;
+                    }
+                }
+
+                return true;
+            });
+
+            // Filter all-week events by sponsorship level only
+            filteredAllWeekEvents = allWeekEvents.filter(event => {
+                if (selectedLevels.length > 0 && !selectedLevels.includes(event.sponsorshipLevel)) {
+                    return false;
+                }
+                return true;
+            });
+
+            renderCalendar();
+            renderAllWeekEvents();
+        }
+
+        function clearFilter() {
+            document.getElementById('startDate').value = '';
+            document.getElementById('endDate').value = '';
+
+            // Reset all sponsorship checkboxes to checked
+            document.getElementById('filterPlatinum').checked = true;
+            document.getElementById('filterDiamond').checked = true;
+            document.getElementById('filterEmerald').checked = true;
+            document.getElementById('filterSapphire').checked = true;
+            document.getElementById('filterRuby').checked = true;
+            document.getElementById('filterGold').checked = true;
+            document.getElementById('filterOther').checked = true;
+
+            filteredEvents = [...events];
+            filteredAllWeekEvents = [...allWeekEvents];
+            renderCalendar();
+            renderAllWeekEvents();
+        }
+
+        function refreshData() {
+            loadBoard();
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('eventModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Initialize
+        loadConfig();
+    </script>
+</body>
+</html>
