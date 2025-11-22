@@ -4,7 +4,10 @@ Interactive floor plan showing booth sponsorships for the 2026 HCBS conference.
 
 ## Live Site
 
-Once deployed, the floor plan will be accessible at: `https://hcbs-sponsorships-2026.web.app`
+Your floor plan is hosted on GitHub Pages at:
+**https://advancingstateshcbs.github.io/2026HCBSSponsorships/**
+
+The site deploys automatically when you push to the branch. You can view deployment status in the "Actions" tab of your repository.
 
 ## Features
 
