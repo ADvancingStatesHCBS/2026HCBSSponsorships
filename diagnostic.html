@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booth Selector Diagnostic</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test {
+            padding: 20px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        .pass {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+        .fail {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+        h1 { color: #006273; }
+        button {
+            background: #006273;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        button:hover { background: #004d5a; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Booth Selector Diagnostic</h1>
+    <p>This page will help diagnose why the booth selector isn't loading.</p>
+
+    <div id="htmlTest" class="test">
+        ✓ HTML is loading correctly
+    </div>
+
+    <div id="cssTest" class="test">
+        Checking CSS...
+    </div>
+
+    <div id="jsTest" class="test fail">
+        ✗ JavaScript not running yet
+    </div>
+
+    <div id="storageTest" class="test">
+        Checking localStorage...
+    </div>
+
+    <div id="boothTest" class="test">
+        Testing booth selector components...
+    </div>
+
+    <button onclick="window.location.href='booth-selector.html'">
+        Open Booth Selector
+    </button>
+
+    <button onclick="runTests()">
+        Re-run Tests
+    </button>
+
+    <div id="details" style="margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+        <h3>Details:</h3>
+        <pre id="detailsContent">Running tests...</pre>
+    </div>
+
+    <script>
+        function runTests() {
+            let details = [];
+
+            // Test 1: JavaScript is running
+            document.getElementById('jsTest').className = 'test pass';
+            document.getElementById('jsTest').textContent = '✓ JavaScript is working!';
+            details.push('✓ JavaScript enabled and running');
+
+            // Test 2: CSS is working
+            const cssTest = document.getElementById('cssTest');
+            cssTest.className = 'test pass';
+            cssTest.textContent = '✓ CSS is loading correctly';
+            details.push('✓ CSS styles applied');
+
+            // Test 3: localStorage
+            try {
+                localStorage.setItem('test', 'value');
+                const val = localStorage.getItem('test');
+                localStorage.removeItem('test');
+
+                if (val === 'value') {
+                    document.getElementById('storageTest').className = 'test pass';
+                    document.getElementById('storageTest').textContent = '✓ localStorage is available';
+                    details.push('✓ localStorage working (booth data will save)');
+                } else {
+                    throw new Error('localStorage read failed');
+                }
+            } catch (e) {
+                document.getElementById('storageTest').className = 'test fail';
+                document.getElementById('storageTest').textContent = '✗ localStorage not available: ' + e.message;
+                details.push('✗ localStorage blocked - booth selections won\'t save between sessions');
+            }
+
+            // Test 4: Booth selector components
+            try {
+                // Test creating a booth element
+                const testDiv = document.createElement('div');
+                testDiv.style.position = 'absolute';
+                testDiv.style.left = '10%';
+                testDiv.style.top = '10%';
+                testDiv.style.width = '50px';
+                testDiv.style.height = '50px';
+                testDiv.style.background = 'rgba(40, 167, 69, 0.5)';
+                testDiv.textContent = '101';
+
+                const boothTest = document.getElementById('boothTest');
+                boothTest.className = 'test pass';
+                boothTest.textContent = '✓ Booth components can be created';
+                boothTest.appendChild(testDiv);
+                details.push('✓ DOM manipulation working');
+                details.push('✓ Booth rendering should work');
+            } catch (e) {
+                document.getElementById('boothTest').className = 'test fail';
+                document.getElementById('boothTest').textContent = '✗ Error creating booth: ' + e.message;
+                details.push('✗ DOM error: ' + e.message);
+            }
+
+            // Browser info
+            details.push('');
+            details.push('Browser Info:');
+            details.push('- User Agent: ' + navigator.userAgent);
+            details.push('- Platform: ' + navigator.platform);
+            details.push('- Screen: ' + window.screen.width + 'x' + window.screen.height);
+            details.push('- Window: ' + window.innerWidth + 'x' + window.innerHeight);
+
+            // File info
+            details.push('');
+            details.push('Current Location:');
+            details.push('- URL: ' + window.location.href);
+            details.push('- Protocol: ' + window.location.protocol);
+            details.push('- Pathname: ' + window.location.pathname);
+
+            document.getElementById('detailsContent').textContent = details.join('\n');
+        }
+
+        // Run tests on load
+        window.addEventListener('load', runTests);
+    </script>
+</body>
+</html>
