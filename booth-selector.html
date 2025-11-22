@@ -4,6 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2026 HCBS Conference - Booth Selector</title>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, onValue, set, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCEw2TwaLWsnIKetH4VhlnrHSRvF4Eha4o",
+            authDomain: "hcbsboothselector.firebaseapp.com",
+            databaseURL: "https://hcbsboothselector-default-rtdb.firebaseio.com",
+            projectId: "hcbsboothselector",
+            storageBucket: "hcbsboothselector.firebasestorage.app",
+            messagingSenderId: "990831676210",
+            appId: "1:990831676210:web:29e0f1c4cab7f1f600a52b",
+            measurementId: "G-CMDFHKZM39"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Make Firebase available globally
+        window.firebaseDB = database;
+        window.firebaseRef = ref;
+        window.firebaseOnValue = onValue;
+        window.firebaseSet = set;
+        window.firebaseUpdate = update;
+    </script>
+
     <style>
         * {
             margin: 0;
@@ -820,23 +848,54 @@
                 };
             });
 
-            // Load saved data from localStorage
-            const saved = localStorage.getItem('boothData');
-            if (saved) {
-                const savedBooths = JSON.parse(saved);
-                Object.keys(savedBooths).forEach(key => {
-                    if (booths[key]) {
-                        booths[key] = savedBooths[key];
+            // Load data from Firebase (real-time sync)
+            if (window.firebaseDB && window.firebaseRef && window.firebaseOnValue) {
+                const boothsRef = window.firebaseRef(window.firebaseDB, 'booths');
+                window.firebaseOnValue(boothsRef, (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        Object.keys(data).forEach(key => {
+                            if (booths[key]) {
+                                booths[key] = data[key];
+                            }
+                        });
+                        renderBooths();
+                        updateStats();
+                        console.log('Booth data synced from Firebase');
                     }
                 });
+            } else {
+                // Fallback to localStorage if Firebase not ready
+                const saved = localStorage.getItem('boothData');
+                if (saved) {
+                    const savedBooths = JSON.parse(saved);
+                    Object.keys(savedBooths).forEach(key => {
+                        if (booths[key]) {
+                            booths[key] = savedBooths[key];
+                        }
+                    });
+                }
             }
 
             updateStats();
         }
 
-        // Save booth data
+        // Save booth data to Firebase (and localStorage as backup)
         function saveData() {
-            localStorage.setItem('boothData', JSON.stringify(booths));
+            // Save to Firebase for real-time sync
+            if (window.firebaseDB && window.firebaseRef && window.firebaseSet) {
+                const boothsRef = window.firebaseRef(window.firebaseDB, 'booths');
+                window.firebaseSet(boothsRef, booths).then(() => {
+                    console.log('Data saved to Firebase');
+                }).catch((error) => {
+                    console.error('Firebase save error:', error);
+                    // Fallback to localStorage on error
+                    localStorage.setItem('boothData', JSON.stringify(booths));
+                });
+            } else {
+                // Fallback to localStorage
+                localStorage.setItem('boothData', JSON.stringify(booths));
+            }
         }
 
         // Tier selection
