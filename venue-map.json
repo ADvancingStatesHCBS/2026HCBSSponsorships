@@ -1,0 +1,288 @@
+{
+  "venueMap": {
+    "title": "2026 HCBS Venue Map",
+    "subtitle": "Click any booth to select and view details",
+    "layout": {
+      "type": "exhibit-hall",
+      "mainHall": {
+        "width": 1000,
+        "height": 550,
+        "centerStage": {
+          "x": 550,
+          "y": 200,
+          "width": 200,
+          "height": 150,
+          "label": "Dance Stage",
+          "clickable": false
+        }
+      },
+      "foyer": {
+        "type": "curved",
+        "radius": 800,
+        "startAngle": 180,
+        "endAngle": 360
+      }
+    },
+    "boothSizes": {
+      "standard": {
+        "size": "10'",
+        "width": 50,
+        "height": 50
+      },
+      "large": {
+        "size": "16'",
+        "width": 80,
+        "height": 30
+      }
+    },
+    "tiers": {
+      "all": {
+        "name": "All Tiers",
+        "colors": ["#58b0e2", "#7b68a6"],
+        "description": "Available to all sponsorship levels"
+      },
+      "exhibitor": {
+        "name": "Exhibitor Only",
+        "colors": ["#5a9367", "#7eb8bb"],
+        "description": "Reserved for exhibitor tier sponsors"
+      },
+      "gold": {
+        "name": "Gold Tier (Likely)",
+        "colors": ["#daa520"],
+        "description": "Available to all, but likely for gold sponsors"
+      },
+      "premium": {
+        "name": "Premium 16' Booth",
+        "colors": ["#ff8c42"],
+        "description": "Larger booths available to all tiers"
+      }
+    },
+    "exits": [
+      {"id": "exit-1", "x": 290, "y": 630, "radius": 15},
+      {"id": "exit-2", "x": 440, "y": 630, "radius": 12},
+      {"id": "exit-3", "x": 640, "y": 630, "radius": 20},
+      {"id": "exit-4", "x": 790, "y": 630, "radius": 12},
+      {"id": "exit-5", "x": 940, "y": 630, "radius": 15}
+    ],
+    "booths": {
+      "mainHall": {
+        "leftSection": [
+          {
+            "column": "L1",
+            "booths": [
+              {"id": "L1-1", "number": "101", "tier": "all", "size": "10'", "x": 210, "y": 60, "color": 0},
+              {"id": "L1-2", "number": "102", "tier": "all", "size": "10'", "x": 210, "y": 115, "color": 1},
+              {"id": "L1-3", "number": "103", "tier": "all", "size": "10'", "x": 210, "y": 170, "color": 0},
+              {"id": "L1-4", "number": "104", "tier": "all", "size": "10'", "x": 210, "y": 225, "color": 1},
+              {"id": "L1-5", "number": "105", "tier": "all", "size": "10'", "x": 210, "y": 280, "color": 0},
+              {"id": "L1-6", "number": "106", "tier": "all", "size": "10'", "x": 210, "y": 335, "color": 1},
+              {"id": "L1-7", "number": "107", "tier": "all", "size": "10'", "x": 210, "y": 390, "color": 0},
+              {"id": "L1-8", "number": "108", "tier": "all", "size": "10'", "x": 210, "y": 445, "color": 1},
+              {"id": "L1-9", "number": "109", "tier": "all", "size": "10'", "x": 210, "y": 500, "color": 0}
+            ]
+          },
+          {
+            "column": "L2",
+            "booths": [
+              {"id": "L2-1", "number": "110", "tier": "all", "size": "10'", "x": 265, "y": 60, "color": 1},
+              {"id": "L2-2", "number": "111", "tier": "all", "size": "10'", "x": 265, "y": 115, "color": 0},
+              {"id": "L2-3", "number": "112", "tier": "all", "size": "10'", "x": 265, "y": 170, "color": 1},
+              {"id": "L2-4", "number": "113", "tier": "all", "size": "10'", "x": 265, "y": 225, "color": 0},
+              {"id": "L2-5", "number": "114", "tier": "all", "size": "10'", "x": 265, "y": 280, "color": 1},
+              {"id": "L2-6", "number": "115", "tier": "all", "size": "10'", "x": 265, "y": 335, "color": 0},
+              {"id": "L2-7", "number": "116", "tier": "all", "size": "10'", "x": 265, "y": 390, "color": 1},
+              {"id": "L2-8", "number": "117", "tier": "all", "size": "10'", "x": 265, "y": 445, "color": 0},
+              {"id": "L2-9", "number": "118", "tier": "all", "size": "10'", "x": 265, "y": 500, "color": 1}
+            ]
+          },
+          {
+            "column": "L3",
+            "booths": [
+              {"id": "L3-1", "number": "119", "tier": "all", "size": "10'", "x": 320, "y": 60, "color": 0},
+              {"id": "L3-2", "number": "120", "tier": "all", "size": "10'", "x": 320, "y": 115, "color": 1},
+              {"id": "L3-3", "number": "121", "tier": "all", "size": "10'", "x": 320, "y": 170, "color": 0},
+              {"id": "L3-4", "number": "122", "tier": "all", "size": "10'", "x": 320, "y": 225, "color": 1},
+              {"id": "L3-5", "number": "123", "tier": "all", "size": "10'", "x": 320, "y": 280, "color": 0},
+              {"id": "L3-6", "number": "124", "tier": "all", "size": "10'", "x": 320, "y": 335, "color": 1},
+              {"id": "L3-7", "number": "125", "tier": "all", "size": "10'", "x": 320, "y": 390, "color": 0},
+              {"id": "L3-8", "number": "126", "tier": "all", "size": "10'", "x": 320, "y": 445, "color": 1},
+              {"id": "L3-9", "number": "127", "tier": "all", "size": "10'", "x": 320, "y": 500, "color": 0}
+            ]
+          },
+          {
+            "column": "L4",
+            "booths": [
+              {"id": "L4-1", "number": "128", "tier": "all", "size": "10'", "x": 375, "y": 60, "color": 1},
+              {"id": "L4-2", "number": "129", "tier": "all", "size": "10'", "x": 375, "y": 115, "color": 0},
+              {"id": "L4-3", "number": "130", "tier": "all", "size": "10'", "x": 375, "y": 170, "color": 1},
+              {"id": "L4-4", "number": "131", "tier": "all", "size": "10'", "x": 375, "y": 225, "color": 0},
+              {"id": "L4-5", "number": "132", "tier": "all", "size": "10'", "x": 375, "y": 280, "color": 1},
+              {"id": "L4-6", "number": "133", "tier": "all", "size": "10'", "x": 375, "y": 335, "color": 0},
+              {"id": "L4-7", "number": "134", "tier": "all", "size": "10'", "x": 375, "y": 390, "color": 1},
+              {"id": "L4-8", "number": "135", "tier": "all", "size": "10'", "x": 375, "y": 445, "color": 0},
+              {"id": "L4-9", "number": "136", "tier": "all", "size": "10'", "x": 375, "y": 500, "color": 1}
+            ]
+          },
+          {
+            "column": "L5",
+            "booths": [
+              {"id": "L5-1", "number": "137", "tier": "all", "size": "10'", "x": 430, "y": 60, "color": 0},
+              {"id": "L5-2", "number": "138", "tier": "all", "size": "10'", "x": 430, "y": 115, "color": 1},
+              {"id": "L5-3", "number": "139", "tier": "all", "size": "10'", "x": 430, "y": 170, "color": 0},
+              {"id": "L5-4", "number": "140", "tier": "all", "size": "10'", "x": 430, "y": 225, "color": 1},
+              {"id": "L5-5", "number": "141", "tier": "all", "size": "10'", "x": 430, "y": 280, "color": 0},
+              {"id": "L5-6", "number": "142", "tier": "all", "size": "10'", "x": 430, "y": 335, "color": 1},
+              {"id": "L5-7", "number": "143", "tier": "all", "size": "10'", "x": 430, "y": 390, "color": 0},
+              {"id": "L5-8", "number": "144", "tier": "all", "size": "10'", "x": 430, "y": 445, "color": 1},
+              {"id": "L5-9", "number": "145", "tier": "all", "size": "10'", "x": 430, "y": 500, "color": 0}
+            ]
+          }
+        ],
+        "rightSection": [
+          {
+            "column": "R1",
+            "booths": [
+              {"id": "R1-1", "number": "201", "tier": "all", "size": "10'", "x": 820, "y": 60, "color": 1},
+              {"id": "R1-2", "number": "202", "tier": "all", "size": "10'", "x": 820, "y": 115, "color": 0},
+              {"id": "R1-3", "number": "203", "tier": "all", "size": "10'", "x": 820, "y": 170, "color": 1},
+              {"id": "R1-4", "number": "204", "tier": "all", "size": "10'", "x": 820, "y": 225, "color": 0},
+              {"id": "R1-5", "number": "205", "tier": "all", "size": "10'", "x": 820, "y": 280, "color": 1},
+              {"id": "R1-6", "number": "206", "tier": "all", "size": "10'", "x": 820, "y": 335, "color": 0},
+              {"id": "R1-7", "number": "207", "tier": "all", "size": "10'", "x": 820, "y": 390, "color": 1},
+              {"id": "R1-8", "number": "208", "tier": "all", "size": "10'", "x": 820, "y": 445, "color": 0},
+              {"id": "R1-9", "number": "209", "tier": "all", "size": "10'", "x": 820, "y": 500, "color": 1}
+            ]
+          },
+          {
+            "column": "R2",
+            "booths": [
+              {"id": "R2-1", "number": "210", "tier": "all", "size": "10'", "x": 875, "y": 60, "color": 0},
+              {"id": "R2-2", "number": "211", "tier": "all", "size": "10'", "x": 875, "y": 115, "color": 1},
+              {"id": "R2-3", "number": "212", "tier": "all", "size": "10'", "x": 875, "y": 170, "color": 0},
+              {"id": "R2-4", "number": "213", "tier": "all", "size": "10'", "x": 875, "y": 225, "color": 1},
+              {"id": "R2-5", "number": "214", "tier": "all", "size": "10'", "x": 875, "y": 280, "color": 0},
+              {"id": "R2-6", "number": "215", "tier": "all", "size": "10'", "x": 875, "y": 335, "color": 1},
+              {"id": "R2-7", "number": "216", "tier": "all", "size": "10'", "x": 875, "y": 390, "color": 0},
+              {"id": "R2-8", "number": "217", "tier": "all", "size": "10'", "x": 875, "y": 445, "color": 1},
+              {"id": "R2-9", "number": "218", "tier": "all", "size": "10'", "x": 875, "y": 500, "color": 0}
+            ]
+          },
+          {
+            "column": "R3",
+            "booths": [
+              {"id": "R3-1", "number": "219", "tier": "all", "size": "10'", "x": 930, "y": 60, "color": 1},
+              {"id": "R3-2", "number": "220", "tier": "all", "size": "10'", "x": 930, "y": 115, "color": 0},
+              {"id": "R3-3", "number": "221", "tier": "all", "size": "10'", "x": 930, "y": 170, "color": 1},
+              {"id": "R3-4", "number": "222", "tier": "all", "size": "10'", "x": 930, "y": 225, "color": 0},
+              {"id": "R3-5", "number": "223", "tier": "all", "size": "10'", "x": 930, "y": 280, "color": 1},
+              {"id": "R3-6", "number": "224", "tier": "all", "size": "10'", "x": 930, "y": 335, "color": 0},
+              {"id": "R3-7", "number": "225", "tier": "all", "size": "10'", "x": 930, "y": 390, "color": 1},
+              {"id": "R3-8", "number": "226", "tier": "all", "size": "10'", "x": 930, "y": 445, "color": 0},
+              {"id": "R3-9", "number": "227", "tier": "all", "size": "10'", "x": 930, "y": 500, "color": 1}
+            ]
+          },
+          {
+            "column": "R4",
+            "booths": [
+              {"id": "R4-1", "number": "228", "tier": "all", "size": "10'", "x": 985, "y": 60, "color": 0},
+              {"id": "R4-2", "number": "229", "tier": "all", "size": "10'", "x": 985, "y": 115, "color": 1},
+              {"id": "R4-3", "number": "230", "tier": "all", "size": "10'", "x": 985, "y": 170, "color": 0},
+              {"id": "R4-4", "number": "231", "tier": "all", "size": "10'", "x": 985, "y": 225, "color": 1},
+              {"id": "R4-5", "number": "232", "tier": "all", "size": "10'", "x": 985, "y": 280, "color": 0},
+              {"id": "R4-6", "number": "233", "tier": "all", "size": "10'", "x": 985, "y": 335, "color": 1},
+              {"id": "R4-7", "number": "234", "tier": "all", "size": "10'", "x": 985, "y": 390, "color": 0},
+              {"id": "R4-8", "number": "235", "tier": "all", "size": "10'", "x": 985, "y": 445, "color": 1},
+              {"id": "R4-9", "number": "236", "tier": "all", "size": "10'", "x": 985, "y": 500, "color": 0}
+            ]
+          },
+          {
+            "column": "R5",
+            "booths": [
+              {"id": "R5-1", "number": "237", "tier": "all", "size": "10'", "x": 1040, "y": 60, "color": 1},
+              {"id": "R5-2", "number": "238", "tier": "all", "size": "10'", "x": 1040, "y": 115, "color": 0},
+              {"id": "R5-3", "number": "239", "tier": "all", "size": "10'", "x": 1040, "y": 170, "color": 1},
+              {"id": "R5-4", "number": "240", "tier": "all", "size": "10'", "x": 1040, "y": 225, "color": 0},
+              {"id": "R5-5", "number": "241", "tier": "all", "size": "10'", "x": 1040, "y": 280, "color": 1},
+              {"id": "R5-6", "number": "242", "tier": "all", "size": "10'", "x": 1040, "y": 335, "color": 0},
+              {"id": "R5-7", "number": "243", "tier": "all", "size": "10'", "x": 1040, "y": 390, "color": 1},
+              {"id": "R5-8", "number": "244", "tier": "all", "size": "10'", "x": 1040, "y": 445, "color": 0},
+              {"id": "R5-9", "number": "245", "tier": "all", "size": "10'", "x": 1040, "y": 500, "color": 1}
+            ]
+          }
+        ],
+        "premiumBooths": [
+          {"id": "16-1", "number": "301", "tier": "premium", "size": "16'", "x": 330, "y": 560, "width": 80, "height": 30},
+          {"id": "16-2", "number": "302", "tier": "premium", "size": "16'", "x": 560, "y": 560, "width": 80, "height": 30},
+          {"id": "16-3", "number": "303", "tier": "premium", "size": "16'", "x": 790, "y": 560, "width": 80, "height": 30}
+        ]
+      },
+      "foyer": [
+        {"id": "F-L1", "number": "401", "tier": "exhibitor", "size": "10'", "x": 120, "y": 650, "rotation": -15, "colorIndex": 0},
+        {"id": "F-L2", "number": "402", "tier": "exhibitor", "size": "10'", "x": 165, "y": 670, "rotation": -10, "colorIndex": 1},
+        {"id": "F-L3", "number": "403", "tier": "exhibitor", "size": "10'", "x": 210, "y": 685, "rotation": -5, "colorIndex": 0},
+        {"id": "F-L4", "number": "404", "tier": "exhibitor", "size": "10'", "x": 255, "y": 695, "rotation": 0, "colorIndex": 1},
+        {"id": "F-L5", "number": "405", "tier": "exhibitor", "size": "10'", "x": 300, "y": 700, "rotation": 0, "colorIndex": 0},
+        {"id": "F-L6", "number": "406", "tier": "exhibitor", "size": "10'", "x": 345, "y": 700, "rotation": 0, "colorIndex": 1},
+        {"id": "F-C1", "number": "407", "tier": "gold", "size": "10'", "x": 390, "y": 700, "rotation": 0},
+        {"id": "F-C2", "number": "408", "tier": "gold", "size": "10'", "x": 435, "y": 700, "rotation": 0},
+        {"id": "F-M1", "number": "409", "tier": "all", "size": "10'", "x": 480, "y": 700, "rotation": 0, "colorIndex": 1},
+        {"id": "F-M2", "number": "410", "tier": "all", "size": "10'", "x": 525, "y": 700, "rotation": 0, "colorIndex": 0},
+        {"id": "F-M3", "number": "411", "tier": "all", "size": "10'", "x": 570, "y": 700, "rotation": 0, "colorIndex": 1},
+        {"id": "F-M4", "number": "412", "tier": "all", "size": "10'", "x": 615, "y": 700, "rotation": 0, "colorIndex": 0},
+        {"id": "F-M5", "number": "413", "tier": "all", "size": "10'", "x": 660, "y": 700, "rotation": 0, "colorIndex": 1},
+        {"id": "F-M6", "number": "414", "tier": "all", "size": "10'", "x": 705, "y": 700, "rotation": 0, "colorIndex": 0},
+        {"id": "F-M7", "number": "415", "tier": "all", "size": "10'", "x": 750, "y": 700, "rotation": 0, "colorIndex": 1},
+        {"id": "F-R1", "number": "416", "tier": "all", "size": "10'", "x": 795, "y": 695, "rotation": 0, "colorIndex": 0},
+        {"id": "F-R2", "number": "417", "tier": "all", "size": "10'", "x": 840, "y": 690, "rotation": 5, "colorIndex": 1},
+        {"id": "CORNER-1", "number": "418", "tier": "gold", "size": "10'", "x": 1120, "y": 650, "rotation": 25},
+        {"id": "CORNER-2", "number": "419", "tier": "gold", "size": "10'", "x": 1165, "y": 690, "rotation": 35}
+      ]
+    },
+    "instructions": {
+      "editingBooths": "To change booth numbers, edit the 'number' field for each booth object",
+      "colorIndex": "Color index 0 or 1 refers to the color array in the tier definition (blue/purple alternating)",
+      "tiers": "Tier values: 'all', 'exhibitor', 'gold', 'premium'",
+      "coordinates": "X and Y coordinates are in pixels from top-left corner",
+      "rotation": "Rotation is in degrees for curved foyer booths",
+      "integration": "Import this JSON into Loveable to generate the interactive venue map"
+    },
+    "features": {
+      "clickable": true,
+      "selectable": true,
+      "responsive": true,
+      "filterByTier": true,
+      "searchByNumber": true,
+      "zoomAndPan": true,
+      "exportSelection": true
+    },
+    "styling": {
+      "theme": {
+        "primary": "#006273",
+        "secondary": "#3a8297",
+        "accent": "#58b0e2",
+        "background": "linear-gradient(135deg, #006273 0%, #3a8297 50%, #58b0e2 100%)",
+        "cardBackground": "#ffffff",
+        "exitColor": "#dc3545"
+      },
+      "booth": {
+        "borderRadius": "8px",
+        "borderWidth": "2px",
+        "borderColor": "#333",
+        "hoverBorderColor": "#ffd700",
+        "hoverBorderWidth": "4px",
+        "selectedBorderColor": "#ff0000",
+        "selectedBorderWidth": "4px",
+        "transition": "all 0.3s ease",
+        "shadow": "0 2px 8px rgba(0,0,0,0.1)",
+        "hoverShadow": "0 4px 16px rgba(0,0,0,0.2)"
+      },
+      "typography": {
+        "fontFamily": "'Inter', 'Segoe UI', sans-serif",
+        "headingSize": "32px",
+        "subheadingSize": "16px",
+        "boothNumberSize": "12px",
+        "boothNumberWeight": "600"
+      }
+    }
+  }
+}
