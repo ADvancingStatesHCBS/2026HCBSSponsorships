@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 HCBS Sponsorships - Floor Plan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #006273 0%, #3a8297 60%, #58b0e2 100%);
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background: white;
+            color: #006273;
+        }
+
+        .config-section {
+            padding: 20px 30px;
+            background: #e8f4f8;
+            border-bottom: 2px solid #58b0e2;
+        }
+
+        .config-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: end;
+        }
+
+        .config-field label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #333;
+            font-size: 12px;
+        }
+
+        .config-field input {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .filter-section {
+            padding: 15px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .filter-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .filter-checkbox span {
+            font-size: 13px;
+            color: #555;
+        }
+
+        .legend {
+            margin-left: auto;
+            display: flex;
+            gap: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        .legend-color {
+            width: 18px;
+            height: 18px;
+            border-radius: 3px;
+            border: 1px solid #999;
+        }
+
+        .floor-plan-container {
+            padding: 30px;
+            overflow: auto;
+            background: white;
+        }
+
+        .floor-plan {
+            position: relative;
+            width: 1400px;
+            height: 900px;
+            margin: 0 auto;
+            background: #fafafa;
+            border: 2px solid #ccc;
+        }
+
+        .booth {
+            position: absolute;
+            border: 2px solid #333;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .booth:hover {
+            background: #e3f2fd;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        .booth.available {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .booth.taken {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .booth.pending {
+            background: #fff3cd;
+            border-color: #ffc107;
+        }
+
+        .booth-number {
+            font-size: 16px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .booth-org {
+            font-size: 10px;
+            color: #555;
+            margin-top: 4px;
+            text-align: center;
+            max-width: 90%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .booth-size {
+            font-size: 9px;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        .area-label {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            color: #666;
+            letter-spacing: 2px;
+        }
+
+        .amenity {
+            position: absolute;
+            border: 2px dashed #666;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .restroom {
+            background: #e8e8e8;
+            border: 2px solid #888;
+        }
+
+        .elevator {
+            background: #d0d0d0;
+            border: 2px solid #666;
+            font-size: 10px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .modal-field {
+            margin-bottom: 15px;
+        }
+
+        .modal-field label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .modal-field input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .modal-btn.primary {
+            background: #58b0e2;
+            color: white;
+        }
+
+        .modal-btn.secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>2026 HCBS Sponsorships - Floor Plan</h1>
+            <div class="controls">
+                <button class="btn" onclick="refreshData()">Refresh</button>
+            </div>
+        </div>
+
+        <div class="config-section">
+            <div class="config-form">
+                <div class="config-field">
+                    <label>Monday.com API Token</label>
+                    <input type="password" id="apiToken" placeholder="Enter your API token">
+                </div>
+                <div class="config-field">
+                    <label>Board ID</label>
+                    <input type="text" id="boardId" placeholder="Enter board ID">
+                </div>
+                <div class="config-field">
+                    <label>Booth Column</label>
+                    <input type="text" id="boothColumn" value="text" placeholder="e.g., booth_number">
+                </div>
+                <div class="config-field">
+                    <label>Status Column</label>
+                    <input type="text" id="statusColumn" value="status" placeholder="e.g., status">
+                </div>
+                <div class="config-field">
+                    <label>Sponsorship Column</label>
+                    <input type="text" id="sponsorshipColumn" value="color_mkwgq36e" placeholder="e.g., sponsorship">
+                </div>
+                <div class="config-field">
+                    <button class="btn" onclick="loadBoard()" style="width: 100%; margin-top: 20px;">Load Board</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <label style="font-weight: 600;">Filter by Level:</label>
+            <div class="filter-checkbox">
+                <input type="checkbox" id="filterPlatinum" checked onchange="applyFilter()">
+                <span>Platinum</span>
+            </div>
+            <div class="filter-checkbox">
+                <input type="checkbox" id="filterDiamond" checked onchange="applyFilter()">
+                <span>Diamond</span>
+            </div>
+            <div class="filter-checkbox">
+                <input type="checkbox" id="filterEmerald" checked onchange="applyFilter()">
+                <span>Emerald</span>
+            </div>
+            <div class="filter-checkbox">
+                <input type="checkbox" id="filterSapphire" checked onchange="applyFilter()">
+                <span>Sapphire</span>
+            </div>
+            <div class="filter-checkbox">
+                <input type="checkbox" id="filterRuby" checked onchange="applyFilter()">
+                <span>Ruby</span>
+            </div>
+            <div class="filter-checkbox">
+                <input type="checkbox" id="filterGold" checked onchange="applyFilter()">
+                <span>Gold</span>
+            </div>
+            <div class="filter-checkbox">
+                <input type="checkbox" id="filterOther" checked onchange="applyFilter()">
+                <span>Other</span>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #d4edda;"></div>
+                    <span>Available</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #f8d7da;"></div>
+                    <span>Taken</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #fff3cd;"></div>
+                    <span>Pending</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="floor-plan-container">
+            <div class="floor-plan" id="floorPlan">
+                <div class="loading">Configure your Monday.com board settings above to get started</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="boothModal">
+        <div class="modal-content">
+            <div class="modal-header">Booth Details</div>
+            <div class="modal-body">
+                <div class="modal-field">
+                    <label>Booth Number</label>
+                    <input type="text" id="modalBoothNumber" readonly>
+                </div>
+                <div class="modal-field">
+                    <label>Organization</label>
+                    <input type="text" id="modalOrganization" readonly>
+                </div>
+                <div class="modal-field">
+                    <label>Sponsorship Level</label>
+                    <input type="text" id="modalSponsorshipLevel" readonly>
+                </div>
+                <div class="modal-field">
+                    <label>Status</label>
+                    <input type="text" id="modalStatus" readonly>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let booths = [];
+        let sponsors = [];
+        let config = {
+            apiToken: '',
+            boardId: '',
+            boothColumn: 'text',
+            statusColumn: 'status',
+            sponsorshipColumn: 'color_mkwgq36e'
+        };
+
+        // Floor plan booth definitions with positions and sizes (matched to layout)
+        const boothLayout = [
+            // KENT Section (Left Side) - 100 series (vertical column)
+            { number: '100', x: 20, y: 680, width: 55, height: 45, size: "6'" },
+            { number: '104', x: 20, y: 625, width: 55, height: 45 },
+            { number: '106', x: 20, y: 570, width: 55, height: 45 },
+            { number: '108', x: 20, y: 515, width: 55, height: 45 },
+            { number: '110', x: 20, y: 460, width: 55, height: 45 },
+            { number: '112', x: 20, y: 405, width: 55, height: 45 },
+            { number: '114', x: 20, y: 350, width: 55, height: 45 },
+
+            // KENT 100s - Second column
+            { number: '101', x: 85, y: 680, width: 55, height: 55, size: "10'" },
+            { number: '103', x: 85, y: 625, width: 55, height: 45, size: "16'" },
+            { number: '105', x: 85, y: 570, width: 55, height: 45, size: "20'" },
+            { number: '107', x: 85, y: 515, width: 55, height: 45 },
+            { number: '109', x: 85, y: 460, width: 55, height: 45 },
+            { number: '111', x: 85, y: 405, width: 55, height: 45, size: "20'" },
+            { number: '113', x: 85, y: 350, width: 55, height: 45, size: "20'" },
+            { number: '115', x: 85, y: 295, width: 55, height: 45 },
+
+            // KENT - Third column (200 series left)
+            { number: '200', x: 150, y: 680, width: 55, height: 55, size: "20'" },
+            { number: '204', x: 150, y: 570, width: 55, height: 45 },
+            { number: '206', x: 150, y: 515, width: 55, height: 45 },
+            { number: '208', x: 150, y: 460, width: 55, height: 45 },
+            { number: '212', x: 150, y: 350, width: 55, height: 45 },
+
+            // KENT - Fourth column
+            { number: '117', x: 215, y: 295, width: 55, height: 45, size: "7'" },
+            { number: '214', x: 215, y: 350, width: 55, height: 45 },
+
+            // Center 200s (middle left)
+            { number: '201', x: 305, y: 680, width: 70, height: 55, size: "16'" },
+            { number: '203', x: 305, y: 625, width: 70, height: 45, size: "16'" },
+            { number: '207', x: 305, y: 570, width: 70, height: 45, size: "20'" },
+            { number: '211', x: 305, y: 460, width: 70, height: 45, size: "20'" },
+            { number: '213', x: 305, y: 405, width: 70, height: 45, size: "20'" },
+            { number: '215', x: 305, y: 295, width: 70, height: 45, size: "20'" },
+
+            // Center 300s (middle)
+            { number: '300', x: 385, y: 680, width: 70, height: 55, size: "20'" },
+            { number: '304', x: 385, y: 570, width: 70, height: 45, size: "20'" },
+            { number: '308', x: 385, y: 460, width: 70, height: 45, size: "20'" },
+            { number: '312', x: 385, y: 295, width: 70, height: 45, size: "20'" },
+
+            // Stage and Dance Floor (visual elements, not booths)
+            { number: 'Stage', x: 465, y: 400, width: 130, height: 100, isAmenity: true },
+
+            // Center 400s (middle right)
+            { number: '401', x: 670, y: 680, width: 70, height: 55, size: "16'" },
+            { number: '403', x: 670, y: 625, width: 70, height: 45, size: "16'" },
+            { number: '407', x: 670, y: 570, width: 70, height: 45, size: "20'" },
+            { number: '411', x: 670, y: 460, width: 70, height: 45, size: "20'" },
+            { number: '413', x: 670, y: 405, width: 70, height: 45, size: "20'" },
+            { number: '415', x: 670, y: 295, width: 70, height: 45, size: "20'" },
+
+            // ESSEX Section (Right Side) - 500 series
+            { number: '500', x: 750, y: 680, width: 70, height: 55, size: "20'" },
+            { number: '504', x: 750, y: 570, width: 70, height: 45, size: "20'" },
+            { number: '508', x: 750, y: 460, width: 70, height: 45, size: "20'" },
+            { number: '512', x: 750, y: 295, width: 70, height: 45, size: "20'" },
+
+            // ESSEX - Second column
+            { number: '501', x: 830, y: 680, width: 60, height: 55, size: "7'" },
+            { number: '505', x: 830, y: 625, width: 60, height: 45 },
+            { number: '507', x: 830, y: 570, width: 60, height: 45 },
+            { number: '509', x: 830, y: 515, width: 60, height: 45 },
+            { number: '511', x: 830, y: 460, width: 60, height: 45 },
+            { number: '513', x: 830, y: 405, width: 60, height: 45 },
+            { number: '515', x: 830, y: 350, width: 60, height: 45 },
+
+            // ESSEX - Third column
+            { number: '510', x: 900, y: 405, width: 60, height: 45 },
+            { number: '514', x: 900, y: 295, width: 60, height: 45 },
+
+            // HARBORSIDE FOYER (Bottom) - 600 series
+            { number: '621', x: 20, y: 820, width: 55, height: 45 },
+            { number: '620', x: 85, y: 820, width: 55, height: 45 },
+            { number: '619', x: 150, y: 820, width: 55, height: 45 },
+            { number: '618', x: 215, y: 820, width: 55, height: 45 },
+            { number: '617', x: 280, y: 820, width: 55, height: 45 },
+            { number: '616', x: 345, y: 820, width: 55, height: 45 },
+            { number: '615', x: 410, y: 820, width: 55, height: 45 },
+            { number: '614', x: 475, y: 820, width: 55, height: 45 },
+            { number: '613', x: 540, y: 820, width: 55, height: 45 },
+            { number: '612', x: 605, y: 820, width: 55, height: 45 },
+            { number: '610', x: 670, y: 820, width: 55, height: 45 },
+            { number: '609', x: 735, y: 820, width: 55, height: 45 },
+            { number: '608', x: 800, y: 820, width: 55, height: 45 },
+            { number: '607', x: 865, y: 820, width: 55, height: 45 },
+            { number: '606', x: 930, y: 820, width: 55, height: 45 },
+            { number: '605', x: 995, y: 820, width: 55, height: 45 },
+
+            // Registration area (Right side)
+            { number: '601', x: 1100, y: 640, width: 90, height: 70 },
+            { number: '602', x: 1200, y: 710, width: 80, height: 60 },
+            { number: '603', x: 1100, y: 780, width: 90, height: 70 }
+        ];
+
+        function loadConfig() {
+            const saved = localStorage.getItem('mondayConfig');
+            if (saved) {
+                config = { ...config, ...JSON.parse(saved) };
+                document.getElementById('apiToken').value = config.apiToken || '';
+                document.getElementById('boardId').value = config.boardId || '';
+                document.getElementById('boothColumn').value = config.boothColumn || 'text';
+                document.getElementById('statusColumn').value = config.statusColumn || 'status';
+                document.getElementById('sponsorshipColumn').value = config.sponsorshipColumn || 'color_mkwgq36e';
+            }
+        }
+
+        function saveConfig() {
+            config.apiToken = document.getElementById('apiToken').value;
+            config.boardId = document.getElementById('boardId').value;
+            config.boothColumn = document.getElementById('boothColumn').value;
+            config.statusColumn = document.getElementById('statusColumn').value;
+            config.sponsorshipColumn = document.getElementById('sponsorshipColumn').value;
+            localStorage.setItem('mondayConfig', JSON.stringify(config));
+        }
+
+        async function loadBoard(silent = false) {
+            saveConfig();
+
+            if (!config.apiToken || !config.boardId) {
+                alert('Please enter your API Token and Board ID');
+                return;
+            }
+
+            if (!silent) {
+                document.getElementById('floorPlan').innerHTML = '<div class="loading">Loading board data...</div>';
+            }
+
+            try {
+                let allItems = [];
+                let cursor = null;
+                let hasMore = true;
+
+                while (hasMore) {
+                    const query = `query {
+                        boards(ids: ${config.boardId}) {
+                            items_page(limit: 500${cursor ? `, cursor: "${cursor}"` : ''}) {
+                                cursor
+                                items {
+                                    id
+                                    name
+                                    column_values {
+                                        id
+                                        text
+                                        value
+                                    }
+                                }
+                            }
+                        }
+                    }`;
+
+                    const response = await fetch('https://api.monday.com/v2', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': config.apiToken
+                        },
+                        body: JSON.stringify({ query })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.errors) {
+                        throw new Error(data.errors[0].message);
+                    }
+
+                    const itemsPage = data.data.boards[0].items_page;
+                    allItems = allItems.concat(itemsPage.items);
+
+                    cursor = itemsPage.cursor;
+                    hasMore = itemsPage.items.length === 500;
+                }
+
+                sponsors = parseSponsors(allItems);
+                renderFloorPlan();
+            } catch (error) {
+                document.getElementById('floorPlan').innerHTML =
+                    `<div class="loading">Error loading board: ${error.message}</div>`;
+            }
+        }
+
+        function parseSponsors(items) {
+            return items.map(item => {
+                const boothColumn = item.column_values.find(col => col.id === config.boothColumn);
+                const statusColumn = item.column_values.find(col => col.id === config.statusColumn);
+                const sponsorshipColumn = item.column_values.find(col => col.id === config.sponsorshipColumn);
+
+                let boothNumber = boothColumn?.text || '';
+
+                let sponsorshipLevel = 'Other';
+                if (sponsorshipColumn) {
+                    if (sponsorshipColumn.value) {
+                        try {
+                            const parsed = JSON.parse(sponsorshipColumn.value);
+                            sponsorshipLevel = parsed.label || parsed.text || sponsorshipColumn.text || 'Other';
+                        } catch {
+                            sponsorshipLevel = sponsorshipColumn.value || sponsorshipColumn.text || 'Other';
+                        }
+                    } else if (sponsorshipColumn.text) {
+                        sponsorshipLevel = sponsorshipColumn.text;
+                    }
+                }
+
+                let status = 'available';
+                if (statusColumn?.text) {
+                    const statusText = statusColumn.text.toLowerCase();
+                    if (statusText.includes('taken') || statusText.includes('assigned')) {
+                        status = 'taken';
+                    } else if (statusText.includes('pending') || statusText.includes('hold')) {
+                        status = 'pending';
+                    }
+                }
+
+                return {
+                    id: item.id,
+                    organization: item.name,
+                    boothNumber: boothNumber.trim(),
+                    sponsorshipLevel: sponsorshipLevel.trim(),
+                    status: status
+                };
+            });
+        }
+
+        function renderFloorPlan() {
+            const floorPlan = document.getElementById('floorPlan');
+            floorPlan.innerHTML = '';
+
+            // Add area labels
+            floorPlan.innerHTML += '<div class="area-label" style="top: 240px; left: 40px; font-size: 32px;">KENT</div>';
+            floorPlan.innerHTML += '<div class="area-label" style="top: 520px; left: 465px; font-size: 22px;">FOOD</div>';
+            floorPlan.innerHTML += '<div class="area-label" style="top: 240px; left: 780px; font-size: 32px;">ESSEX</div>';
+            floorPlan.innerHTML += '<div class="area-label" style="bottom: 50px; left: 480px; font-size: 20px;">HARBORSIDE FOYER</div>';
+
+            // Add section letters
+            floorPlan.innerHTML += '<div class="area-label" style="top: 770px; left: 40px; font-size: 28px; color: #999;">A</div>';
+            floorPlan.innerHTML += '<div class="area-label" style="top: 540px; left: 40px; font-size: 28px; color: #999;">B</div>';
+            floorPlan.innerHTML += '<div class="area-label" style="top: 310px; left: 40px; font-size: 28px; color: #999;">C</div>';
+
+            floorPlan.innerHTML += '<div class="area-label" style="top: 770px; left: 930px; font-size: 28px; color: #999;">A</div>';
+            floorPlan.innerHTML += '<div class="area-label" style="top: 540px; left: 930px; font-size: 28px; color: #999;">B</div>';
+            floorPlan.innerHTML += '<div class="area-label" style="top: 310px; left: 930px; font-size: 28px; color: #999;">C</div>';
+
+            // Add amenities
+            floorPlan.innerHTML += '<div class="amenity" style="top: 360px; left: 475px; width: 110px; height: 70px; font-size: 15px;">STAGE</div>';
+            floorPlan.innerHTML += '<div class="amenity" style="top: 440px; left: 465px; width: 130px; height: 70px; font-size: 13px; line-height: 1.4;">Dance Floor<br>16\'x20\'</div>';
+            floorPlan.innerHTML += '<div class="amenity restroom" style="top: 100px; left: 25px; width: 70px; height: 60px; font-size: 13px;">MEN</div>';
+            floorPlan.innerHTML += '<div class="amenity restroom" style="top: 100px; left: 110px; width: 70px; height: 60px; font-size: 13px;">WOMEN</div>';
+            floorPlan.innerHTML += '<div class="amenity restroom" style="top: 400px; right: 240px; width: 70px; height: 60px; font-size: 13px;">MEN</div>';
+            floorPlan.innerHTML += '<div class="amenity restroom" style="top: 480px; right: 240px; width: 70px; height: 60px; font-size: 13px;">WOMEN</div>';
+            floorPlan.innerHTML += '<div class="amenity" style="top: 560px; right: 190px; width: 120px; height: 90px; font-size: 16px; line-height: 1.3;"><b>HCBS</b><br>REGISTRATION</div>';
+
+            // Add elevator markers
+            floorPlan.innerHTML += '<div class="elevator" style="top: 100px; right: 240px; width: 30px; height: 30px;">ELEV</div>';
+            floorPlan.innerHTML += '<div class="elevator" style="top: 100px; right: 200px; width: 30px; height: 30px;">ELEV</div>';
+            floorPlan.innerHTML += '<div class="elevator" style="top: 100px; right: 160px; width: 30px; height: 30px;">ELEV</div>';
+
+            // Render booths
+            boothLayout.forEach(boothDef => {
+                // Skip amenities
+                if (boothDef.isAmenity) return;
+
+                const sponsorData = sponsors.find(s => s.boothNumber === boothDef.number);
+                const booth = document.createElement('div');
+                booth.className = 'booth';
+
+                if (sponsorData) {
+                    booth.classList.add(sponsorData.status);
+
+                    // Apply filter
+                    const level = sponsorData.sponsorshipLevel;
+                    const isFiltered = checkFilter(level);
+                    if (!isFiltered) {
+                        booth.style.opacity = '0.3';
+                    }
+                }
+
+                booth.style.left = boothDef.x + 'px';
+                booth.style.top = boothDef.y + 'px';
+                booth.style.width = boothDef.width + 'px';
+                booth.style.height = boothDef.height + 'px';
+
+                const sizeText = boothDef.size ? `<div class="booth-size">${boothDef.size}</div>` : '';
+                booth.innerHTML = `
+                    <div class="booth-number">${boothDef.number}</div>
+                    ${sponsorData ? `<div class="booth-org">${sponsorData.organization}</div>` : ''}
+                    ${sizeText}
+                `;
+
+                booth.onclick = () => openBoothModal(boothDef.number, sponsorData);
+                floorPlan.appendChild(booth);
+            });
+        }
+
+        function checkFilter(sponsorshipLevel) {
+            const filters = {
+                'Platinum': document.getElementById('filterPlatinum').checked,
+                'Diamond': document.getElementById('filterDiamond').checked,
+                'Emerald': document.getElementById('filterEmerald').checked,
+                'Sapphire': document.getElementById('filterSapphire').checked,
+                'Ruby': document.getElementById('filterRuby').checked,
+                'Gold': document.getElementById('filterGold').checked,
+                'Other': document.getElementById('filterOther').checked
+            };
+
+            return filters[sponsorshipLevel] !== false;
+        }
+
+        function applyFilter() {
+            renderFloorPlan();
+        }
+
+        function openBoothModal(boothNumber, sponsorData) {
+            document.getElementById('modalBoothNumber').value = boothNumber;
+            document.getElementById('modalOrganization').value = sponsorData?.organization || 'Unassigned';
+            document.getElementById('modalSponsorshipLevel').value = sponsorData?.sponsorshipLevel || 'N/A';
+            document.getElementById('modalStatus').value = sponsorData?.status || 'Available';
+            document.getElementById('boothModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('boothModal').classList.remove('active');
+        }
+
+        function refreshData() {
+            loadBoard();
+        }
+
+        document.getElementById('boothModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        loadConfig();
+    </script>
+</body>
+</html>
