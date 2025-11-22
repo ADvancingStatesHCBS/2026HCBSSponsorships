@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 HCBS Conference - Booth Selector</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #006273 0%, #3a8297 50%, #58b0e2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #006273 0%, #3a8297 60%, #58b0e2 100%);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .stats-bar {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            border-bottom: 2px solid #e0e0e0;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #006273;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .urgency-banner {
+            background: #ffc107;
+            color: #333;
+            padding: 15px 40px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 16px;
+            border-bottom: 2px solid #ff9800;
+            display: none;
+        }
+
+        .urgency-banner.show {
+            display: block;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 0;
+        }
+
+        .sidebar {
+            background: #f8f9fa;
+            padding: 30px;
+            border-right: 2px solid #e0e0e0;
+            max-height: calc(100vh - 300px);
+            overflow-y: auto;
+        }
+
+        .tier-selector {
+            margin-bottom: 30px;
+        }
+
+        .tier-selector h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .tier-option {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tier-option:hover {
+            border-color: #58b0e2;
+            transform: translateX(5px);
+        }
+
+        .tier-option.selected {
+            border-color: #006273;
+            background: #e8f4f8;
+            box-shadow: 0 4px 12px rgba(0, 98, 115, 0.2);
+        }
+
+        .tier-name {
+            font-weight: 600;
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .tier-price {
+            font-size: 14px;
+            color: #006273;
+            font-weight: 600;
+        }
+
+        .tier-booths {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .tier-availability {
+            font-size: 12px;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+
+        .tier-availability.low {
+            color: #dc3545;
+        }
+
+        .tier-availability.medium {
+            color: #ffc107;
+        }
+
+        .tier-availability.high {
+            color: #28a745;
+        }
+
+        .legend {
+            margin-top: 30px;
+        }
+
+        .legend h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            border: 2px solid #333;
+        }
+
+        .recent-activity {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #ddd;
+        }
+
+        .recent-activity h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .activity-item {
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 12px;
+            border-left: 3px solid #28a745;
+        }
+
+        .activity-time {
+            color: #999;
+            font-size: 11px;
+        }
+
+        .map-container {
+            padding: 40px;
+            background: white;
+            position: relative;
+            overflow: auto;
+        }
+
+        .floor-plan {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #f0f0f0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .floor-plan img {
+            width: 100%;
+            height: auto;
+            display: block;
+            opacity: 0.3;
+        }
+
+        .floor-plan svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .booth-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .booth-overlay > * {
+            pointer-events: auto;
+        }
+
+        .booth {
+            position: absolute;
+            border: 2px solid #333;
+            background: rgba(40, 167, 69, 0.5);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 11px;
+            color: #000;
+        }
+
+        .booth:hover {
+            transform: scale(1.05);
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .booth.available {
+            background: rgba(40, 167, 69, 0.5);
+            border-color: #28a745;
+        }
+
+        .booth.selected {
+            background: rgba(88, 176, 226, 0.7);
+            border-color: #006273;
+            border-width: 3px;
+        }
+
+        .booth.reserved {
+            background: rgba(255, 193, 7, 0.5);
+            border-color: #ffc107;
+            cursor: not-allowed;
+        }
+
+        .booth.taken {
+            background: rgba(220, 53, 69, 0.5);
+            border-color: #dc3545;
+            cursor: not-allowed;
+        }
+
+        .booth.not-allowed {
+            background: rgba(200, 200, 200, 0.3);
+            border-color: #999;
+            cursor: not-allowed;
+            opacity: 0.4;
+        }
+
+        .booth-number {
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .modal-body {
+            margin-bottom: 30px;
+        }
+
+        .modal-field {
+            margin-bottom: 20px;
+        }
+
+        .modal-field label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .modal-field input,
+        .modal-field select,
+        .modal-field textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #006273;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #004d5a;
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+
+        .admin-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #006273;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 500;
+        }
+
+        .admin-panel {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .admin-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+        }
+
+        .admin-overlay.active {
+            display: block;
+        }
+
+        .booth-list {
+            margin-top: 20px;
+        }
+
+        .booth-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .booth-item-info {
+            flex: 1;
+        }
+
+        .booth-item-number {
+            font-weight: 700;
+            color: #006273;
+            margin-bottom: 5px;
+        }
+
+        .booth-item-org {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .booth-item-tier {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .booth-item-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        @media (max-width: 1024px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                max-height: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>2026 HCBS Conference - Booth Selection</h1>
+            <p>Select your preferred booth location</p>
+        </div>
+
+        <div class="urgency-banner" id="urgencyBanner">
+            <span id="urgencyText"></span>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat">
+                <div class="stat-number" id="totalAvailable">94</div>
+                <div class="stat-label">Total Booths</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="bookedCount">0</div>
+                <div class="stat-label">Booked</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="availableCount">94</div>
+                <div class="stat-label">Available</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="viewerCount">1</div>
+                <div class="stat-label">Viewing Now</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="sidebar">
+                <div class="tier-selector">
+                    <h3>Select Your Tier</h3>
+                    <div class="tier-option" data-tier="platinum">
+                        <div class="tier-name">Platinum</div>
+                        <div class="tier-price">$58,000</div>
+                        <div class="tier-booths">Double booth (10×20)</div>
+                        <div class="tier-availability high" data-tier-stat="platinum">20 sets available</div>
+                    </div>
+                    <div class="tier-option" data-tier="diamond">
+                        <div class="tier-name">Diamond</div>
+                        <div class="tier-price">$48,000</div>
+                        <div class="tier-booths">Single booth (10×8)</div>
+                        <div class="tier-availability high" data-tier-stat="diamond">Available</div>
+                    </div>
+                    <div class="tier-option" data-tier="emerald">
+                        <div class="tier-name">Emerald</div>
+                        <div class="tier-price">$37,000</div>
+                        <div class="tier-booths">Single booth (10×8)</div>
+                        <div class="tier-availability high" data-tier-stat="emerald">4 available</div>
+                    </div>
+                    <div class="tier-option" data-tier="sapphire">
+                        <div class="tier-name">Sapphire</div>
+                        <div class="tier-price">$27,000</div>
+                        <div class="tier-booths">Single booth (10×8)</div>
+                        <div class="tier-availability high" data-tier-stat="sapphire">10 available</div>
+                    </div>
+                    <div class="tier-option" data-tier="ruby">
+                        <div class="tier-name">Ruby</div>
+                        <div class="tier-price">$16,250</div>
+                        <div class="tier-booths">Single booth (10×8)</div>
+                        <div class="tier-availability high" data-tier-stat="ruby">16 available</div>
+                    </div>
+                    <div class="tier-option" data-tier="gold">
+                        <div class="tier-name">Gold</div>
+                        <div class="tier-price">$13,000</div>
+                        <div class="tier-booths">Single booth (10×8)</div>
+                        <div class="tier-availability medium" data-tier-stat="gold">14 available</div>
+                    </div>
+                    <div class="tier-option" data-tier="exhibitor">
+                        <div class="tier-name">Exhibitor</div>
+                        <div class="tier-price">$7,500</div>
+                        <div class="tier-booths">Single booth (10×8)</div>
+                        <div class="tier-availability low" data-tier-stat="exhibitor">Only 10 available!</div>
+                    </div>
+                </div>
+
+                <div class="legend">
+                    <h3>Legend</h3>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(40, 167, 69, 0.5); border-color: #28a745;"></div>
+                        <span>Available</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(88, 176, 226, 0.7); border-color: #006273;"></div>
+                        <span>Your Selection</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(255, 193, 7, 0.5); border-color: #ffc107;"></div>
+                        <span>Reserved</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(220, 53, 69, 0.5); border-color: #dc3545;"></div>
+                        <span>Taken</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(200, 200, 200, 0.3); border-color: #999;"></div>
+                        <span>Not Available for Tier</span>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h3>Recent Activity</h3>
+                    <div id="activityList">
+                        <div class="activity-item">
+                            Select a tier to get started
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="map-container">
+                <div class="floor-plan">
+                    <svg viewBox="0 0 1400 1000" id="floorPlanSVG">
+                        <!-- Background -->
+                        <rect width="1400" height="1000" fill="#ffffff"/>
+
+                        <!-- Main Exhibit Hall -->
+                        <rect x="50" y="50" width="900" height="700" fill="#f9f9f9" stroke="#333" stroke-width="2"/>
+                        <text x="500" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">Main Exhibit Hall</text>
+
+                        <!-- Foyer -->
+                        <rect x="50" y="800" width="1300" height="150" fill="#e8f4f8" stroke="#006273" stroke-width="2"/>
+                        <text x="700" y="785" text-anchor="middle" font-size="18" font-weight="bold" fill="#006273">Harborside Foyer</text>
+
+                        <!-- Food area indicator -->
+                        <circle cx="500" cy="400" r="40" fill="#ffc107" opacity="0.3"/>
+                        <text x="500" y="405" text-anchor="middle" font-size="14" font-weight="bold">FOOD</text>
+
+                        <!-- Stage area indicator -->
+                        <rect x="800" y="200" width="120" height="80" fill="#58b0e2" opacity="0.3"/>
+                        <text x="860" y="245" text-anchor="middle" font-size="12" font-weight="bold">STAGE</text>
+
+                        <!-- Entrances -->
+                        <rect x="450" y="48" width="100" height="4" fill="#28a745"/>
+                        <text x="500" y="45" text-anchor="middle" font-size="10" fill="#28a745">ENTRANCE</text>
+                    </svg>
+                    <div class="booth-overlay" id="boothOverlay">
+                        <!-- Booths will be dynamically placed here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="admin-toggle" onclick="toggleAdmin()">Admin Panel</button>
+
+    <div class="admin-overlay" id="adminOverlay" onclick="toggleAdmin()"></div>
+    <div class="admin-panel" id="adminPanel">
+        <h2>Admin Panel</h2>
+        <button class="btn btn-secondary btn-small" onclick="exportData()" style="margin-bottom: 20px;">Export Data (JSON)</button>
+        <button class="btn btn-secondary btn-small" onclick="clearAllData()" style="margin-bottom: 20px; margin-left: 10px;">Clear All</button>
+
+        <div class="booth-list" id="adminBoothList">
+            <!-- Admin booth list will be populated here -->
+        </div>
+    </div>
+
+    <div class="modal" id="boothModal">
+        <div class="modal-content">
+            <div class="modal-header">Reserve Booth <span id="modalBoothNumber"></span></div>
+            <div class="modal-body">
+                <div class="modal-field">
+                    <label>Organization Name</label>
+                    <input type="text" id="orgName" placeholder="Enter organization name">
+                </div>
+                <div class="modal-field">
+                    <label>Contact Name</label>
+                    <input type="text" id="contactName" placeholder="Enter contact name">
+                </div>
+                <div class="modal-field">
+                    <label>Email</label>
+                    <input type="email" id="contactEmail" placeholder="Enter email address">
+                </div>
+                <div class="modal-field">
+                    <label>Phone</label>
+                    <input type="tel" id="contactPhone" placeholder="Enter phone number">
+                </div>
+                <div class="modal-field">
+                    <label>Notes</label>
+                    <textarea id="notes" rows="3" placeholder="Any special requests or notes"></textarea>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="submitReservation()">Submit Reservation</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const TIER_CONFIG = {
+            platinum: {
+                name: 'Platinum',
+                price: 58000,
+                boothType: 'double',
+                color: '#9333EA',
+                maxCount: 20, // 20 double sets = 40 booths
+                allowedBooths: 'main-hall-premium'
+            },
+            diamond: {
+                name: 'Diamond',
+                price: 48000,
+                boothType: 'single',
+                color: '#60A5FA',
+                maxCount: 0,
+                allowedBooths: 'main-hall'
+            },
+            emerald: {
+                name: 'Emerald',
+                price: 37000,
+                boothType: 'single',
+                color: '#10B981',
+                maxCount: 4,
+                allowedBooths: 'main-hall'
+            },
+            sapphire: {
+                name: 'Sapphire',
+                price: 27000,
+                boothType: 'single',
+                color: '#3B82F6',
+                maxCount: 10,
+                allowedBooths: 'main-hall-and-premium-foyer'
+            },
+            ruby: {
+                name: 'Ruby',
+                price: 16250,
+                boothType: 'single',
+                color: '#EF4444',
+                maxCount: 16,
+                allowedBooths: 'main-hall-and-premium-foyer'
+            },
+            gold: {
+                name: 'Gold',
+                price: 13000,
+                boothType: 'single',
+                color: '#F59E0B',
+                maxCount: 14,
+                allowedBooths: 'main-hall-and-gold-foyer'
+            },
+            exhibitor: {
+                name: 'Exhibitor',
+                price: 7500,
+                boothType: 'single',
+                color: '#6B7280',
+                maxCount: 10,
+                allowedBooths: 'exhibitor-foyer-only'
+            }
+        };
+
+        // Booth location definitions
+        const BOOTH_LOCATIONS = {
+            // Foyer booths
+            'foyer-gold-front': [601, 602, 603],
+            'foyer-premium': [605, 606, 607, 608, 609, 610, 611, 612],
+            'foyer-gold-back': [613, 614],
+            'foyer-exhibitor': [615, 616, 617, 618, 619, 620, 621, 622, 623, 624],
+
+            // Main hall booths (simplified example - you'll need to map all 70)
+            'main-hall': [
+                100, 101, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 117,
+                200, 201, 203, 204, 206, 207, 208, 211, 212, 213, 214, 215,
+                300, 304, 308, 312,
+                401, 403, 407, 411, 413, 415,
+                500, 501, 504, 507, 508, 509, 510, 511, 512, 513, 514, 515,
+            ]
+        };
+
+        // Platinum pre-paired sets (examples - you'll define all 20)
+        const PLATINUM_PAIRS = [
+            [101, 103], [104, 106], [107, 109], [110, 112], [113, 115],
+            [200, 201], [203, 204], [206, 207], [208, 211], [212, 213],
+            [214, 215], [300, 304], [308, 312], [401, 403], [407, 411],
+            [413, 415], [500, 501], [504, 507], [508, 509], [510, 511]
+        ];
+
+        // State management
+        let selectedTier = null;
+        let selectedBooths = [];
+        let booths = {};
+        let recentActivity = [];
+
+        // Initialize booth data
+        function initializeBooths() {
+            const allBooths = [
+                ...BOOTH_LOCATIONS['foyer-gold-front'],
+                ...BOOTH_LOCATIONS['foyer-premium'],
+                ...BOOTH_LOCATIONS['foyer-gold-back'],
+                ...BOOTH_LOCATIONS['foyer-exhibitor'],
+                ...BOOTH_LOCATIONS['main-hall']
+            ];
+
+            allBooths.forEach(boothNum => {
+                booths[boothNum] = {
+                    number: boothNum,
+                    status: 'available', // available, reserved, taken
+                    tier: null,
+                    organization: null,
+                    contact: null,
+                    timestamp: null
+                };
+            });
+
+            // Load saved data from localStorage
+            const saved = localStorage.getItem('boothData');
+            if (saved) {
+                const savedBooths = JSON.parse(saved);
+                Object.keys(savedBooths).forEach(key => {
+                    if (booths[key]) {
+                        booths[key] = savedBooths[key];
+                    }
+                });
+            }
+
+            updateStats();
+        }
+
+        // Save booth data
+        function saveData() {
+            localStorage.setItem('boothData', JSON.stringify(booths));
+        }
+
+        // Tier selection
+        document.querySelectorAll('.tier-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.tier-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedTier = this.dataset.tier;
+                selectedBooths = [];
+                renderBooths();
+                addActivity(`Selected ${TIER_CONFIG[selectedTier].name} tier`);
+            });
+        });
+
+        // Determine if booth is allowed for selected tier
+        function isBoothAllowed(boothNum) {
+            if (!selectedTier) return false;
+
+            const tier = TIER_CONFIG[selectedTier];
+            const allowedBooths = tier.allowedBooths;
+
+            // Check booth location restrictions
+            if (allowedBooths === 'exhibitor-foyer-only') {
+                return BOOTH_LOCATIONS['foyer-exhibitor'].includes(boothNum);
+            }
+
+            if (allowedBooths === 'main-hall-and-gold-foyer') {
+                return BOOTH_LOCATIONS['main-hall'].includes(boothNum) ||
+                       BOOTH_LOCATIONS['foyer-gold-front'].includes(boothNum) ||
+                       BOOTH_LOCATIONS['foyer-gold-back'].includes(boothNum);
+            }
+
+            if (allowedBooths === 'main-hall-and-premium-foyer') {
+                return BOOTH_LOCATIONS['main-hall'].includes(boothNum) ||
+                       BOOTH_LOCATIONS['foyer-premium'].includes(boothNum);
+            }
+
+            if (allowedBooths === 'main-hall') {
+                return BOOTH_LOCATIONS['main-hall'].includes(boothNum);
+            }
+
+            if (allowedBooths === 'main-hall-premium') {
+                return BOOTH_LOCATIONS['main-hall'].includes(boothNum) ||
+                       BOOTH_LOCATIONS['foyer-premium'].includes(boothNum);
+            }
+
+            return false;
+        }
+
+        // Render booths on floor plan
+        function renderBooths() {
+            const overlay = document.getElementById('boothOverlay');
+            overlay.innerHTML = '';
+
+            Object.values(booths).forEach(booth => {
+                const boothDiv = document.createElement('div');
+                boothDiv.className = 'booth';
+                boothDiv.dataset.booth = booth.number;
+
+                // Position booth (you'll need to adjust these coordinates based on actual floor plan)
+                const position = getBoothPosition(booth.number);
+                boothDiv.style.left = position.x + '%';
+                boothDiv.style.top = position.y + '%';
+                boothDiv.style.width = position.width + '%';
+                boothDiv.style.height = position.height + '%';
+
+                // Set booth status styling
+                if (selectedBooths.includes(booth.number)) {
+                    boothDiv.classList.add('selected');
+                } else if (booth.status === 'taken') {
+                    boothDiv.classList.add('taken');
+                } else if (booth.status === 'reserved') {
+                    boothDiv.classList.add('reserved');
+                } else if (!selectedTier || !isBoothAllowed(booth.number)) {
+                    boothDiv.classList.add('not-allowed');
+                } else {
+                    boothDiv.classList.add('available');
+                }
+
+                boothDiv.innerHTML = `<div class="booth-number">${booth.number}</div>`;
+
+                // Click handler
+                boothDiv.addEventListener('click', () => handleBoothClick(booth.number));
+
+                overlay.appendChild(boothDiv);
+            });
+        }
+
+        // Get booth position on floor plan
+        function getBoothPosition(boothNum) {
+            let x = 0, y = 0, width = 4, height = 5;
+
+            // Foyer booths (601-624) - arranged horizontally
+            if (boothNum >= 601 && boothNum <= 624) {
+                // Map specific foyer booths
+                const foyerPositions = {
+                    601: { x: 5, y: 82 }, 602: { x: 10, y: 82 }, 603: { x: 15, y: 82 },
+                    // Premium foyer 605-612
+                    605: { x: 22, y: 82 }, 606: { x: 27, y: 82 }, 607: { x: 32, y: 82 },
+                    608: { x: 37, y: 82 }, 609: { x: 42, y: 82 }, 610: { x: 47, y: 82 },
+                    611: { x: 52, y: 82 }, 612: { x: 57, y: 82 },
+                    // Gold foyer 613-614
+                    613: { x: 63, y: 82 }, 614: { x: 68, y: 82 },
+                    // Exhibitor foyer 615-624
+                    615: { x: 74, y: 82 }, 616: { x: 78, y: 82 }, 617: { x: 82, y: 82 },
+                    618: { x: 86, y: 82 }, 619: { x: 90, y: 82 }, 620: { x: 5, y: 88 },
+                    621: { x: 10, y: 88 }, 622: { x: 15, y: 88 }, 623: { x: 20, y: 88 },
+                    624: { x: 25, y: 88 }
+                };
+
+                if (foyerPositions[boothNum]) {
+                    return { ...foyerPositions[boothNum], width: 4, height: 5 };
+                }
+
+                // Fallback for any missing booths
+                const index = boothNum - 601;
+                x = 5 + (index % 12) * 5;
+                y = 82 + Math.floor(index / 12) * 6;
+                width = 4;
+                height = 5;
+            }
+            // Main hall booths - arranged in grid pattern
+            // 100s - Left side (near entrance)
+            else if (boothNum >= 100 && boothNum < 200) {
+                const positions = {
+                    100: { x: 6, y: 65 }, 101: { x: 6, y: 58 }, 103: { x: 11, y: 58 },
+                    104: { x: 11, y: 50 }, 105: { x: 11, y: 42 }, 106: { x: 16, y: 42 },
+                    107: { x: 16, y: 34 }, 108: { x: 6, y: 34 }, 109: { x: 6, y: 26 },
+                    110: { x: 6, y: 18 }, 111: { x: 11, y: 18 }, 112: { x: 16, y: 18 },
+                    113: { x: 11, y: 26 }, 114: { x: 6, y: 10 }, 115: { x: 11, y: 10 },
+                    117: { x: 16, y: 10 }
+                };
+
+                if (positions[boothNum]) {
+                    return { ...positions[boothNum], width: 4, height: 6 };
+                }
+
+                const index = boothNum - 100;
+                x = 6 + (index % 5) * 6;
+                y = 10 + Math.floor(index / 5) * 8;
+                width = 4;
+                height = 6;
+            }
+            // 200s - Center left area
+            else if (boothNum >= 200 && boothNum < 300) {
+                const positions = {
+                    200: { x: 22, y: 68 }, 201: { x: 27, y: 68 }, 203: { x: 22, y: 60 },
+                    204: { x: 27, y: 60 }, 206: { x: 22, y: 52 }, 207: { x: 27, y: 52 },
+                    208: { x: 22, y: 44 }, 211: { x: 27, y: 44 }, 212: { x: 22, y: 36 },
+                    213: { x: 27, y: 36 }, 214: { x: 22, y: 28 }, 215: { x: 27, y: 28 }
+                };
+
+                if (positions[boothNum]) {
+                    return { ...positions[boothNum], width: 4, height: 6 };
+                }
+
+                const index = boothNum - 200;
+                x = 22 + (index % 4) * 6;
+                y = 28 + Math.floor(index / 4) * 8;
+                width = 4;
+                height = 6;
+            }
+            // 300s - Center area (wider booths)
+            else if (boothNum >= 300 && boothNum < 400) {
+                const positions = {
+                    300: { x: 34, y: 60 }, 304: { x: 41, y: 60 },
+                    308: { x: 34, y: 52 }, 312: { x: 41, y: 52 }
+                };
+
+                if (positions[boothNum]) {
+                    return { ...positions[boothNum], width: 6, height: 6 };
+                }
+
+                const index = boothNum - 300;
+                x = 34 + (index % 3) * 8;
+                y = 36 + Math.floor(index / 3) * 9;
+                width = 6;
+                height = 6;
+            }
+            // 400s - Right center area
+            else if (boothNum >= 400 && boothNum < 500) {
+                const positions = {
+                    401: { x: 50, y: 68 }, 403: { x: 50, y: 60 }, 407: { x: 56, y: 60 },
+                    411: { x: 56, y: 52 }, 413: { x: 50, y: 52 }, 415: { x: 56, y: 44 }
+                };
+
+                if (positions[boothNum]) {
+                    return { ...positions[boothNum], width: 5, height: 6 };
+                }
+
+                const index = boothNum - 400;
+                x = 50 + (index % 3) * 7;
+                y = 36 + Math.floor(index / 3) * 8;
+                width = 5;
+                height = 6;
+            }
+            // 500s - Right side area
+            else if (boothNum >= 500 && boothNum < 600) {
+                const positions = {
+                    500: { x: 62, y: 68 }, 501: { x: 67, y: 68 }, 504: { x: 62, y: 60 },
+                    507: { x: 67, y: 60 }, 508: { x: 62, y: 52 }, 509: { x: 67, y: 52 },
+                    510: { x: 62, y: 44 }, 511: { x: 67, y: 44 }, 512: { x: 62, y: 36 },
+                    513: { x: 67, y: 36 }, 514: { x: 62, y: 28 }, 515: { x: 67, y: 28 }
+                };
+
+                if (positions[boothNum]) {
+                    return { ...positions[boothNum], width: 4, height: 6 };
+                }
+
+                const index = boothNum - 500;
+                x = 62 + (index % 4) * 6;
+                y = 10 + Math.floor(index / 4) * 8;
+                width = 4;
+                height = 6;
+            }
+
+            return { x, y, width, height };
+        }
+
+        // Handle booth click
+        function handleBoothClick(boothNum) {
+            if (!selectedTier) {
+                alert('Please select a tier first');
+                return;
+            }
+
+            const booth = booths[boothNum];
+
+            if (booth.status !== 'available') {
+                alert('This booth is not available');
+                return;
+            }
+
+            if (!isBoothAllowed(boothNum)) {
+                alert('This booth is not available for your selected tier');
+                return;
+            }
+
+            // Handle platinum (double booth) selection
+            if (selectedTier === 'platinum') {
+                const pair = PLATINUM_PAIRS.find(p => p.includes(boothNum));
+                if (!pair) {
+                    alert('This booth is not part of a Platinum double set');
+                    return;
+                }
+
+                // Check if both booths in pair are available
+                const bothAvailable = pair.every(b => booths[b].status === 'available');
+                if (!bothAvailable) {
+                    alert('One or both booths in this set are not available');
+                    return;
+                }
+
+                selectedBooths = pair;
+            } else {
+                // Single booth selection
+                selectedBooths = [boothNum];
+            }
+
+            renderBooths();
+            openModal();
+        }
+
+        // Modal functions
+        function openModal() {
+            document.getElementById('modalBoothNumber').textContent =
+                selectedBooths.length > 1 ? selectedBooths.join(' & ') : selectedBooths[0];
+            document.getElementById('boothModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('boothModal').classList.remove('active');
+            // Clear form
+            document.getElementById('orgName').value = '';
+            document.getElementById('contactName').value = '';
+            document.getElementById('contactEmail').value = '';
+            document.getElementById('contactPhone').value = '';
+            document.getElementById('notes').value = '';
+        }
+
+        function submitReservation() {
+            const orgName = document.getElementById('orgName').value;
+            const contactName = document.getElementById('contactName').value;
+            const contactEmail = document.getElementById('contactEmail').value;
+            const contactPhone = document.getElementById('contactPhone').value;
+            const notes = document.getElementById('notes').value;
+
+            if (!orgName || !contactName || !contactEmail) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            // Mark booths as reserved
+            selectedBooths.forEach(boothNum => {
+                booths[boothNum].status = 'reserved';
+                booths[boothNum].tier = selectedTier;
+                booths[boothNum].organization = orgName;
+                booths[boothNum].contact = {
+                    name: contactName,
+                    email: contactEmail,
+                    phone: contactPhone,
+                    notes: notes
+                };
+                booths[boothNum].timestamp = new Date().toISOString();
+            });
+
+            saveData();
+            updateStats();
+            addActivity(`${orgName} reserved booth ${selectedBooths.join(' & ')} (${TIER_CONFIG[selectedTier].name})`);
+            showUrgencyBanner();
+
+            closeModal();
+            selectedBooths = [];
+            renderBooths();
+
+            alert('Booth reserved successfully! Our team will contact you shortly.');
+        }
+
+        // Update statistics
+        function updateStats() {
+            const total = Object.keys(booths).length;
+            const booked = Object.values(booths).filter(b => b.status === 'taken').length;
+            const reserved = Object.values(booths).filter(b => b.status === 'reserved').length;
+            const available = total - booked - reserved;
+
+            document.getElementById('totalAvailable').textContent = total;
+            document.getElementById('bookedCount').textContent = booked + reserved;
+            document.getElementById('availableCount').textContent = available;
+
+            // Update tier availability
+            Object.keys(TIER_CONFIG).forEach(tier => {
+                const config = TIER_CONFIG[tier];
+                const tierBooths = Object.values(booths).filter(b =>
+                    b.tier === tier && (b.status === 'reserved' || b.status === 'taken')
+                );
+
+                let count;
+                if (tier === 'platinum') {
+                    count = tierBooths.length / 2;
+                    const remaining = config.maxCount - count;
+                    const elem = document.querySelector(`[data-tier-stat="${tier}"]`);
+                    elem.textContent = remaining > 0 ? `${remaining} sets available` : 'SOLD OUT';
+                    elem.className = 'tier-availability ' + (remaining > 5 ? 'high' : remaining > 2 ? 'medium' : 'low');
+                } else if (config.maxCount > 0) {
+                    count = tierBooths.length;
+                    const remaining = config.maxCount - count;
+                    const elem = document.querySelector(`[data-tier-stat="${tier}"]`);
+                    elem.textContent = remaining > 0 ? `${remaining} available` : 'SOLD OUT';
+                    elem.className = 'tier-availability ' + (remaining > config.maxCount * 0.5 ? 'high' : remaining > 2 ? 'medium' : 'low');
+                }
+            });
+
+            // Simulate viewer count (1-8 random)
+            document.getElementById('viewerCount').textContent = Math.floor(Math.random() * 8) + 1;
+        }
+
+        // Activity tracking
+        function addActivity(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            recentActivity.unshift({ message, timestamp });
+            recentActivity = recentActivity.slice(0, 5);
+
+            const activityList = document.getElementById('activityList');
+            activityList.innerHTML = recentActivity.map(a => `
+                <div class="activity-item">
+                    ${a.message}
+                    <div class="activity-time">${a.timestamp}</div>
+                </div>
+            `).join('');
+        }
+
+        // Urgency banner
+        function showUrgencyBanner() {
+            const messages = [
+                'A booth was just reserved! Don\'t miss out!',
+                'Popular booths are going fast!',
+                'Limited availability - secure your spot today!',
+            ];
+            const message = messages[Math.floor(Math.random() * messages.length)];
+            document.getElementById('urgencyText').textContent = message;
+            document.getElementById('urgencyBanner').classList.add('show');
+
+            setTimeout(() => {
+                document.getElementById('urgencyBanner').classList.remove('show');
+            }, 5000);
+        }
+
+        // Admin panel
+        function toggleAdmin() {
+            document.getElementById('adminPanel').classList.toggle('active');
+            document.getElementById('adminOverlay').classList.toggle('active');
+            if (document.getElementById('adminPanel').classList.contains('active')) {
+                renderAdminList();
+            }
+        }
+
+        function renderAdminList() {
+            const list = document.getElementById('adminBoothList');
+            const reservedBooths = Object.values(booths).filter(b =>
+                b.status === 'reserved' || b.status === 'taken'
+            );
+
+            if (reservedBooths.length === 0) {
+                list.innerHTML = '<p>No reservations yet</p>';
+                return;
+            }
+
+            list.innerHTML = reservedBooths.map(booth => `
+                <div class="booth-item">
+                    <div class="booth-item-info">
+                        <div class="booth-item-number">Booth ${booth.number}</div>
+                        <div class="booth-item-org">${booth.organization || 'N/A'}</div>
+                        <div class="booth-item-tier">${booth.tier ? TIER_CONFIG[booth.tier].name : 'N/A'} - ${booth.status}</div>
+                    </div>
+                    <div class="booth-item-actions">
+                        <button class="btn btn-secondary btn-small" onclick="markAsTaken(${booth.number})">Mark Taken</button>
+                        <button class="btn btn-secondary btn-small" onclick="releaseBooths([${booth.number}])">Release</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function markAsTaken(boothNum) {
+            booths[boothNum].status = 'taken';
+            saveData();
+            updateStats();
+            renderBooths();
+            renderAdminList();
+        }
+
+        function releaseBooths(boothNums) {
+            if (!confirm('Are you sure you want to release this booth?')) return;
+
+            boothNums.forEach(num => {
+                booths[num].status = 'available';
+                booths[num].tier = null;
+                booths[num].organization = null;
+                booths[num].contact = null;
+                booths[num].timestamp = null;
+            });
+            saveData();
+            updateStats();
+            renderBooths();
+            renderAdminList();
+        }
+
+        function exportData() {
+            const data = {
+                booths: booths,
+                exportDate: new Date().toISOString()
+            };
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `booth-reservations-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+        }
+
+        function clearAllData() {
+            if (!confirm('Are you sure you want to clear ALL booth data? This cannot be undone!')) return;
+            localStorage.removeItem('boothData');
+            initializeBooths();
+            renderBooths();
+            renderAdminList();
+            alert('All data cleared');
+        }
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            initializeBooths();
+            renderBooths();
+
+            // Auto-update viewer count every 5 seconds
+            setInterval(() => {
+                document.getElementById('viewerCount').textContent = Math.floor(Math.random() * 8) + 1;
+            }, 5000);
+
+            // Periodically show urgency banner
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    showUrgencyBanner();
+                }
+            }, 30000);
+        });
+    </script>
+</body>
+</html>
