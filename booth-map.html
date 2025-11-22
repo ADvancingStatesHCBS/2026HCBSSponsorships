@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 HCBS Booth Map</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #006273 0%, #3a8297 50%, #58b0e2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #006273 0%, #3a8297 60%, #58b0e2 100%);
+            color: white;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background: white;
+            color: #006273;
+        }
+
+        .legend {
+            padding: 20px 40px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .legend-label {
+            font-weight: 600;
+            color: #333;
+            margin-right: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .legend-color {
+            width: 30px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid #ddd;
+        }
+
+        .map-container {
+            padding: 40px;
+            background: #f5f5f5;
+        }
+
+        .booth-map {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            aspect-ratio: 850 / 680;
+            background: white;
+            border: 3px solid #006273;
+            border-radius: 8px;
+        }
+
+        .booth {
+            position: absolute;
+            background: #28a745;
+            border: 2px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .booth:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        .booth.available {
+            background: #28a745;
+        }
+
+        .booth.pending {
+            background: #ffc107;
+            color: #333;
+            text-shadow: none;
+        }
+
+        .booth.taken {
+            background: #dc3545;
+        }
+
+        .special-area {
+            position: absolute;
+            border: 2px dashed #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            color: #666;
+            background: rgba(255, 255, 255, 0.9);
+            pointer-events: none;
+        }
+
+        .entrance {
+            position: absolute;
+            height: 30px;
+            background: #006273;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 11px;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .modal-field {
+            margin-bottom: 15px;
+        }
+
+        .modal-field label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .modal-field input, .modal-field select, .modal-field textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .modal-field textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .modal-btn.primary {
+            background: #58b0e2;
+            color: white;
+        }
+
+        .modal-btn.primary:hover {
+            background: #3a8297;
+        }
+
+        .modal-btn.secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .modal-btn.secondary:hover {
+            background: #d0d0d0;
+        }
+
+        .modal-btn.danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .modal-btn.danger:hover {
+            background: #c82333;
+        }
+
+        .stats {
+            padding: 20px 40px;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #006273;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>2026 HCBS Booth Map</h1>
+            <div class="controls">
+                <button class="btn" onclick="resetAll()">Reset All</button>
+                <button class="btn" onclick="exportData()">Export Data</button>
+            </div>
+        </div>
+
+        <div class="legend">
+            <span class="legend-label">Status:</span>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #28a745;"></div>
+                <span>Available</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ffc107;"></div>
+                <span>Pending</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #dc3545;"></div>
+                <span>Taken</span>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="totalBooths">70</div>
+                <div class="stat-label">Total Booths</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="availableBooths">70</div>
+                <div class="stat-label">Available</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="pendingBooths">0</div>
+                <div class="stat-label">Pending</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="takenBooths">0</div>
+                <div class="stat-label">Taken</div>
+            </div>
+        </div>
+
+        <div class="map-container">
+            <div class="booth-map" id="boothMap">
+                <!-- Booths will be generated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="boothModal">
+        <div class="modal-content">
+            <div class="modal-header">Booth <span id="modalBoothNumber"></span></div>
+            <div class="modal-body">
+                <div class="modal-field">
+                    <label>Status</label>
+                    <select id="modalStatus">
+                        <option value="available">Available</option>
+                        <option value="pending">Pending</option>
+                        <option value="taken">Taken</option>
+                    </select>
+                </div>
+                <div class="modal-field">
+                    <label>Organization Name</label>
+                    <input type="text" id="modalOrganization" placeholder="Enter organization name">
+                </div>
+                <div class="modal-field">
+                    <label>Contact Person</label>
+                    <input type="text" id="modalContact" placeholder="Enter contact name">
+                </div>
+                <div class="modal-field">
+                    <label>Email</label>
+                    <input type="email" id="modalEmail" placeholder="Enter email address">
+                </div>
+                <div class="modal-field">
+                    <label>Notes</label>
+                    <textarea id="modalNotes" placeholder="Additional notes..."></textarea>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeModal()">Cancel</button>
+                <button class="modal-btn danger" onclick="clearBooth()">Clear</button>
+                <button class="modal-btn primary" onclick="saveBooth()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Booth layout data - each booth defined by position and size (in percentage of container)
+        const boothLayout = [
+            // Left column (vertical)
+            { id: '100A', x: 0, y: 87, w: 3, h: 6 },
+            { id: '100B', x: 0, y: 93, w: 3, h: 6 },
+            { id: '104A', x: 0, y: 70, w: 3, h: 6 },
+            { id: '104B', x: 0, y: 76, w: 3, h: 6 },
+            { id: '106', x: 0, y: 60, w: 3, h: 7 },
+            { id: '108', x: 0, y: 50, w: 3, h: 7 },
+            { id: '110', x: 0, y: 40, w: 3, h: 7 },
+            { id: '112', x: 0, y: 30, w: 3, h: 7 },
+            { id: '114', x: 0, y: 20, w: 3, h: 7 },
+
+            // Second column from left
+            { id: '101', x: 5, y: 87, w: 3, h: 6 },
+            { id: '103', x: 5, y: 77, w: 3, h: 6 },
+            { id: '105', x: 5, y: 67, w: 3, h: 6 },
+            { id: '107', x: 5, y: 60, w: 3, h: 4 },
+            { id: '109', x: 5, y: 50, w: 3, h: 7 },
+            { id: '111', x: 5, y: 40, w: 3, h: 7 },
+            { id: '113A', x: 5, y: 30, w: 3, h: 6 },
+            { id: '113B', x: 5, y: 24, w: 3, h: 6 },
+            { id: '115', x: 5, y: 14, w: 3, h: 7 },
+            { id: '117', x: 5, y: 4, w: 3, h: 7 },
+
+            // Third column
+            { id: '200', x: 10, y: 77, w: 3, h: 6 },
+            { id: '204', x: 10, y: 60, w: 3, h: 4 },
+            { id: '206', x: 10, y: 50, w: 3, h: 7 },
+            { id: '208A', x: 10, y: 40, w: 3, h: 6 },
+            { id: '208B', x: 10, y: 34, w: 3, h: 6 },
+            { id: '212A', x: 10, y: 24, w: 3, h: 6 },
+            { id: '212B', x: 10, y: 18, w: 3, h: 6 },
+            { id: '214', x: 10, y: 8, w: 3, h: 7 },
+
+            // Fourth column
+            { id: '201', x: 15, y: 87, w: 3, h: 6 },
+            { id: '203', x: 15, y: 77, w: 3, h: 6 },
+            { id: '207A', x: 15, y: 60, w: 3, h: 6 },
+            { id: '207B', x: 15, y: 54, w: 3, h: 6 },
+            { id: '211A', x: 15, y: 40, w: 3, h: 6 },
+            { id: '211B', x: 15, y: 34, w: 3, h: 6 },
+            { id: '213A', x: 15, y: 24, w: 3, h: 6 },
+            { id: '213B', x: 15, y: 18, w: 3, h: 6 },
+            { id: '215A', x: 15, y: 8, w: 3, h: 6 },
+            { id: '215B', x: 15, y: 2, w: 3, h: 6 },
+
+            // Fifth column
+            { id: '300', x: 20, y: 77, w: 3, h: 6 },
+            { id: '304A', x: 20, y: 60, w: 3, h: 6 },
+            { id: '304B', x: 20, y: 54, w: 3, h: 6 },
+            { id: '308A', x: 20, y: 40, w: 3, h: 6 },
+            { id: '308B', x: 20, y: 34, w: 3, h: 6 },
+            { id: '312A', x: 20, y: 8, w: 3, h: 6 },
+            { id: '312B', x: 20, y: 2, w: 3, h: 6 },
+
+            // Sixth column (right side)
+            { id: '401', x: 74, y: 87, w: 3, h: 6 },
+            { id: '403', x: 74, y: 77, w: 3, h: 6 },
+            { id: '407A', x: 74, y: 60, w: 3, h: 6 },
+            { id: '407B', x: 74, y: 54, w: 3, h: 6 },
+            { id: '411A', x: 74, y: 40, w: 3, h: 6 },
+            { id: '411B', x: 74, y: 34, w: 3, h: 6 },
+            { id: '413A', x: 74, y: 24, w: 3, h: 6 },
+            { id: '413B', x: 74, y: 18, w: 3, h: 6 },
+            { id: '415A', x: 74, y: 8, w: 3, h: 6 },
+            { id: '415B', x: 74, y: 2, w: 3, h: 6 },
+
+            // Seventh column
+            { id: '500', x: 79, y: 77, w: 3, h: 6 },
+            { id: '504A', x: 79, y: 60, w: 3, h: 6 },
+            { id: '504B', x: 79, y: 54, w: 3, h: 6 },
+            { id: '508A', x: 79, y: 40, w: 3, h: 6 },
+            { id: '508B', x: 79, y: 34, w: 3, h: 6 },
+            { id: '510A', x: 79, y: 24, w: 3, h: 6 },
+            { id: '510B', x: 79, y: 18, w: 3, h: 6 },
+            { id: '512', x: 79, y: 8, w: 3, h: 7 },
+            { id: '514', x: 79, y: 0, w: 3, h: 6 },
+
+            // Right column
+            { id: '501', x: 84, y: 87, w: 3, h: 6 },
+            { id: '505A', x: 84, y: 70, w: 3, h: 6 },
+            { id: '505B', x: 84, y: 76, w: 3, h: 6 },
+            { id: '507', x: 84, y: 60, w: 3, h: 7 },
+            { id: '509', x: 84, y: 50, w: 3, h: 7 },
+            { id: '511', x: 84, y: 40, w: 3, h: 7 },
+            { id: '513', x: 84, y: 30, w: 3, h: 7 },
+            { id: '515', x: 84, y: 20, w: 3, h: 7 }
+        ];
+
+        // Special areas (non-clickable)
+        const specialAreas = [
+            { label: 'STAGE\n16×12', x: 41, y: 2, w: 12, h: 15 },
+            { label: 'Dance Floor\n16×20', x: 41, y: 27, w: 12, h: 20 },
+            { label: 'FOOD', x: 35, y: 65, w: 20, h: 25 }
+        ];
+
+        // Entrances
+        const entrances = [
+            { label: 'EXIT', x: 7, y: 97, w: 8, isBottom: true },
+            { label: 'EXIT', x: 25, y: 97, w: 8, isBottom: true },
+            { label: 'EXIT', x: 50, y: 97, w: 8, isBottom: true },
+            { label: 'EXIT', x: 68, y: 97, w: 8, isBottom: true }
+        ];
+
+        // Booth data storage
+        let boothData = {};
+        let currentBoothId = null;
+
+        // Initialize
+        function init() {
+            loadBoothData();
+            renderBooths();
+            updateStats();
+        }
+
+        // Render booths
+        function renderBooths() {
+            const map = document.getElementById('boothMap');
+            map.innerHTML = '';
+
+            // Render booths
+            boothLayout.forEach(booth => {
+                const boothEl = document.createElement('div');
+                boothEl.className = 'booth';
+                boothEl.id = `booth-${booth.id}`;
+                boothEl.style.left = booth.x + '%';
+                boothEl.style.top = booth.y + '%';
+                boothEl.style.width = booth.w + '%';
+                boothEl.style.height = booth.h + '%';
+                boothEl.textContent = booth.id;
+
+                // Apply status
+                const data = boothData[booth.id] || { status: 'available' };
+                boothEl.classList.add(data.status);
+
+                boothEl.onclick = () => openBoothModal(booth.id);
+                map.appendChild(boothEl);
+            });
+
+            // Render special areas
+            specialAreas.forEach(area => {
+                const areaEl = document.createElement('div');
+                areaEl.className = 'special-area';
+                areaEl.style.left = area.x + '%';
+                areaEl.style.top = area.y + '%';
+                areaEl.style.width = area.w + '%';
+                areaEl.style.height = area.h + '%';
+                areaEl.textContent = area.label;
+                areaEl.style.whiteSpace = 'pre-line';
+                map.appendChild(areaEl);
+            });
+
+            // Render entrances
+            entrances.forEach(entrance => {
+                const entranceEl = document.createElement('div');
+                entranceEl.className = 'entrance';
+                entranceEl.style.left = entrance.x + '%';
+                entranceEl.style.width = entrance.w + '%';
+                if (entrance.isBottom) {
+                    entranceEl.style.bottom = '0';
+                } else {
+                    entranceEl.style.top = '0';
+                }
+                entranceEl.textContent = entrance.label;
+                map.appendChild(entranceEl);
+            });
+        }
+
+        // Open booth modal
+        function openBoothModal(boothId) {
+            currentBoothId = boothId;
+            const data = boothData[boothId] || {
+                status: 'available',
+                organization: '',
+                contact: '',
+                email: '',
+                notes: ''
+            };
+
+            document.getElementById('modalBoothNumber').textContent = boothId;
+            document.getElementById('modalStatus').value = data.status;
+            document.getElementById('modalOrganization').value = data.organization || '';
+            document.getElementById('modalContact').value = data.contact || '';
+            document.getElementById('modalEmail').value = data.email || '';
+            document.getElementById('modalNotes').value = data.notes || '';
+
+            document.getElementById('boothModal').classList.add('active');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('boothModal').classList.remove('active');
+            currentBoothId = null;
+        }
+
+        // Save booth
+        function saveBooth() {
+            if (!currentBoothId) return;
+
+            boothData[currentBoothId] = {
+                status: document.getElementById('modalStatus').value,
+                organization: document.getElementById('modalOrganization').value,
+                contact: document.getElementById('modalContact').value,
+                email: document.getElementById('modalEmail').value,
+                notes: document.getElementById('modalNotes').value
+            };
+
+            saveBoothData();
+            renderBooths();
+            updateStats();
+            closeModal();
+        }
+
+        // Clear booth
+        function clearBooth() {
+            if (!currentBoothId) return;
+
+            if (confirm(`Clear all data for booth ${currentBoothId}?`)) {
+                delete boothData[currentBoothId];
+                saveBoothData();
+                renderBooths();
+                updateStats();
+                closeModal();
+            }
+        }
+
+        // Update statistics
+        function updateStats() {
+            const total = boothLayout.length;
+            let available = 0;
+            let pending = 0;
+            let taken = 0;
+
+            boothLayout.forEach(booth => {
+                const data = boothData[booth.id] || { status: 'available' };
+                if (data.status === 'available') available++;
+                else if (data.status === 'pending') pending++;
+                else if (data.status === 'taken') taken++;
+            });
+
+            document.getElementById('totalBooths').textContent = total;
+            document.getElementById('availableBooths').textContent = available;
+            document.getElementById('pendingBooths').textContent = pending;
+            document.getElementById('takenBooths').textContent = taken;
+        }
+
+        // Reset all booths
+        function resetAll() {
+            if (confirm('Are you sure you want to reset all booth data? This cannot be undone.')) {
+                boothData = {};
+                saveBoothData();
+                renderBooths();
+                updateStats();
+            }
+        }
+
+        // Export data
+        function exportData() {
+            const data = [];
+            boothLayout.forEach(booth => {
+                const boothInfo = boothData[booth.id] || { status: 'available' };
+                data.push({
+                    booth: booth.id,
+                    status: boothInfo.status,
+                    organization: boothInfo.organization || '',
+                    contact: boothInfo.contact || '',
+                    email: boothInfo.email || '',
+                    notes: boothInfo.notes || ''
+                });
+            });
+
+            const csv = [
+                ['Booth', 'Status', 'Organization', 'Contact', 'Email', 'Notes'],
+                ...data.map(row => [
+                    row.booth,
+                    row.status,
+                    row.organization,
+                    row.contact,
+                    row.email,
+                    row.notes
+                ])
+            ].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `booth-map-${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Load booth data from localStorage
+        function loadBoothData() {
+            const saved = localStorage.getItem('boothMapData');
+            if (saved) {
+                boothData = JSON.parse(saved);
+            }
+        }
+
+        // Save booth data to localStorage
+        function saveBoothData() {
+            localStorage.setItem('boothMapData', JSON.stringify(boothData));
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('boothModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
