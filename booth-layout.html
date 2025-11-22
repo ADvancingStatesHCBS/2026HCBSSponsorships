@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 HCBS Conference - Interactive Booth Layout</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #006273 0%, #3a8297 50%, #58b0e2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #006273 0%, #3a8297 60%, #58b0e2 100%);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .floor-plan-container {
+            padding: 40px;
+            background: #f5f5f5;
+            overflow-x: auto;
+        }
+
+        .floor-plan {
+            position: relative;
+            width: 1400px;
+            height: 900px;
+            margin: 0 auto;
+            background: white;
+            border: 2px solid #333;
+        }
+
+        .booth {
+            position: absolute;
+            border: 2px solid #333;
+            background: #28a745;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            color: white;
+        }
+
+        .booth:hover {
+            background: #58b0e2;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        .booth.selected {
+            background: #dc3545;
+        }
+
+        .booth.pending {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .label {
+            position: absolute;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            pointer-events: none;
+        }
+
+        .area-label {
+            position: absolute;
+            font-size: 16px;
+            font-weight: bold;
+            color: #666;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .sidebar {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 350px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.3s;
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+        .sidebar-header {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #006273;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .booth-info {
+            margin-bottom: 20px;
+        }
+
+        .booth-info label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .booth-info input, .booth-info select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #58b0e2;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #3a8297;
+        }
+
+        .legend {
+            padding: 20px 40px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-color {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #333;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>2026 HCBS Conference - Booth Layout</h1>
+            <p>Click on any booth to select and assign a sponsor</p>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #28a745;"></div>
+                <span>Available</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #dc3545;"></div>
+                <span>Assigned</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ffc107;"></div>
+                <span>Pending</span>
+            </div>
+        </div>
+
+        <div class="floor-plan-container">
+            <div class="floor-plan" id="floorPlan">
+                <!-- Labels for areas -->
+                <div class="label" style="top: 20px; left: 30px;">MEN</div>
+                <div class="label" style="top: 20px; left: 100px;">WOMEN</div>
+                <div class="label" style="top: 120px; left: 30px;">D</div>
+                <div class="label" style="top: 220px; left: 30px;">C</div>
+                <div class="label" style="top: 300px; left: 30px;">LAUREL</div>
+                <div class="label" style="top: 380px; left: 30px;">B</div>
+                <div class="label" style="top: 500px; left: 30px;">A</div>
+
+                <div class="label" style="top: 180px; left: 200px;">C</div>
+                <div class="label" style="top: 280px; left: 200px;">KENT</div>
+                <div class="label" style="top: 380px; left: 200px;">B</div>
+                <div class="label" style="top: 500px; left: 200px;">A</div>
+
+                <div class="area-label" style="top: 300px; left: 580px; width: 120px;">Stage</div>
+                <div class="area-label" style="top: 400px; left: 550px; width: 180px;">Dance Floor<br>16'x20'</div>
+                <div class="area-label" style="top: 480px; left: 570px; width: 140px;">FOOD</div>
+
+                <div class="label" style="top: 200px; left: 950px;">C</div>
+                <div class="label" style="top: 320px; left: 950px;">ESSEX</div>
+                <div class="label" style="top: 420px; left: 950px;">B</div>
+                <div class="label" style="top: 550px; left: 950px;">A</div>
+
+                <div class="label" style="top: 20px; right: 200px;">HERON</div>
+                <div class="label" style="top: 20px; right: 100px;">GALENA</div>
+                <div class="label" style="top: 120px; right: 100px;">FALKLAND</div>
+                <div class="label" style="top: 320px; right: 30px;">MEN</div>
+                <div class="label" style="top: 420px; right: 30px;">WOMEN</div>
+
+                <div class="area-label" style="bottom: 180px; left: 900px; width: 100px;">HCBS</div>
+                <div class="area-label" style="bottom: 180px; left: 1020px; width: 120px;">REGISTRATION</div>
+                <div class="area-label" style="bottom: 10px; left: 650px; width: 200px;">HARBORSIDE FOYER</div>
+
+                <!-- BAR labels -->
+                <div class="area-label" style="top: 610px; left: 300px;">BAR</div>
+                <div class="area-label" style="top: 610px; left: 850px;">BAR</div>
+
+                <!-- Booths will be added via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+        <button class="close-btn" onclick="closeSidebar()">×</button>
+        <div class="sidebar-header">Booth <span id="currentBooth"></span></div>
+
+        <div class="booth-info">
+            <label>Sponsor Name</label>
+            <input type="text" id="sponsorName" placeholder="Enter sponsor name">
+        </div>
+
+        <div class="booth-info">
+            <label>Status</label>
+            <select id="boothStatus">
+                <option value="available">Available</option>
+                <option value="selected">Assigned</option>
+                <option value="pending">Pending</option>
+            </select>
+        </div>
+
+        <button class="btn" onclick="saveBooth()">Save</button>
+        <button class="btn" style="background: #e0e0e0; color: #333;" onclick="clearBooth()">Clear</button>
+    </div>
+
+    <script>
+        // Booth layout data - all 93 booths with exact positions
+        const booths = [
+            // Left side - Column 1 (KENT A)
+            { id: '100', x: 280, y: 600, w: 50, h: 40 },
+            { id: '104', x: 280, y: 560, w: 50, h: 35 },
+            { id: '106', x: 280, y: 520, w: 50, h: 35 },
+            { id: '108', x: 280, y: 480, w: 50, h: 35 },
+            { id: '110', x: 280, y: 440, w: 50, h: 35 },
+            { id: '112', x: 280, y: 400, w: 50, h: 35 },
+            { id: '114', x: 280, y: 360, w: 50, h: 35 },
+
+            // Column 2 (KENT)
+            { id: '101', x: 340, y: 600, w: 50, h: 40 },
+            { id: '103', x: 340, y: 560, w: 50, h: 35 },
+            { id: '105-1', x: 340, y: 520, w: 50, h: 35 },
+            { id: '105-2', x: 395, y: 520, w: 50, h: 35 },
+            { id: '107-1', x: 340, y: 480, w: 50, h: 35 },
+            { id: '107-2', x: 395, y: 480, w: 50, h: 35 },
+            { id: '109-1', x: 340, y: 440, w: 50, h: 35 },
+            { id: '109-2', x: 395, y: 440, w: 50, h: 35 },
+            { id: '111-1', x: 340, y: 400, w: 50, h: 35 },
+            { id: '111-2', x: 395, y: 400, w: 50, h: 35 },
+            { id: '113-1', x: 340, y: 360, w: 50, h: 35 },
+            { id: '113-2', x: 395, y: 360, w: 50, h: 35 },
+            { id: '115', x: 340, y: 320, w: 50, h: 35 },
+            { id: '117', x: 340, y: 280, w: 50, h: 35 },
+
+            // Column 3
+            { id: '200', x: 455, y: 600, w: 50, h: 40 },
+            { id: '204-1', x: 455, y: 560, w: 50, h: 35 },
+            { id: '204-2', x: 510, y: 560, w: 50, h: 35 },
+            { id: '206-1', x: 455, y: 520, w: 50, h: 35 },
+            { id: '206-2', x: 510, y: 520, w: 50, h: 35 },
+            { id: '208-1', x: 455, y: 480, w: 50, h: 35 },
+            { id: '208-2', x: 510, y: 480, w: 50, h: 35 },
+            { id: '212', x: 455, y: 340, w: 50, h: 35 },
+            { id: '214', x: 455, y: 300, w: 50, h: 35 },
+
+            // Column 4
+            { id: '201', x: 570, y: 600, w: 50, h: 40 },
+            { id: '203', x: 570, y: 560, w: 50, h: 35 },
+            { id: '207-1', x: 570, y: 520, w: 50, h: 35 },
+            { id: '207-2', x: 625, y: 520, w: 50, h: 35 },
+            { id: '211-1', x: 570, y: 440, w: 50, h: 35 },
+            { id: '211-2', x: 625, y: 440, w: 50, h: 35 },
+            { id: '213-1', x: 570, y: 400, w: 50, h: 35 },
+            { id: '213-2', x: 625, y: 400, w: 50, h: 35 },
+            { id: '215-1', x: 570, y: 320, w: 50, h: 35 },
+            { id: '215-2', x: 625, y: 320, w: 50, h: 35 },
+
+            // Column 5
+            { id: '300', x: 685, y: 600, w: 50, h: 40 },
+            { id: '304-1', x: 685, y: 520, w: 50, h: 35 },
+            { id: '304-2', x: 740, y: 520, w: 50, h: 35 },
+            { id: '308-1', x: 685, y: 440, w: 50, h: 35 },
+            { id: '308-2', x: 740, y: 440, w: 50, h: 35 },
+            { id: '312-1', x: 685, y: 320, w: 50, h: 35 },
+            { id: '312-2', x: 740, y: 320, w: 50, h: 35 },
+
+            // Right side - ESSEX
+            { id: '401', x: 800, y: 600, w: 50, h: 40 },
+            { id: '403', x: 800, y: 560, w: 50, h: 35 },
+            { id: '407-1', x: 800, y: 520, w: 50, h: 35 },
+            { id: '407-2', x: 855, y: 520, w: 50, h: 35 },
+            { id: '411-1', x: 800, y: 440, w: 50, h: 35 },
+            { id: '411-2', x: 855, y: 440, w: 50, h: 35 },
+            { id: '413-1', x: 800, y: 400, w: 50, h: 35 },
+            { id: '413-2', x: 855, y: 400, w: 50, h: 35 },
+            { id: '415-1', x: 800, y: 320, w: 50, h: 35 },
+            { id: '415-2', x: 855, y: 320, w: 50, h: 35 },
+
+            // Right column
+            { id: '500', x: 915, y: 600, w: 50, h: 40 },
+            { id: '501', x: 915, y: 640, w: 50, h: 35 },
+            { id: '504-1', x: 915, y: 560, w: 50, h: 35 },
+            { id: '504-2', x: 970, y: 560, w: 50, h: 35 },
+            { id: '505', x: 915, y: 520, w: 50, h: 35 },
+            { id: '507-1', x: 915, y: 480, w: 50, h: 35 },
+            { id: '507-2', x: 970, y: 480, w: 50, h: 35 },
+            { id: '508-1', x: 915, y: 440, w: 50, h: 35 },
+            { id: '508-2', x: 970, y: 440, w: 50, h: 35 },
+            { id: '509', x: 915, y: 400, w: 50, h: 35 },
+            { id: '510-1', x: 915, y: 360, w: 50, h: 35 },
+            { id: '510-2', x: 970, y: 360, w: 50, h: 35 },
+            { id: '511', x: 915, y: 320, w: 50, h: 35 },
+            { id: '512-1', x: 915, y: 280, w: 50, h: 35 },
+            { id: '512-2', x: 970, y: 280, w: 50, h: 35 },
+            { id: '513', x: 915, y: 240, w: 50, h: 35 },
+            { id: '514-1', x: 915, y: 200, w: 50, h: 35 },
+            { id: '514-2', x: 970, y: 200, w: 50, h: 35 },
+            { id: '515', x: 915, y: 160, w: 50, h: 35 },
+
+            // Bottom row (Harborside Foyer)
+            { id: '605', x: 1030, y: 760, w: 45, h: 35 },
+            { id: '606', x: 980, y: 760, w: 45, h: 35 },
+            { id: '607', x: 930, y: 760, w: 45, h: 35 },
+            { id: '608', x: 880, y: 760, w: 45, h: 35 },
+            { id: '609', x: 830, y: 760, w: 45, h: 35 },
+            { id: '610', x: 780, y: 760, w: 45, h: 35 },
+            { id: '612', x: 705, y: 760, w: 45, h: 35 },
+            { id: '613', x: 655, y: 760, w: 45, h: 35 },
+            { id: '614', x: 605, y: 760, w: 45, h: 35 },
+            { id: '615', x: 555, y: 760, w: 45, h: 35 },
+            { id: '616', x: 505, y: 760, w: 45, h: 35 },
+            { id: '617', x: 455, y: 760, w: 45, h: 35 },
+            { id: '618', x: 405, y: 760, w: 45, h: 35 },
+            { id: '619', x: 355, y: 760, w: 45, h: 35 },
+            { id: '620', x: 305, y: 760, w: 45, h: 35 },
+            { id: '621', x: 255, y: 760, w: 45, h: 35 },
+
+            // Bottom right area
+            { id: '601', x: 1100, y: 680, w: 45, h: 40 },
+            { id: '602', x: 1100, y: 720, w: 45, h: 35 },
+            { id: '603', x: 1050, y: 720, w: 45, h: 35 },
+
+            // Bottom left area
+            { id: '622', x: 100, y: 720, w: 45, h: 40 },
+            { id: '623', x: 150, y: 680, w: 45, h: 40 }
+        ];
+
+        let currentBoothId = null;
+        let boothData = {};
+
+        // Load saved data from localStorage
+        function loadData() {
+            const saved = localStorage.getItem('boothLayout');
+            if (saved) {
+                boothData = JSON.parse(saved);
+            }
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('boothLayout', JSON.stringify(boothData));
+        }
+
+        // Initialize floor plan
+        function initFloorPlan() {
+            const floorPlan = document.getElementById('floorPlan');
+
+            booths.forEach(booth => {
+                const boothElement = document.createElement('div');
+                boothElement.className = 'booth';
+                boothElement.id = `booth-${booth.id}`;
+                boothElement.style.left = `${booth.x}px`;
+                boothElement.style.top = `${booth.y}px`;
+                boothElement.style.width = `${booth.w}px`;
+                boothElement.style.height = `${booth.h}px`;
+                boothElement.textContent = booth.id;
+                boothElement.onclick = () => selectBooth(booth.id);
+
+                // Apply saved status
+                if (boothData[booth.id]) {
+                    boothElement.className = `booth ${boothData[booth.id].status}`;
+                    boothElement.title = boothData[booth.id].sponsor || booth.id;
+                }
+
+                floorPlan.appendChild(boothElement);
+            });
+        }
+
+        // Select booth
+        function selectBooth(boothId) {
+            currentBoothId = boothId;
+            document.getElementById('currentBooth').textContent = boothId;
+            document.getElementById('sidebar').classList.add('active');
+
+            // Load existing data
+            if (boothData[boothId]) {
+                document.getElementById('sponsorName').value = boothData[boothId].sponsor || '';
+                document.getElementById('boothStatus').value = boothData[boothId].status || 'available';
+            } else {
+                document.getElementById('sponsorName').value = '';
+                document.getElementById('boothStatus').value = 'available';
+            }
+        }
+
+        // Close sidebar
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('active');
+            currentBoothId = null;
+        }
+
+        // Save booth
+        function saveBooth() {
+            if (!currentBoothId) return;
+
+            const sponsor = document.getElementById('sponsorName').value;
+            const status = document.getElementById('boothStatus').value;
+
+            boothData[currentBoothId] = { sponsor, status };
+            saveData();
+
+            // Update booth appearance
+            const boothElement = document.getElementById(`booth-${currentBoothId}`);
+            boothElement.className = `booth ${status}`;
+            boothElement.title = sponsor || currentBoothId;
+
+            closeSidebar();
+        }
+
+        // Clear booth
+        function clearBooth() {
+            if (!currentBoothId) return;
+
+            delete boothData[currentBoothId];
+            saveData();
+
+            // Reset booth appearance
+            const boothElement = document.getElementById(`booth-${currentBoothId}`);
+            boothElement.className = 'booth';
+            boothElement.title = currentBoothId;
+
+            closeSidebar();
+        }
+
+        // Initialize
+        loadData();
+        initFloorPlan();
+
+        console.log(`Total booths: ${booths.length}`);
+    </script>
+</body>
+</html>
