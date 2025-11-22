@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HCBS Venue Map - Clickable Booth Selection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #006273 0%, #3a8297 50%, #58b0e2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 1600px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #006273;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .legend {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .legend-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            border: 2px solid #333;
+        }
+
+        .selected-booth {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-align: center;
+            min-height: 80px;
+        }
+
+        .selected-booth h3 {
+            color: #006273;
+            margin-bottom: 10px;
+        }
+
+        .selected-booth p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .map-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+
+        svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .booth {
+            cursor: pointer;
+            transition: all 0.2s;
+            stroke: #333;
+            stroke-width: 2;
+        }
+
+        .booth:hover {
+            stroke: #ffd700;
+            stroke-width: 4;
+            filter: brightness(1.1);
+        }
+
+        .booth.selected {
+            stroke: #ff0000;
+            stroke-width: 4;
+        }
+
+        .booth-number {
+            font-size: 12px;
+            font-weight: bold;
+            fill: white;
+            text-anchor: middle;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .dance-stage {
+            fill: #4a4a4a;
+            stroke: #333;
+            stroke-width: 3;
+        }
+
+        .stage-label {
+            font-size: 16px;
+            font-weight: bold;
+            fill: #333;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .exit {
+            fill: #dc3545;
+            stroke: #333;
+            stroke-width: 2;
+        }
+
+        .dimension-label {
+            font-size: 10px;
+            fill: #666;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        /* Color classes for booths */
+        .booth-blue {
+            fill: #58b0e2;
+        }
+
+        .booth-purple {
+            fill: #7b68a6;
+        }
+
+        .booth-orange {
+            fill: #ff8c42;
+        }
+
+        .booth-green {
+            fill: #5a9367;
+        }
+
+        .booth-lightblue {
+            fill: #7eb8bb;
+        }
+
+        .booth-gold {
+            fill: #daa520;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>2026 HCBS Venue Map</h1>
+            <p>Click any booth to select. Numbers are editable in the HTML.</p>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color booth-blue"></div>
+                <span>10' Booth - All Tiers</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color booth-purple"></div>
+                <span>10' Booth - All Tiers</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color booth-orange"></div>
+                <span>16' Booth - All Tiers</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color booth-green"></div>
+                <span>10' Booth - Exhibitor Only</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color booth-lightblue"></div>
+                <span>10' Booth - Exhibitor Only</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color booth-gold"></div>
+                <span>10' Booth - All (Likely Gold)</span>
+            </div>
+            <div class="legend-item">
+                <div class="exit"></div>
+                <span>Exit</span>
+            </div>
+        </div>
+
+        <div class="selected-booth" id="selectedBooth">
+            <h3>No booth selected</h3>
+            <p>Click a booth to view details</p>
+        </div>
+
+        <div class="map-container">
+            <svg width="1400" height="900" viewBox="0 0 1400 900" id="venueMap">
+                <!-- Define booth size constants (using 1px = 1 unit for 10') -->
+                <!-- 10' booth = 50 units, 16' booth = 80 units -->
+
+                <!-- Main Exhibit Hall Background -->
+                <rect x="200" y="50" width="1000" height="550" fill="#f5f5f5" stroke="#333" stroke-width="4"/>
+
+                <!-- LEFT SIDE BOOTHS (5 columns, 9 rows each) -->
+                <!-- Column 1 (leftmost) -->
+                <rect class="booth booth-blue" data-booth="L1-1" data-tier="all" data-size="10" x="210" y="60" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="235" y="90">L1-1</text>
+
+                <rect class="booth booth-purple" data-booth="L1-2" data-tier="all" data-size="10" x="210" y="115" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="235" y="145">L1-2</text>
+
+                <rect class="booth booth-blue" data-booth="L1-3" data-tier="all" data-size="10" x="210" y="170" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="235" y="200">L1-3</text>
+
+                <rect class="booth booth-purple" data-booth="L1-4" data-tier="all" data-size="10" x="210" y="225" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="235" y="255">L1-4</text>
+
+                <rect class="booth booth-blue" data-booth="L1-5" data-tier="all" data-size="10" x="210" y="280" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="235" y="310">L1-5</text>
+
+                <rect class="booth booth-purple" data-booth="L1-6" data-tier="all" data-size="10" x="210" y="335" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="235" y="365">L1-6</text>
+
+                <rect class="booth booth-blue" data-booth="L1-7" data-tier="all" data-size="10" x="210" y="390" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="235" y="420">L1-7</text>
+
+                <rect class="booth booth-purple" data-booth="L1-8" data-tier="all" data-size="10" x="210" y="445" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="235" y="475">L1-8</text>
+
+                <rect class="booth booth-blue" data-booth="L1-9" data-tier="all" data-size="10" x="210" y="500" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="235" y="530">L1-9</text>
+
+                <!-- Column 2 -->
+                <rect class="booth booth-purple" data-booth="L2-1" data-tier="all" data-size="10" x="265" y="60" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="290" y="90">L2-1</text>
+
+                <rect class="booth booth-blue" data-booth="L2-2" data-tier="all" data-size="10" x="265" y="115" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="290" y="145">L2-2</text>
+
+                <rect class="booth booth-purple" data-booth="L2-3" data-tier="all" data-size="10" x="265" y="170" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="290" y="200">L2-3</text>
+
+                <rect class="booth booth-blue" data-booth="L2-4" data-tier="all" data-size="10" x="265" y="225" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="290" y="255">L2-4</text>
+
+                <rect class="booth booth-purple" data-booth="L2-5" data-tier="all" data-size="10" x="265" y="280" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="290" y="310">L2-5</text>
+
+                <rect class="booth booth-blue" data-booth="L2-6" data-tier="all" data-size="10" x="265" y="335" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="290" y="365">L2-6</text>
+
+                <rect class="booth booth-purple" data-booth="L2-7" data-tier="all" data-size="10" x="265" y="390" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="290" y="420">L2-7</text>
+
+                <rect class="booth booth-blue" data-booth="L2-8" data-tier="all" data-size="10" x="265" y="445" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="290" y="475">L2-8</text>
+
+                <rect class="booth booth-purple" data-booth="L2-9" data-tier="all" data-size="10" x="265" y="500" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="290" y="530">L2-9</text>
+
+                <!-- Column 3 -->
+                <rect class="booth booth-blue" data-booth="L3-1" data-tier="all" data-size="10" x="320" y="60" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="345" y="90">L3-1</text>
+
+                <rect class="booth booth-purple" data-booth="L3-2" data-tier="all" data-size="10" x="320" y="115" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="345" y="145">L3-2</text>
+
+                <rect class="booth booth-blue" data-booth="L3-3" data-tier="all" data-size="10" x="320" y="170" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="345" y="200">L3-3</text>
+
+                <rect class="booth booth-purple" data-booth="L3-4" data-tier="all" data-size="10" x="320" y="225" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="345" y="255">L3-4</text>
+
+                <rect class="booth booth-blue" data-booth="L3-5" data-tier="all" data-size="10" x="320" y="280" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="345" y="310">L3-5</text>
+
+                <rect class="booth booth-purple" data-booth="L3-6" data-tier="all" data-size="10" x="320" y="335" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="345" y="365">L3-6</text>
+
+                <rect class="booth booth-blue" data-booth="L3-7" data-tier="all" data-size="10" x="320" y="390" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="345" y="420">L3-7</text>
+
+                <rect class="booth booth-purple" data-booth="L3-8" data-tier="all" data-size="10" x="320" y="445" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="345" y="475">L3-8</text>
+
+                <rect class="booth booth-blue" data-booth="L3-9" data-tier="all" data-size="10" x="320" y="500" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="345" y="530">L3-9</text>
+
+                <!-- Column 4 -->
+                <rect class="booth booth-purple" data-booth="L4-1" data-tier="all" data-size="10" x="375" y="60" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="400" y="90">L4-1</text>
+
+                <rect class="booth booth-blue" data-booth="L4-2" data-tier="all" data-size="10" x="375" y="115" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="400" y="145">L4-2</text>
+
+                <rect class="booth booth-purple" data-booth="L4-3" data-tier="all" data-size="10" x="375" y="170" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="400" y="200">L4-3</text>
+
+                <rect class="booth booth-blue" data-booth="L4-4" data-tier="all" data-size="10" x="375" y="225" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="400" y="255">L4-4</text>
+
+                <rect class="booth booth-purple" data-booth="L4-5" data-tier="all" data-size="10" x="375" y="280" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="400" y="310">L4-5</text>
+
+                <rect class="booth booth-blue" data-booth="L4-6" data-tier="all" data-size="10" x="375" y="335" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="400" y="365">L4-6</text>
+
+                <rect class="booth booth-purple" data-booth="L4-7" data-tier="all" data-size="10" x="375" y="390" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="400" y="420">L4-7</text>
+
+                <rect class="booth booth-blue" data-booth="L4-8" data-tier="all" data-size="10" x="375" y="445" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="400" y="475">L4-8</text>
+
+                <rect class="booth booth-purple" data-booth="L4-9" data-tier="all" data-size="10" x="375" y="500" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="400" y="530">L4-9</text>
+
+                <!-- Column 5 -->
+                <rect class="booth booth-blue" data-booth="L5-1" data-tier="all" data-size="10" x="430" y="60" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="455" y="90">L5-1</text>
+
+                <rect class="booth booth-purple" data-booth="L5-2" data-tier="all" data-size="10" x="430" y="115" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="455" y="145">L5-2</text>
+
+                <rect class="booth booth-blue" data-booth="L5-3" data-tier="all" data-size="10" x="430" y="170" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="455" y="200">L5-3</text>
+
+                <rect class="booth booth-purple" data-booth="L5-4" data-tier="all" data-size="10" x="430" y="225" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="455" y="255">L5-4</text>
+
+                <rect class="booth booth-blue" data-booth="L5-5" data-tier="all" data-size="10" x="430" y="280" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="455" y="310">L5-5</text>
+
+                <rect class="booth booth-purple" data-booth="L5-6" data-tier="all" data-size="10" x="430" y="335" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="455" y="365">L5-6</text>
+
+                <rect class="booth booth-blue" data-booth="L5-7" data-tier="all" data-size="10" x="430" y="390" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="455" y="420">L5-7</text>
+
+                <rect class="booth booth-purple" data-booth="L5-8" data-tier="all" data-size="10" x="430" y="445" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="455" y="475">L5-8</text>
+
+                <rect class="booth booth-blue" data-booth="L5-9" data-tier="all" data-size="10" x="430" y="500" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="455" y="530">L5-9</text>
+
+                <!-- DANCE STAGE (Center - Not Clickable) -->
+                <rect class="dance-stage" x="550" y="200" width="200" height="150" rx="10"/>
+                <rect class="booth-gold" x="600" y="250" width="100" height="60" rx="5"/>
+                <text class="stage-label" x="650" y="275">Dance</text>
+                <text class="stage-label" x="650" y="295">Stage</text>
+
+                <!-- RIGHT SIDE BOOTHS (5 columns, 9 rows each) -->
+                <!-- Column 6 -->
+                <rect class="booth booth-purple" data-booth="R1-1" data-tier="all" data-size="10" x="820" y="60" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="845" y="90">R1-1</text>
+
+                <rect class="booth booth-blue" data-booth="R1-2" data-tier="all" data-size="10" x="820" y="115" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="845" y="145">R1-2</text>
+
+                <rect class="booth booth-purple" data-booth="R1-3" data-tier="all" data-size="10" x="820" y="170" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="845" y="200">R1-3</text>
+
+                <rect class="booth booth-blue" data-booth="R1-4" data-tier="all" data-size="10" x="820" y="225" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="845" y="255">R1-4</text>
+
+                <rect class="booth booth-purple" data-booth="R1-5" data-tier="all" data-size="10" x="820" y="280" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="845" y="310">R1-5</text>
+
+                <rect class="booth booth-blue" data-booth="R1-6" data-tier="all" data-size="10" x="820" y="335" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="845" y="365">R1-6</text>
+
+                <rect class="booth booth-purple" data-booth="R1-7" data-tier="all" data-size="10" x="820" y="390" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="845" y="420">R1-7</text>
+
+                <rect class="booth booth-blue" data-booth="R1-8" data-tier="all" data-size="10" x="820" y="445" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="845" y="475">R1-8</text>
+
+                <rect class="booth booth-purple" data-booth="R1-9" data-tier="all" data-size="10" x="820" y="500" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="845" y="530">R1-9</text>
+
+                <!-- Column 7 -->
+                <rect class="booth booth-blue" data-booth="R2-1" data-tier="all" data-size="10" x="875" y="60" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="900" y="90">R2-1</text>
+
+                <rect class="booth booth-purple" data-booth="R2-2" data-tier="all" data-size="10" x="875" y="115" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="900" y="145">R2-2</text>
+
+                <rect class="booth booth-blue" data-booth="R2-3" data-tier="all" data-size="10" x="875" y="170" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="900" y="200">R2-3</text>
+
+                <rect class="booth booth-purple" data-booth="R2-4" data-tier="all" data-size="10" x="875" y="225" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="900" y="255">R2-4</text>
+
+                <rect class="booth booth-blue" data-booth="R2-5" data-tier="all" data-size="10" x="875" y="280" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="900" y="310">R2-5</text>
+
+                <rect class="booth booth-purple" data-booth="R2-6" data-tier="all" data-size="10" x="875" y="335" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="900" y="365">R2-6</text>
+
+                <rect class="booth booth-blue" data-booth="R2-7" data-tier="all" data-size="10" x="875" y="390" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="900" y="420">R2-7</text>
+
+                <rect class="booth booth-purple" data-booth="R2-8" data-tier="all" data-size="10" x="875" y="445" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="900" y="475">R2-8</text>
+
+                <rect class="booth booth-blue" data-booth="R2-9" data-tier="all" data-size="10" x="875" y="500" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="900" y="530">R2-9</text>
+
+                <!-- Column 8 -->
+                <rect class="booth booth-purple" data-booth="R3-1" data-tier="all" data-size="10" x="930" y="60" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="955" y="90">R3-1</text>
+
+                <rect class="booth booth-blue" data-booth="R3-2" data-tier="all" data-size="10" x="930" y="115" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="955" y="145">R3-2</text>
+
+                <rect class="booth booth-purple" data-booth="R3-3" data-tier="all" data-size="10" x="930" y="170" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="955" y="200">R3-3</text>
+
+                <rect class="booth booth-blue" data-booth="R3-4" data-tier="all" data-size="10" x="930" y="225" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="955" y="255">R3-4</text>
+
+                <rect class="booth booth-purple" data-booth="R3-5" data-tier="all" data-size="10" x="930" y="280" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="955" y="310">R3-5</text>
+
+                <rect class="booth booth-blue" data-booth="R3-6" data-tier="all" data-size="10" x="930" y="335" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="955" y="365">R3-6</text>
+
+                <rect class="booth booth-purple" data-booth="R3-7" data-tier="all" data-size="10" x="930" y="390" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="955" y="420">R3-7</text>
+
+                <rect class="booth booth-blue" data-booth="R3-8" data-tier="all" data-size="10" x="930" y="445" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="955" y="475">R3-8</text>
+
+                <rect class="booth booth-purple" data-booth="R3-9" data-tier="all" data-size="10" x="930" y="500" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="955" y="530">R3-9</text>
+
+                <!-- Column 9 -->
+                <rect class="booth booth-blue" data-booth="R4-1" data-tier="all" data-size="10" x="985" y="60" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="1010" y="90">R4-1</text>
+
+                <rect class="booth booth-purple" data-booth="R4-2" data-tier="all" data-size="10" x="985" y="115" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="1010" y="145">R4-2</text>
+
+                <rect class="booth booth-blue" data-booth="R4-3" data-tier="all" data-size="10" x="985" y="170" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="1010" y="200">R4-3</text>
+
+                <rect class="booth booth-purple" data-booth="R4-4" data-tier="all" data-size="10" x="985" y="225" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="1010" y="255">R4-4</text>
+
+                <rect class="booth booth-blue" data-booth="R4-5" data-tier="all" data-size="10" x="985" y="280" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="1010" y="310">R4-5</text>
+
+                <rect class="booth booth-purple" data-booth="R4-6" data-tier="all" data-size="10" x="985" y="335" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="1010" y="365">R4-6</text>
+
+                <rect class="booth booth-blue" data-booth="R4-7" data-tier="all" data-size="10" x="985" y="390" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="1010" y="420">R4-7</text>
+
+                <rect class="booth booth-purple" data-booth="R4-8" data-tier="all" data-size="10" x="985" y="445" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="1010" y="475">R4-8</text>
+
+                <rect class="booth booth-blue" data-booth="R4-9" data-tier="all" data-size="10" x="985" y="500" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="1010" y="530">R4-9</text>
+
+                <!-- Column 10 (rightmost) -->
+                <rect class="booth booth-purple" data-booth="R5-1" data-tier="all" data-size="10" x="1040" y="60" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="1065" y="90">R5-1</text>
+
+                <rect class="booth booth-blue" data-booth="R5-2" data-tier="all" data-size="10" x="1040" y="115" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="1065" y="145">R5-2</text>
+
+                <rect class="booth booth-purple" data-booth="R5-3" data-tier="all" data-size="10" x="1040" y="170" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="1065" y="200">R5-3</text>
+
+                <rect class="booth booth-blue" data-booth="R5-4" data-tier="all" data-size="10" x="1040" y="225" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="1065" y="255">R5-4</text>
+
+                <rect class="booth booth-purple" data-booth="R5-5" data-tier="all" data-size="10" x="1040" y="280" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="1065" y="310">R5-5</text>
+
+                <rect class="booth booth-blue" data-booth="R5-6" data-tier="all" data-size="10" x="1040" y="335" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="1065" y="365">R5-6</text>
+
+                <rect class="booth booth-purple" data-booth="R5-7" data-tier="all" data-size="10" x="1040" y="390" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="1065" y="420">R5-7</text>
+
+                <rect class="booth booth-blue" data-booth="R5-8" data-tier="all" data-size="10" x="1040" y="445" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="1065" y="475">R5-8</text>
+
+                <rect class="booth booth-purple" data-booth="R5-9" data-tier="all" data-size="10" x="1040" y="500" width="50" height="50" rx="3"/>
+                <text class="booth-number" x="1065" y="530">R5-9</text>
+
+                <!-- BOTTOM 16' BOOTHS (Orange - All Tiers) -->
+                <rect class="booth booth-orange" data-booth="16-1" data-tier="all" data-size="16" x="330" y="560" width="80" height="30" rx="3"/>
+                <text class="booth-number" x="370" y="580">16-1 (16')</text>
+                <text class="dimension-label" x="370" y="555">16'</text>
+
+                <rect class="booth booth-orange" data-booth="16-2" data-tier="all" data-size="16" x="560" y="560" width="80" height="30" rx="3"/>
+                <text class="booth-number" x="600" y="580">16-2 (16')</text>
+                <text class="dimension-label" x="600" y="555">16'</text>
+
+                <rect class="booth booth-orange" data-booth="16-3" data-tier="all" data-size="16" x="790" y="560" width="80" height="30" rx="3"/>
+                <text class="booth-number" x="830" y="580">16-3 (16')</text>
+                <text class="dimension-label" x="830" y="555">16'</text>
+
+                <!-- FOYER CURVED SECTION -->
+                <!-- Using path to create curved booth arrangement -->
+
+                <!-- Left side foyer booths (green and light blue - exhibitor only) -->
+                <rect class="booth booth-green" data-booth="F-L1" data-tier="exhibitor" data-size="10" x="120" y="650" width="40" height="50" rx="3" transform="rotate(-15 140 675)"/>
+                <text class="booth-number" x="140" y="680" transform="rotate(-15 140 680)">F-L1</text>
+
+                <rect class="booth booth-lightblue" data-booth="F-L2" data-tier="exhibitor" data-size="10" x="165" y="670" width="40" height="50" rx="3" transform="rotate(-10 185 695)"/>
+                <text class="booth-number" x="185" y="700" transform="rotate(-10 185 700)">F-L2</text>
+
+                <rect class="booth booth-green" data-booth="F-L3" data-tier="exhibitor" data-size="10" x="210" y="685" width="40" height="50" rx="3" transform="rotate(-5 230 710)"/>
+                <text class="booth-number" x="230" y="715" transform="rotate(-5 230 715)">F-L3</text>
+
+                <rect class="booth booth-lightblue" data-booth="F-L4" data-tier="exhibitor" data-size="10" x="255" y="695" width="40" height="50" rx="3"/>
+                <text class="booth-number" x="275" y="725">F-L4</text>
+
+                <rect class="booth booth-green" data-booth="F-L5" data-tier="exhibitor" data-size="10" x="300" y="700" width="40" height="50" rx="3"/>
+                <text class="booth-number" x="320" y="730">F-L5</text>
+
+                <rect class="booth booth-lightblue" data-booth="F-L6" data-tier="exhibitor" data-size="10" x="345" y="700" width="40" height="50" rx="3"/>
+                <text class="booth-number" x="365" y="730">F-L6</text>
+
+                <!-- Center foyer booths (gold - available to all, likely gold tier) -->
+                <rect class="booth booth-gold" data-booth="F-C1" data-tier="all-gold" data-size="10" x="390" y="700" width="40" height="50" rx="3"/>
+                <text class="booth-number" x="410" y="730">F-C1</text>
+
+                <rect class="booth booth-gold" data-booth="F-C2" data-tier="all-gold" data-size="10" x="435" y="700" width="40" height="50" rx="3"/>
+                <text class="booth-number" x="455" y="730">F-C2</text>
+
+                <!-- Main area foyer booths (purple and blue - all tiers) -->
+                <rect class="booth booth-purple" data-booth="F-M1" data-tier="all" data-size="10" x="480" y="700" width="40" height="50" rx="3"/>
+                <text class="booth-number" x="500" y="730">F-M1</text>
+
+                <rect class="booth booth-blue" data-booth="F-M2" data-tier="all" data-size="10" x="525" y="700" width="40" height="50" rx="3"/>
+                <text class="booth-number" x="545" y="730">F-M2</text>
+
+                <rect class="booth booth-purple" data-booth="F-M3" data-tier="all" data-size="10" x="570" y="700" width="40" height="50" rx="3"/>
+                <text class="booth-number" x="590" y="730">F-M3</text>
+
+                <rect class="booth booth-blue" data-booth="F-M4" data-tier="all" data-size="10" x="615" y="700" width="40" height="50" rx="3"/>
+                <text class="booth-number" x="635" y="730">F-M4</text>
+
+                <rect class="booth booth-purple" data-booth="F-M5" data-tier="all" data-size="10" x="660" y="700" width="40" height="50" rx="3"/>
+                <text class="booth-number" x="680" y="730">F-M5</text>
+
+                <rect class="booth booth-blue" data-booth="F-M6" data-tier="all" data-size="10" x="705" y="700" width="40" height="50" rx="3"/>
+                <text class="booth-number" x="725" y="730">F-M6</text>
+
+                <rect class="booth booth-purple" data-booth="F-M7" data-tier="all" data-size="10" x="750" y="700" width="40" height="50" rx="3"/>
+                <text class="booth-number" x="770" y="730">F-M7</text>
+
+                <!-- Right side additional booths -->
+                <rect class="booth booth-blue" data-booth="F-R1" data-tier="all" data-size="10" x="795" y="695" width="40" height="50" rx="3"/>
+                <text class="booth-number" x="815" y="725">F-R1</text>
+
+                <rect class="booth booth-purple" data-booth="F-R2" data-tier="all" data-size="10" x="840" y="690" width="40" height="50" rx="3" transform="rotate(5 860 715)"/>
+                <text class="booth-number" x="860" y="720" transform="rotate(5 860 720)">F-R2</text>
+
+                <!-- Additional corner booths matching image -->
+                <rect class="booth booth-gold" data-booth="CORNER-1" data-tier="all-gold" data-size="10" x="1120" y="650" width="50" height="40" rx="3" transform="rotate(25 1145 670)"/>
+                <text class="booth-number" x="1145" y="675" transform="rotate(25 1145 675)">C-1</text>
+
+                <rect class="booth booth-gold" data-booth="CORNER-2" data-tier="all-gold" data-size="10" x="1165" y="690" width="50" height="40" rx="3" transform="rotate(35 1190 710)"/>
+                <text class="booth-number" x="1190" y="715" transform="rotate(35 1190 715)">C-2</text>
+
+                <!-- EXIT MARKERS (Red circles - not clickable) -->
+                <circle class="exit" cx="290" cy="630" r="15"/>
+                <circle class="exit" cx="440" cy="630" r="12"/>
+                <circle class="exit" cx="640" cy="630" r="20"/>
+                <circle class="exit" cx="790" cy="630" r="12"/>
+                <circle class="exit" cx="940" cy="630" r="15"/>
+
+                <!-- Dimension labels for reference -->
+                <text class="dimension-label" x="235" y="35">10'</text>
+                <line x1="210" y1="40" x2="260" y2="40" stroke="#666" stroke-width="1"/>
+
+                <text class="dimension-label" x="455" y="345">10'</text>
+                <line x1="430" y1="350" x2="480" y2="350" stroke="#666" stroke-width="1"/>
+
+                <text class="dimension-label" x="1065" y="35">10'</text>
+                <line x1="1040" y1="40" x2="1090" y2="40" stroke="#666" stroke-width="1"/>
+            </svg>
+        </div>
+    </div>
+
+    <script>
+        // Store selected booth
+        let selectedBooth = null;
+
+        // Add click event listeners to all booths
+        document.querySelectorAll('.booth').forEach(booth => {
+            booth.addEventListener('click', function() {
+                const boothNumber = this.getAttribute('data-booth');
+                const tier = this.getAttribute('data-tier');
+                const size = this.getAttribute('data-size');
+
+                // Remove previous selection
+                if (selectedBooth) {
+                    selectedBooth.classList.remove('selected');
+                }
+
+                // Add selection to clicked booth
+                this.classList.add('selected');
+                selectedBooth = this;
+
+                // Update selected booth display
+                const selectedBoothDiv = document.getElementById('selectedBooth');
+
+                let tierText = '';
+                switch(tier) {
+                    case 'all':
+                        tierText = 'Available to All Tiers';
+                        break;
+                    case 'exhibitor':
+                        tierText = 'Exhibitor Only';
+                        break;
+                    case 'all-gold':
+                        tierText = 'Available to All (Likely Gold)';
+                        break;
+                }
+
+                selectedBoothDiv.innerHTML = `
+                    <h3>Booth ${boothNumber}</h3>
+                    <p><strong>Size:</strong> ${size}' booth | <strong>Tier:</strong> ${tierText}</p>
+                    <p style="margin-top: 10px; color: #999; font-size: 12px;">
+                        Add your custom logic here - e.g., assignment, availability check, sponsor selection, etc.
+                    </p>
+                `;
+
+                // YOUR CUSTOM LOGIC HERE
+                // Example: You can call a function to handle the booth selection
+                handleBoothSelection(boothNumber, tier, size);
+            });
+        });
+
+        // Custom function where you can add your booth selection logic
+        function handleBoothSelection(boothNumber, tier, size) {
+            // Add your custom logic here
+            // For example:
+            // - Show a modal for sponsor assignment
+            // - Check availability in a database
+            // - Update Monday.com board
+            // - Show additional booth details
+            // - Enable/disable based on tier selection
+
+            console.log('Booth selected:', {
+                booth: boothNumber,
+                tier: tier,
+                size: size
+            });
+
+            // Example: You could make an API call here
+            // fetch('/api/select-booth', {
+            //     method: 'POST',
+            //     body: JSON.stringify({ boothNumber, tier, size })
+            // });
+        }
+
+        // You can also add functions to programmatically select booths
+        function selectBoothByNumber(boothNumber) {
+            const booth = document.querySelector(`[data-booth="${boothNumber}"]`);
+            if (booth) {
+                booth.click();
+            }
+        }
+
+        // Example: Auto-select a booth on load (optional)
+        // selectBoothByNumber('L1-1');
+    </script>
+</body>
+</html>
