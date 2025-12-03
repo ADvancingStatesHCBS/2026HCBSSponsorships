@@ -1,0 +1,96 @@
+{
+  "name": "Time Entry Categorization - Fixed",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "start-node",
+      "name": "Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "notes": "Input your 280 time entry items here"
+    },
+    {
+      "parameters": {
+        "authentication": "headerAuth",
+        "requestMethod": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "jsonParameters": true,
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 200
+            }
+          }
+        },
+        "bodyParametersJson": "={\n  \"model\": \"gpt-3.5-turbo\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are an expert categorization specialist. Your task is to receive a brief note and classify it into EXACTLY ONE of the predefined categories.\\n\\nCATEGORIZATION RULES:\\n- Conference names (NASDDDS, SNP Alliance, Milken Summit, MLTSS Summit, etc.) = 'Travel and Events'\\n- Meetings with people/organizations = 'Meetings and Collaboration'\\n- Research, reading reports, policy analysis = 'Policy and Research'\\n- Director calls, policy updates = 'Meetings and Collaboration'\\n- Webinars (attended or presented) = 'Training, Webinars, and Presentations'\\n- Office hours with states = 'Technical Assistance to States'\\n- Website work, aging website updates = 'Communications and Outreach'\\n- Survey development, data collection = 'Project Work and Deliverables'\\n- Hill visits, advocacy = 'Communications and Outreach'\\n- Timesheets, admin tasks = 'Administrative and Operational Tasks'\\n- Empty or unclear notes = 'No Comments / Not Specified'\\n\\nVALID CATEGORIES:\\nMeetings and Collaboration\\nProject Work and Deliverables\\nAdministrative and Operational Tasks\\nFinancial and Invoicing\\nTraining, Webinars, and Presentations\\nTravel and Events\\nTechnical Assistance to States\\nCommunications and Outreach\\nPolicy and Research\\nNo Comments / Not Specified\\n\\nReturn ONLY valid JSON:\\n{\\n  \\\"category\\\": \\\"<exact category name>\\\",\\n  \\\"hours\\\": <hours_value>\\n}\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Note: {{ $json.notes_original }}\\n\\nStates mentioned: {{ $json.states }}\\n\\nHours: {{ $json.Hours }}\"\n    }\n  ],\n  \"temperature\": 0.2,\n  \"response_format\": { \"type\": \"json_object\" }\n}"
+      },
+      "id": "openai-call",
+      "name": "OpenAI Categorize",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [450, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "openai-key",
+          "name": "OpenAI API"
+        }
+      },
+      "notes": "Processes items with 200ms delay between requests to avoid rate limits"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  try {\n    const responseContent = item.json.choices[0].message.content;\n    const parsed = JSON.parse(responseContent);\n    \n    results.push({\n      json: {\n        notes_original: item.json.notes_original || '',\n        Hours: item.json.Hours || 0,\n        states: item.json.states || [],\n        category: parsed.category || 'No Comments / Not Specified',\n        categorized_hours: parsed.hours || item.json.Hours || 0\n      }\n    });\n  } catch (error) {\n    // If parsing fails, mark as uncategorized\n    results.push({\n      json: {\n        notes_original: item.json.notes_original || '',\n        Hours: item.json.Hours || 0,\n        states: item.json.states || [],\n        category: 'No Comments / Not Specified',\n        categorized_hours: item.json.Hours || 0,\n        error: error.message\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "id": "parse-results",
+      "name": "Parse & Format Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [650, 300],
+      "notes": "Extracts categorization results and formats output"
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Categorize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Categorize": {
+      "main": [
+        [
+          {
+            "node": "Parse & Format Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-12-03T20:00:00.000Z",
+  "versionId": "1"
+}

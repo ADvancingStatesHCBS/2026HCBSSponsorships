@@ -1,0 +1,231 @@
+{
+  "name": "Time Entry Categorization with Batching",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "a1b2c3d4-1234-5678-9abc-def012345678",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "batchSize": 50,
+        "options": {}
+      },
+      "id": "b2c3d4e5-2345-6789-abcd-ef0123456789",
+      "name": "Split In Batches",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "c3d4e5f6-3456-789a-bcde-f01234567890",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [650, 300],
+      "notes": "This processes each item within the batch individually"
+    },
+    {
+      "parameters": {
+        "authentication": "generic",
+        "genericAuthType": "httpHeaderAuth",
+        "requestMethod": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": []
+        },
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={\n  \"model\": \"gpt-3.5-turbo\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are an expert categorization specialist. Your task is to receive a brief note and classify it into EXACTLY ONE of the predefined categories below.\\n\\nCRITICAL INSTRUCTIONS:\\n- You MUST choose EXACTLY ONE category from the list below\\n- Return the category name EXACTLY as written - no variations, abbreviations, or modifications\\n- Do not add numbers, prefixes, or any other text to the category name\\n- If the note is unclear or empty, use 'No Comments / Not Specified'\\n- Conference names (like NASDDDS, SNP Alliance, Milken, MLTSS Summit, etc.) should be categorized as 'Travel and Events'\\n- Meeting with specific organizations or people should be 'Meetings and Collaboration'\\n- Research, reading reports, or policy work should be 'Policy and Research'\\n- Calls with directors or policy updates should be 'Meetings and Collaboration'\\n- Webinars attended or presented should be 'Training, Webinars, and Presentations'\\n- Office hours with states should be 'Technical Assistance to States'\\n\\nVALID CATEGORIES (copy exactly):\\nMeetings and Collaboration\\nProject Work and Deliverables\\nAdministrative and Operational Tasks\\nFinancial and Invoicing\\nTraining, Webinars, and Presentations\\nTravel and Events\\nTechnical Assistance to States\\nCommunications and Outreach\\nPolicy and Research\\nNo Comments / Not Specified\\n\\nReturn ONLY valid JSON in this exact format:\\n{\\n  \\\"category\\\": \\\"<exact category name from list above>\\\",\\n  \\\"hours\\\": <hours_value>\\n}\\n\\nDO NOT include any explanations, markdown formatting, or additional text. Return only the JSON object.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Note: {{ $json.notes_original }}\\n\\nStates mentioned (if any): {{ $json.states }}\\n\\nHours of activity: {{ $json.Hours }}\"\n    }\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": { \"type\": \"json_object\" }\n}"
+      },
+      "id": "d4e5f6a7-4567-89ab-cdef-012345678901",
+      "name": "OpenAI Categorization",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [850, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "1",
+          "name": "OpenAI API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1",
+              "name": "notes_original",
+              "value": "={{ $json.notes_original }}",
+              "type": "string"
+            },
+            {
+              "id": "2",
+              "name": "Hours",
+              "value": "={{ $json.Hours }}",
+              "type": "number"
+            },
+            {
+              "id": "3",
+              "name": "states",
+              "value": "={{ $json.states }}",
+              "type": "array"
+            },
+            {
+              "id": "4",
+              "name": "category",
+              "value": "={{ JSON.parse($json.choices[0].message.content).category }}",
+              "type": "string"
+            },
+            {
+              "id": "5",
+              "name": "categorized_hours",
+              "value": "={{ JSON.parse($json.choices[0].message.content).hours }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e5f6a7b8-5678-9abc-def0-123456789012",
+      "name": "Format Output",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [1050, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.category }}",
+              "operation": "notEmpty"
+            }
+          ]
+        }
+      },
+      "id": "f6a7b8c9-6789-abcd-ef01-234567890123",
+      "name": "Valid Category",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1250, 300]
+    },
+    {
+      "parameters": {
+        "mode": "aggregate",
+        "destinationFieldName": "all_results",
+        "options": {}
+      },
+      "id": "a7b8c9d0-789a-bcde-f012-345678901234",
+      "name": "Aggregate Results",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [1450, 200]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Split In Batches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split In Batches": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Categorization",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Categorization": {
+      "main": [
+        [
+          {
+            "node": "Format Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Output": {
+      "main": [
+        [
+          {
+            "node": "Valid Category",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Valid Category": {
+      "main": [
+        [
+          {
+            "node": "Aggregate Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate Results": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-12-03T20:00:00.000Z",
+  "versionId": "1"
+}
