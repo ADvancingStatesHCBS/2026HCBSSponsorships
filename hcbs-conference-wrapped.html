@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 HCBS Conference Wrapped</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --dark-blue: rgb(0, 98, 117);
+            --dark-green: #318332;
+            --dark-violet: #701e7d;
+            --blue: #3a8297;
+            --light-blue: #58b0e2;
+            --green: #8ac65a;
+            --violet: #8f499c;
+            --white: #FFFFFF;
+            --off-white: #F5F5F0;
+            --cream: #FFFEF5;
+        }
+
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--dark-blue);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            letter-spacing: 0.04em;
+        }
+
+        /* Phone Container */
+        .phone {
+            position: relative;
+            width: 375px;
+            height: 812px;
+            background: var(--dark-blue);
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow:
+                0 0 0 10px var(--dark-blue),
+                0 0 0 12px #3a8297,
+                0 40px 80px rgba(0,0,0,0.6);
+        }
+
+        /* Each slide */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            overflow: hidden;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        /* Status bar */
+        .status-bar {
+            position: absolute;
+            top: 12px;
+            left: 0;
+            right: 0;
+            height: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 28px;
+            z-index: 100;
+        }
+
+        .status-bar .time {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .status-bar .icons {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .status-bar .icons svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* ===== SLIDE 1: COVER ===== */
+        .slide-cover {
+            background: var(--off-white);
+        }
+
+        .slide-cover .status-bar .time,
+        .slide-cover .status-bar .icons svg {
+            color: var(--dark-blue);
+            fill: var(--dark-blue);
+        }
+
+        .cover-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Wrapped header bar */
+        .wrapped-header {
+            background: var(--dark-blue);
+            padding: 55px 24px 28px;
+        }
+
+        .wrapped-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.8);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .wrapped-conference {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--green);
+            letter-spacing: 0.06em;
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .wrapped-text {
+            font-size: 48px;
+            font-weight: 900;
+            font-style: italic;
+            color: var(--white);
+            letter-spacing: 0.04em;
+        }
+
+        /* Year section */
+        .year-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 20px;
+        }
+
+        .year-display {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .year-outline {
+            font-size: 110px;
+            font-weight: 900;
+            font-style: italic;
+            color: transparent;
+            -webkit-text-stroke: 3px var(--green);
+            letter-spacing: 0.05em;
+            line-height: 1;
+        }
+
+        /* Star figures - celebration */
+        .star-celebration {
+            position: absolute;
+            top: -80px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .star-person {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .star-person svg {
+            width: 55px;
+            height: 75px;
+        }
+
+        /* Holiday decorations scattered */
+        .holiday-decorations {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .ornament-float {
+            position: absolute;
+        }
+
+        /* Checker pattern bottom */
+        .checker-bottom {
+            position: absolute;
+            bottom: -40px;
+            right: -90px;
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Scribble decoration */
+        .scribble-deco {
+            position: absolute;
+            bottom: 120px;
+            left: 20px;
+            width: 80px;
+            height: 25px;
+        }
+
+        /* Brand footer */
+        .brand-footer {
+            position: absolute;
+            bottom: 40px;
+            left: 24px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--dark-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        /* ===== SLIDE 2: TOTAL ATTENDANCE ===== */
+        .slide-attendance {
+            background: linear-gradient(180deg, var(--violet) 0%, var(--dark-violet) 100%);
+        }
+
+        .slide-attendance .status-bar .time,
+        .slide-attendance .status-bar .icons svg {
+            color: var(--white);
+            fill: var(--white);
+        }
+
+        .attendance-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 80px 24px 60px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wavy-bg {
+            position: absolute;
+            top: 80px;
+            left: 0;
+            right: 0;
+            height: 400px;
+            overflow: hidden;
+        }
+
+        .attendance-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .big-number {
+            font-size: 130px;
+            font-weight: 900;
+            color: var(--white);
+            line-height: 0.85;
+            letter-spacing: 0.03em;
+        }
+
+        .big-label {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.3;
+            margin-top: 20px;
+            letter-spacing: 0.05em;
+        }
+
+        .big-sub {
+            font-size: 16px;
+            color: rgba(255,255,255,0.75);
+            margin-top: 20px;
+            font-style: italic;
+            letter-spacing: 0.05em;
+        }
+
+        /* ===== SLIDE 3: EXECUTIVE ===== */
+        .slide-exec {
+            background: var(--dark-blue);
+        }
+
+        .slide-exec .status-bar .time,
+        .slide-exec .status-bar .icons svg {
+            color: var(--white);
+            fill: var(--white);
+        }
+
+        .exec-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px;
+        }
+
+        .circles-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+        }
+
+        .stat-number {
+            font-size: 115px;
+            font-weight: 900;
+            color: var(--green);
+            line-height: 0.9;
+            letter-spacing: 0.03em;
+            position: relative;
+            z-index: 10;
+        }
+
+        .stat-percent {
+            font-size: 58px;
+            letter-spacing: 0.04em;
+        }
+
+        .stat-label {
+            font-size: 23px;
+            font-weight: 700;
+            color: var(--white);
+            margin-top: 20px;
+            line-height: 1.4;
+            max-width: 300px;
+            position: relative;
+            z-index: 10;
+            letter-spacing: 0.06em;
+        }
+
+        .stat-sub {
+            font-size: 15px;
+            color: rgba(255,255,255,0.65);
+            margin-top: 16px;
+            position: relative;
+            z-index: 10;
+            letter-spacing: 0.06em;
+        }
+
+        /* ===== SLIDE 4: BUDGET ===== */
+        .slide-budget {
+            background: linear-gradient(160deg, var(--light-blue) 0%, var(--dark-blue) 100%);
+        }
+
+        .slide-budget .status-bar .time,
+        .slide-budget .status-bar .icons svg {
+            color: var(--white);
+            fill: var(--white);
+        }
+
+        .budget-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px;
+        }
+
+        .budget-bg {
+            position: absolute;
+            inset: 0;
+        }
+
+        .budget-number {
+            font-size: 115px;
+            font-weight: 900;
+            color: var(--white);
+            line-height: 0.9;
+            letter-spacing: 0.03em;
+            position: relative;
+            z-index: 10;
+        }
+
+        .budget-percent {
+            font-size: 58px;
+            color: var(--green);
+            letter-spacing: 0.04em;
+        }
+
+        /* ===== SLIDE 5: GOVERNMENT ===== */
+        .slide-gov {
+            background: var(--dark-blue);
+        }
+
+        .slide-gov .status-bar .time,
+        .slide-gov .status-bar .icons svg {
+            color: var(--white);
+            fill: var(--white);
+        }
+
+        .gov-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 80px 24px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .gov-stat {
+            margin-bottom: 40px;
+        }
+
+        .gov-number {
+            font-size: 76px;
+            font-weight: 900;
+            color: var(--green);
+            line-height: 0.9;
+            letter-spacing: 0.03em;
+        }
+
+        .gov-label {
+            font-size: 17px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.9);
+            margin-top: 8px;
+            line-height: 1.4;
+            letter-spacing: 0.06em;
+        }
+
+        /* Checker accent */
+        .checker-accent {
+            position: absolute;
+            bottom: -60px;
+            right: -60px;
+            width: 250px;
+            height: 250px;
+            opacity: 0.25;
+        }
+
+        /* ===== SLIDE 6: BARS ===== */
+        .slide-bars {
+            background: var(--dark-green);
+        }
+
+        .slide-bars .status-bar .time,
+        .slide-bars .status-bar .icons svg {
+            color: var(--white);
+            fill: var(--white);
+        }
+
+        .bars-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 60px 20px 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bars-title {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--white);
+            margin-bottom: 8px;
+            letter-spacing: 0.06em;
+        }
+
+        .bars-subtitle {
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 25px;
+            letter-spacing: 0.06em;
+        }
+
+        .bars-list {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .bar-item {
+            /* Each bar */
+        }
+
+        .bar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 6px;
+        }
+
+        .bar-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--white);
+            letter-spacing: 0.06em;
+        }
+
+        .bar-pct {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--green);
+            letter-spacing: 0.04em;
+        }
+
+        .bar-track {
+            height: 44px;
+            background: rgba(0,0,0,0.25);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: var(--white);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            padding-left: 14px;
+            transition: width 0.8s ease;
+        }
+
+        .bar-count {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--dark-green);
+            letter-spacing: 0.05em;
+        }
+
+        .bars-total {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 2px solid rgba(255,255,255,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bars-total-label {
+            font-size: 13px;
+            color: rgba(255,255,255,0.8);
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .bars-total-number {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--white);
+            letter-spacing: 0.04em;
+        }
+
+        /* ===== SLIDE 7: LEADERBOARD ===== */
+        .slide-leader {
+            background: var(--green);
+        }
+
+        .slide-leader .status-bar .time,
+        .slide-leader .status-bar .icons svg {
+            color: var(--dark-blue);
+            fill: var(--dark-blue);
+        }
+
+        .leader-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .leader-top {
+            padding: 70px 24px 30px;
+        }
+
+        .leader-question {
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--dark-blue);
+            line-height: 1.2;
+            letter-spacing: 0.05em;
+        }
+
+        .leader-circles {
+            display: flex;
+            margin-top: 24px;
+        }
+
+        .leader-circle {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            border: 4px solid var(--dark-blue);
+            margin-left: -12px;
+        }
+
+        .leader-circle:first-child {
+            margin-left: 0;
+        }
+
+        /* Checker bars animation area */
+        .checker-bars {
+            position: absolute;
+            top: 270px;
+            left: 0;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .checker-bar {
+            height: 48px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--dark-blue) 0px,
+                var(--dark-blue) 14px,
+                var(--white) 14px,
+                var(--white) 28px
+            );
+        }
+
+        /* Results card */
+        .leader-card {
+            position: absolute;
+            bottom: 35px;
+            left: 20px;
+            right: 20px;
+            background: var(--white);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+        }
+
+        .card-header {
+            font-size: 11px;
+            font-weight: 700;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 12px;
+        }
+
+        .card-top {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--dark-blue);
+            letter-spacing: 0.04em;
+        }
+
+        .card-subtitle {
+            font-size: 14px;
+            color: #666;
+            letter-spacing: 0.05em;
+        }
+
+        .card-list {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .card-list-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            letter-spacing: 0.05em;
+        }
+
+        .card-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .card-list-item span:last-child {
+            font-weight: 700;
+        }
+
+        /* ===== SLIDE 8: INTERACTIVE RADIAL ===== */
+        .slide-radial {
+            background: linear-gradient(160deg, var(--dark-blue) 0%, #003d4d 100%);
+        }
+
+        .slide-radial .status-bar .time,
+        .slide-radial .status-bar .icons svg {
+            color: var(--white);
+            fill: var(--white);
+        }
+
+        .radial-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 60px 16px 25px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .radial-title {
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--white);
+            text-align: center;
+            letter-spacing: 0.07em;
+            margin-bottom: 10px;
+        }
+
+        .radial-subtitle {
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+            text-align: center;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        /* Interactive wheel */
+        .wheel-container {
+            flex: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wheel-svg {
+            width: 300px;
+            height: 300px;
+            cursor: pointer;
+        }
+
+        .wheel-segment {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .wheel-segment:hover {
+            filter: brightness(1.15);
+            transform-origin: center;
+        }
+
+        .wheel-segment.active {
+            filter: brightness(1.2) drop-shadow(0 0 15px rgba(255,255,255,0.4));
+        }
+
+        .wheel-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+
+        .wheel-center-pct {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--dark-blue);
+            letter-spacing: 0.03em;
+            line-height: 1;
+        }
+
+        .wheel-center-label {
+            font-size: 9px;
+            font-weight: 700;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 2px;
+        }
+
+        /* Legend cards */
+        .radial-legend {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            padding: 0 4px;
+        }
+
+        .legend-card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .legend-card:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+
+        .legend-card.active {
+            background: rgba(255,255,255,0.2);
+            border-color: var(--green);
+        }
+
+        .legend-card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .legend-card-name {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: 0.06em;
+        }
+
+        .legend-card-pct {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--green);
+            letter-spacing: 0.03em;
+        }
+
+        .legend-card-count {
+            font-size: 10px;
+            color: rgba(255,255,255,0.6);
+            letter-spacing: 0.06em;
+        }
+
+        /* Pulse animation for hint */
+        @keyframes pulseHint {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .tap-hint {
+            text-align: center;
+            font-size: 10px;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-top: 15px;
+            animation: pulseHint 2s ease-in-out infinite;
+        }
+
+        /* ===== SLIDE 9: SUMMARY CARD ===== */
+        .slide-summary {
+            background: var(--dark-blue);
+        }
+
+        .slide-summary .status-bar .time,
+        .slide-summary .status-bar .icons svg {
+            color: var(--white);
+            fill: var(--white);
+        }
+
+        .summary-content {
+            position: absolute;
+            top: 50px;
+            left: 24px;
+            right: 24px;
+            bottom: 50px;
+        }
+
+        .summary-border {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 14px solid;
+            border-image: repeating-linear-gradient(
+                45deg,
+                var(--dark-blue) 0px,
+                var(--dark-blue) 7px,
+                var(--white) 7px,
+                var(--white) 14px
+            ) 14;
+        }
+
+        .summary-card {
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            right: 18px;
+            bottom: 18px;
+            background: var(--white);
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .summary-image {
+            height: 170px;
+            background: linear-gradient(135deg, var(--dark-blue), var(--dark-green));
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.4);
+            font-size: 12px;
+            letter-spacing: 0.08em;
+        }
+
+        .summary-year {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 55px;
+            font-weight: 900;
+            font-style: italic;
+            color: var(--green);
+            writing-mode: vertical-rl;
+            letter-spacing: 0.03em;
+        }
+
+        .summary-stats {
+            flex: 1;
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+
+        .summary-col h4 {
+            font-size: 10px;
+            font-weight: 700;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.12em;
+        }
+
+        .summary-col ol {
+            list-style: none;
+            font-size: 12px;
+        }
+
+        .summary-col li {
+            margin-bottom: 3px;
+            font-weight: 500;
+            color: var(--dark-blue);
+            letter-spacing: 0.05em;
+        }
+
+        .summary-col li span {
+            color: #888;
+            margin-right: 5px;
+        }
+
+        .summary-bottom {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+            margin-top: auto;
+        }
+
+        .summary-stat h5 {
+            font-size: 9px;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+            letter-spacing: 0.1em;
+        }
+
+        .summary-stat .val {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--dark-blue);
+            letter-spacing: 0.03em;
+        }
+
+        .summary-stat .genre {
+            font-size: 17px;
+            font-weight: 900;
+            color: var(--dark-green);
+            letter-spacing: 0.05em;
+        }
+
+        .summary-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 16px;
+            border-top: 1px solid #eee;
+        }
+
+        .summary-footer .brand {
+            font-size: 13px;
+            font-weight: 900;
+            color: var(--dark-blue);
+            letter-spacing: 0.05em;
+        }
+
+        .summary-footer .url {
+            font-size: 9px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* ===== SLIDE 10: CLOSING ===== */
+        .slide-close {
+            background: linear-gradient(160deg, var(--dark-violet), var(--dark-blue));
+        }
+
+        .slide-close .status-bar .time,
+        .slide-close .status-bar .icons svg {
+            color: var(--white);
+            fill: var(--white);
+        }
+
+        .close-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 60px 30px 100px;
+        }
+
+        .dots-bg {
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .close-thanks {
+            font-size: 14px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.75);
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .close-title {
+            font-size: 44px;
+            font-weight: 900;
+            color: var(--green);
+            line-height: 1.1;
+            position: relative;
+            z-index: 10;
+            letter-spacing: 0.05em;
+        }
+
+        .close-year {
+            display: inline-block;
+            font-size: 34px;
+            font-weight: 900;
+            color: var(--white);
+            padding: 12px 36px;
+            border: 3px solid rgba(255,255,255,0.35);
+            border-radius: 50px;
+            margin-top: 28px;
+            position: relative;
+            z-index: 10;
+            letter-spacing: 0.06em;
+        }
+
+        .close-msg {
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.6;
+            margin-top: 28px;
+            max-width: 300px;
+            position: relative;
+            z-index: 10;
+            letter-spacing: 0.06em;
+        }
+
+        .close-footer {
+            position: absolute;
+            bottom: 45px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 11px;
+            color: rgba(255,255,255,0.55);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        /* Navigation */
+        .controls {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--blue);
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: var(--green);
+            color: var(--dark-blue);
+        }
+
+        .nav-btn.play {
+            width: 60px;
+            height: 60px;
+            background: var(--green);
+            color: var(--dark-blue);
+        }
+
+        .frame-info {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            font-weight: 600;
+            margin-left: 20px;
+            letter-spacing: 0.06em;
+        }
+
+        .instructions {
+            margin-top: 24px;
+            color: rgba(255,255,255,0.5);
+            font-size: 12px;
+            text-align: center;
+            letter-spacing: 0.06em;
+        }
+
+        .instructions kbd {
+            background: var(--blue);
+            color: var(--white);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+
+        /* Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .floating { animation: float 3s ease-in-out infinite; }
+        .pulsing { animation: pulse 2s ease-in-out infinite; }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+        }
+
+        .sparkle { animation: sparkle 2s ease-in-out infinite; }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- SVG Definitions -->
+    <svg style="position:absolute;width:0;height:0;">
+        <defs>
+            <!-- Star person - stick figure with star head -->
+            <symbol id="starPerson" viewBox="0 0 50 80">
+                <!-- Star head -->
+                <polygon points="25,0 28,10 38,10 30,16 33,26 25,20 17,26 20,16 12,10 22,10" fill="#8ac65a"/>
+                <!-- Body line -->
+                <line x1="25" y1="26" x2="25" y2="55" stroke="rgb(0,98,117)" stroke-width="3" stroke-linecap="round"/>
+                <!-- Arms -->
+                <line x1="10" y1="38" x2="40" y2="38" stroke="rgb(0,98,117)" stroke-width="3" stroke-linecap="round"/>
+                <!-- Legs -->
+                <line x1="25" y1="55" x2="15" y2="75" stroke="rgb(0,98,117)" stroke-width="3" stroke-linecap="round"/>
+                <line x1="25" y1="55" x2="35" y2="75" stroke="rgb(0,98,117)" stroke-width="3" stroke-linecap="round"/>
+            </symbol>
+
+            <!-- Star person celebrating - arms up -->
+            <symbol id="starPersonCelebrate" viewBox="0 0 50 80">
+                <!-- Star head -->
+                <polygon points="25,0 28,10 38,10 30,16 33,26 25,20 17,26 20,16 12,10 22,10" fill="#8ac65a"/>
+                <!-- Body line -->
+                <line x1="25" y1="26" x2="25" y2="55" stroke="rgb(0,98,117)" stroke-width="3" stroke-linecap="round"/>
+                <!-- Arms up -->
+                <line x1="8" y1="28" x2="25" y2="42" stroke="rgb(0,98,117)" stroke-width="3" stroke-linecap="round"/>
+                <line x1="42" y1="28" x2="25" y2="42" stroke="rgb(0,98,117)" stroke-width="3" stroke-linecap="round"/>
+                <!-- Legs -->
+                <line x1="25" y1="55" x2="15" y2="75" stroke="rgb(0,98,117)" stroke-width="3" stroke-linecap="round"/>
+                <line x1="25" y1="55" x2="35" y2="75" stroke="rgb(0,98,117)" stroke-width="3" stroke-linecap="round"/>
+            </symbol>
+
+            <!-- Ornament -->
+            <symbol id="ornament" viewBox="0 0 30 35">
+                <rect x="12" y="0" width="6" height="5" fill="rgb(0,98,117)"/>
+                <circle cx="15" cy="20" r="14" fill="currentColor"/>
+                <path d="M8 15 Q15 25 22 15" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+            </symbol>
+
+            <!-- Snowflake -->
+            <symbol id="snowflake" viewBox="0 0 24 24">
+                <path d="M12 0v24M0 12h24M3.5 3.5l17 17M20.5 3.5l-17 17" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <circle cx="12" cy="12" r="2" fill="currentColor"/>
+            </symbol>
+
+            <!-- Gift -->
+            <symbol id="gift" viewBox="0 0 40 45">
+                <rect x="2" y="15" width="36" height="28" rx="3" fill="#701e7d"/>
+                <rect x="17" y="15" width="6" height="28" fill="#8ac65a"/>
+                <rect x="0" y="10" width="40" height="8" rx="2" fill="#8f499c"/>
+                <path d="M20 10 Q10 0 5 10" fill="none" stroke="#8ac65a" stroke-width="3"/>
+                <path d="M20 10 Q30 0 35 10" fill="none" stroke="#8ac65a" stroke-width="3"/>
+            </symbol>
+
+            <!-- Candy cane -->
+            <symbol id="candyCane" viewBox="0 0 30 50">
+                <path d="M15 50 L15 20 Q15 5 25 5 Q30 5 30 10" fill="none" stroke="#e74c3c" stroke-width="5" stroke-linecap="round"/>
+                <path d="M15 45 L15 35" stroke="#fff" stroke-width="5"/>
+                <path d="M15 30 L15 20" stroke="#fff" stroke-width="5"/>
+            </symbol>
+
+            <!-- Star -->
+            <symbol id="starIcon" viewBox="0 0 24 24">
+                <polygon points="12,0 15,9 24,9 17,14.5 19.5,24 12,18.5 4.5,24 7,14.5 0,9 9,9" fill="currentColor"/>
+            </symbol>
+        </defs>
+    </svg>
+
+    <div class="phone">
+        <!-- SLIDE 1: COVER -->
+        <div class="slide slide-cover active" data-slide="1">
+            <div class="status-bar">
+                <span class="time">9:41</span>
+                <div class="icons">
+                    <svg viewBox="0 0 24 24"><path d="M12 21.5c5.25 0 9.5-4.25 9.5-9.5S17.25 2.5 12 2.5 2.5 6.75 2.5 12s4.25 9.5 9.5 9.5z"/></svg>
+                    <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/></svg>
+                </div>
+            </div>
+            <div class="cover-content">
+                <div class="wrapped-header">
+                    <div class="wrapped-title">ADvancing States</div>
+                    <div class="wrapped-conference">HCBS Conference</div>
+                    <div class="wrapped-text">Wrapped</div>
+                </div>
+                <div class="year-section">
+                    <!-- Holiday decorations scattered -->
+                    <div class="holiday-decorations">
+                        <svg class="ornament-float sparkle" style="top:15px;left:25px;width:28px;height:32px;color:#e74c3c;" viewBox="0 0 30 35"><use href="#ornament"/></svg>
+                        <svg class="ornament-float floating" style="top:80px;right:25px;width:24px;height:28px;color:#58b0e2;animation-delay:0.3s;" viewBox="0 0 30 35"><use href="#ornament"/></svg>
+                        <svg class="ornament-float sparkle" style="top:150px;left:40px;width:20px;height:24px;color:#8ac65a;animation-delay:0.6s;" viewBox="0 0 30 35"><use href="#ornament"/></svg>
+                        <svg class="ornament-float" style="top:30px;right:80px;width:22px;height:26px;color:#8f499c;" viewBox="0 0 30 35"><use href="#ornament"/></svg>
+
+                        <!-- Snowflakes -->
+                        <svg class="sparkle" style="position:absolute;top:60px;left:60px;width:16px;height:16px;color:var(--dark-blue);opacity:0.2;" viewBox="0 0 24 24"><use href="#snowflake"/></svg>
+                        <svg class="sparkle" style="position:absolute;top:120px;right:50px;width:14px;height:14px;color:var(--dark-blue);opacity:0.15;animation-delay:0.7s;" viewBox="0 0 24 24"><use href="#snowflake"/></svg>
+
+                        <!-- Gift -->
+                        <svg style="position:absolute;bottom:180px;right:30px;width:32px;height:36px;" viewBox="0 0 40 45"><use href="#gift"/></svg>
+
+                        <!-- Candy cane -->
+                        <svg class="floating" style="position:absolute;bottom:200px;left:25px;width:25px;height:42px;animation-delay:0.4s;" viewBox="0 0 30 50"><use href="#candyCane"/></svg>
+                    </div>
+
+                    <div class="year-display">
+                        <!-- Star people celebrating above the year -->
+                        <div class="star-celebration">
+                            <svg class="floating" style="animation-delay:0s;" viewBox="0 0 50 80"><use href="#starPersonCelebrate"/></svg>
+                            <svg class="floating" style="animation-delay:0.2s;" viewBox="0 0 50 80"><use href="#starPerson"/></svg>
+                            <svg class="floating" style="animation-delay:0.4s;" viewBox="0 0 50 80"><use href="#starPersonCelebrate"/></svg>
+                        </div>
+                        <div class="year-outline">2025</div>
+                    </div>
+                </div>
+
+                <svg class="checker-bottom" viewBox="0 0 300 300">
+                    <defs>
+                        <pattern id="check" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(-15)">
+                            <rect width="9" height="9" fill="rgb(0,98,117)"/>
+                            <rect x="9" y="9" width="9" height="9" fill="rgb(0,98,117)"/>
+                        </pattern>
+                    </defs>
+                    <ellipse cx="150" cy="150" rx="140" ry="120" fill="url(#check)"/>
+                </svg>
+
+                <svg class="scribble-deco" viewBox="0 0 100 30">
+                    <path d="M5 15 Q25 5 50 15 Q75 25 95 15" fill="none" stroke="rgb(0,98,117)" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+
+                <div class="brand-footer">ADvancing States</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: ATTENDANCE -->
+        <div class="slide slide-attendance" data-slide="2">
+            <div class="status-bar">
+                <span class="time">9:41</span>
+                <div class="icons">
+                    <svg viewBox="0 0 24 24"><path d="M12 21.5c5.25 0 9.5-4.25 9.5-9.5S17.25 2.5 12 2.5 2.5 6.75 2.5 12s4.25 9.5 9.5 9.5z"/></svg>
+                    <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/></svg>
+                </div>
+            </div>
+            <div class="wavy-bg">
+                <svg width="100%" height="100%" viewBox="0 0 375 400" preserveAspectRatio="none">
+                    <defs>
+                        <linearGradient id="wave1" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#58b0e2"/>
+                            <stop offset="50%" stop-color="#8ac65a"/>
+                            <stop offset="100%" stop-color="#318332"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M-50 100 Q80 30 200 100 T450 100" stroke="url(#wave1)" stroke-width="50" fill="none" opacity="0.4"/>
+                    <path d="M-50 200 Q80 130 200 200 T450 200" stroke="url(#wave1)" stroke-width="40" fill="none" opacity="0.35"/>
+                    <path d="M-50 300 Q80 230 200 300 T450 300" stroke="url(#wave1)" stroke-width="45" fill="none" opacity="0.4"/>
+                </svg>
+            </div>
+            <div class="attendance-content">
+                <div class="attendance-main">
+                    <div class="big-number">1,933</div>
+                    <div class="big-label">attendees registered for the 2025 HCBS Conference</div>
+                    <div class="big-sub">And there was one thing they all had in common...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: EXECUTIVE -->
+        <div class="slide slide-exec" data-slide="3">
+            <div class="status-bar">
+                <span class="time">9:41</span>
+                <div class="icons">
+                    <svg viewBox="0 0 24 24"><path d="M12 21.5c5.25 0 9.5-4.25 9.5-9.5S17.25 2.5 12 2.5 2.5 6.75 2.5 12s4.25 9.5 9.5 9.5z"/></svg>
+                    <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/></svg>
+                </div>
+            </div>
+            <svg class="circles-bg" viewBox="0 0 500 500">
+                <circle cx="250" cy="250" r="230" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="40"/>
+                <circle cx="250" cy="250" r="170" fill="none" stroke="rgba(138,198,90,0.15)" stroke-width="35"/>
+                <circle cx="250" cy="250" r="110" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="30"/>
+                <circle cx="250" cy="250" r="50" fill="none" stroke="rgba(138,198,90,0.12)" stroke-width="25"/>
+            </svg>
+            <div class="exec-content">
+                <div class="stat-number">59.8<span class="stat-percent">%</span></div>
+                <div class="stat-label">held executive or director-level titles</div>
+                <div class="stat-sub">1,156 decision-makers in the room</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: BUDGET -->
+        <div class="slide slide-budget" data-slide="4">
+            <div class="status-bar">
+                <span class="time">9:41</span>
+                <div class="icons">
+                    <svg viewBox="0 0 24 24"><path d="M12 21.5c5.25 0 9.5-4.25 9.5-9.5S17.25 2.5 12 2.5 2.5 6.75 2.5 12s4.25 9.5 9.5 9.5z"/></svg>
+                    <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/></svg>
+                </div>
+            </div>
+            <svg class="budget-bg" viewBox="0 0 375 812" preserveAspectRatio="none">
+                <defs>
+                    <linearGradient id="budgetGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="rgba(138,198,90,0.2)"/>
+                        <stop offset="100%" stop-color="rgba(0,98,117,0.1)"/>
+                    </linearGradient>
+                </defs>
+                <circle cx="100" cy="200" r="200" fill="url(#budgetGrad)"/>
+                <circle cx="300" cy="600" r="250" fill="url(#budgetGrad)"/>
+                <circle cx="187" cy="406" r="180" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="50"/>
+                <circle cx="187" cy="406" r="100" fill="none" stroke="rgba(138,198,90,0.1)" stroke-width="35"/>
+            </svg>
+            <div class="budget-content">
+                <div class="budget-number">82.2<span class="budget-percent">%</span></div>
+                <div class="stat-label">held titles with purchasing influence or program oversight</div>
+                <div class="stat-sub">1,589 people who move the needle</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: GOVERNMENT -->
+        <div class="slide slide-gov" data-slide="5">
+            <div class="status-bar">
+                <span class="time">9:41</span>
+                <div class="icons">
+                    <svg viewBox="0 0 24 24"><path d="M12 21.5c5.25 0 9.5-4.25 9.5-9.5S17.25 2.5 12 2.5 2.5 6.75 2.5 12s4.25 9.5 9.5 9.5z"/></svg>
+                    <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/></svg>
+                </div>
+            </div>
+            <svg class="checker-accent" viewBox="0 0 250 250">
+                <defs>
+                    <pattern id="chk2" width="20" height="20" patternUnits="userSpaceOnUse">
+                        <rect width="10" height="10" fill="rgba(255,255,255,0.1)"/>
+                        <rect x="10" y="10" width="10" height="10" fill="rgba(255,255,255,0.1)"/>
+                    </pattern>
+                </defs>
+                <circle cx="125" cy="125" r="120" fill="url(#chk2)"/>
+            </svg>
+            <div class="gov-content">
+                <div class="gov-stat">
+                    <div class="gov-number">39.8%</div>
+                    <div class="gov-label">represented federal, state, or local government</div>
+                </div>
+                <div class="gov-stat">
+                    <div class="gov-number">67.2%</div>
+                    <div class="gov-label">had 5+ years of HCBS experience</div>
+                </div>
+                <div class="gov-stat">
+                    <div class="gov-number">769</div>
+                    <div class="gov-label">public sector voices</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: BARS -->
+        <div class="slide slide-bars" data-slide="6">
+            <div class="status-bar">
+                <span class="time">9:41</span>
+                <div class="icons">
+                    <svg viewBox="0 0 24 24"><path d="M12 21.5c5.25 0 9.5-4.25 9.5-9.5S17.25 2.5 12 2.5 2.5 6.75 2.5 12s4.25 9.5 9.5 9.5z"/></svg>
+                    <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/></svg>
+                </div>
+            </div>
+            <div class="bars-content">
+                <div class="bars-title">Title Seniority Distribution</div>
+                <div class="bars-subtitle">Breaking down our attendees by role level</div>
+                <div class="bars-list">
+                    <div class="bar-item">
+                        <div class="bar-header">
+                            <span class="bar-name">Director / VP</span>
+                            <span class="bar-pct">38.8%</span>
+                        </div>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width:100%"><span class="bar-count">750</span></div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-header">
+                            <span class="bar-name">Manager / Sr Staff</span>
+                            <span class="bar-pct">22.4%</span>
+                        </div>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width:58%"><span class="bar-count">433</span></div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-header">
+                            <span class="bar-name">C-Suite / Executive</span>
+                            <span class="bar-pct">21%</span>
+                        </div>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width:54%"><span class="bar-count">406</span></div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-header">
+                            <span class="bar-name">Professional</span>
+                            <span class="bar-pct">17.8%</span>
+                        </div>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width:46%"><span class="bar-count">344</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bars-total">
+                    <span class="bars-total-label">Total Attendees</span>
+                    <span class="bars-total-number">1,933</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: LEADERBOARD -->
+        <div class="slide slide-leader" data-slide="7">
+            <div class="status-bar">
+                <span class="time">9:41</span>
+                <div class="icons">
+                    <svg viewBox="0 0 24 24"><path d="M12 21.5c5.25 0 9.5-4.25 9.5-9.5S17.25 2.5 12 2.5 2.5 6.75 2.5 12s4.25 9.5 9.5 9.5z"/></svg>
+                    <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/></svg>
+                </div>
+            </div>
+            <div class="leader-content">
+                <div class="leader-top">
+                    <div class="leader-question">Who attended<br>the most?</div>
+                    <div class="leader-circles">
+                        <div class="leader-circle" style="background:var(--dark-blue)"></div>
+                        <div class="leader-circle" style="background:var(--dark-violet)"></div>
+                        <div class="leader-circle" style="background:var(--dark-green)"></div>
+                        <div class="leader-circle" style="background:var(--blue)"></div>
+                    </div>
+                </div>
+                <div class="checker-bars">
+                    <div class="checker-bar" style="width:100%"></div>
+                    <div class="checker-bar" style="width:80%"></div>
+                    <div class="checker-bar" style="width:65%"></div>
+                    <div class="checker-bar" style="width:50%"></div>
+                </div>
+                <div class="leader-card">
+                    <div class="card-header">Most Represented Sectors</div>
+                    <div class="card-top">
+                        <div class="card-icon" style="background:var(--dark-blue)"></div>
+                        <div>
+                            <div class="card-title">Government</div>
+                            <div class="card-subtitle">769 attendees</div>
+                        </div>
+                    </div>
+                    <div class="card-list">
+                        <div class="card-list-item"><span>#2 Corporate</span><span>669</span></div>
+                        <div class="card-list-item"><span>#3 Nonprofit</span><span>153</span></div>
+                        <div class="card-list-item"><span>#4 Consulting</span><span>151</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: INTERACTIVE RADIAL CHART -->
+        <div class="slide slide-radial" data-slide="8">
+            <div class="status-bar">
+                <span class="time">9:41</span>
+                <div class="icons">
+                    <svg viewBox="0 0 24 24"><path d="M12 21.5c5.25 0 9.5-4.25 9.5-9.5S17.25 2.5 12 2.5 2.5 6.75 2.5 12s4.25 9.5 9.5 9.5z"/></svg>
+                    <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/></svg>
+                </div>
+            </div>
+            <div class="radial-content">
+                <div class="radial-title">Audience Composition</div>
+                <div class="radial-subtitle">Tap to explore each segment</div>
+
+                <div class="wheel-container">
+                    <svg class="wheel-svg" viewBox="0 0 200 200" id="wheelChart">
+                        <!-- Segments will be generated by JS -->
+                    </svg>
+                    <div class="wheel-center">
+                        <span class="wheel-center-pct" id="centerPct">1,933</span>
+                        <span class="wheel-center-label" id="centerLabel">Total</span>
+                    </div>
+                </div>
+
+                <div class="tap-hint">Tap segments or cards to explore</div>
+
+                <div class="radial-legend" id="legendGrid">
+                    <!-- Legend cards generated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: SUMMARY -->
+        <div class="slide slide-summary" data-slide="9">
+            <div class="status-bar">
+                <span class="time">9:41</span>
+                <div class="icons">
+                    <svg viewBox="0 0 24 24"><path d="M12 21.5c5.25 0 9.5-4.25 9.5-9.5S17.25 2.5 12 2.5 2.5 6.75 2.5 12s4.25 9.5 9.5 9.5z"/></svg>
+                    <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/></svg>
+                </div>
+            </div>
+            <div class="summary-content">
+                <div class="summary-border"></div>
+                <div class="summary-card">
+                    <div class="summary-image">
+                        [Sponsor Image]
+                        <span class="summary-year">2025</span>
+                    </div>
+                    <div class="summary-stats">
+                        <div class="summary-grid">
+                            <div class="summary-col">
+                                <h4>Top Sectors</h4>
+                                <ol>
+                                    <li><span>1</span> Government</li>
+                                    <li><span>2</span> Corporate</li>
+                                    <li><span>3</span> Nonprofit</li>
+                                    <li><span>4</span> Consulting</li>
+                                    <li><span>5</span> Tech / Vendor</li>
+                                </ol>
+                            </div>
+                            <div class="summary-col">
+                                <h4>Top Titles</h4>
+                                <ol>
+                                    <li><span>1</span> Director</li>
+                                    <li><span>2</span> VP</li>
+                                    <li><span>3</span> Sr Staff</li>
+                                    <li><span>4</span> Executive</li>
+                                    <li><span>5</span> C-Suite</li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="summary-bottom">
+                            <div class="summary-stat">
+                                <h5>Total Attendees</h5>
+                                <div class="val">1,933</div>
+                            </div>
+                            <div class="summary-stat">
+                                <h5>Top Focus</h5>
+                                <div class="genre">HCBS</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="summary-footer">
+                        <span class="brand">ADvancing States</span>
+                        <span class="url">advancingstates.org</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: CLOSING -->
+        <div class="slide slide-close" data-slide="10">
+            <div class="status-bar">
+                <span class="time">9:41</span>
+                <div class="icons">
+                    <svg viewBox="0 0 24 24"><path d="M12 21.5c5.25 0 9.5-4.25 9.5-9.5S17.25 2.5 12 2.5 2.5 6.75 2.5 12s4.25 9.5 9.5 9.5z"/></svg>
+                    <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/></svg>
+                </div>
+            </div>
+            <div class="dots-bg"></div>
+            <div class="close-content">
+                <div class="close-thanks">Thank you to our</div>
+                <div class="close-title">Sponsors &<br>Partners</div>
+                <div class="close-year">2025</div>
+                <div class="close-msg">Your support made the 2025 HCBS Conference a landmark gathering of nearly 2,000 professionals shaping the future of home and community-based services.</div>
+            </div>
+            <div class="close-footer">HCBS Conference &bull; ADvancing States</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="controls">
+        <button class="nav-btn" onclick="prev()">&#8592;</button>
+        <button class="nav-btn play" onclick="toggle()" id="playBtn">&#9654;</button>
+        <button class="nav-btn" onclick="next()">&#8594;</button>
+        <span class="frame-info">Frame <span id="num">1</span> / 10</span>
+    </div>
+
+    <div class="instructions">
+        Use <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> arrows to navigate &bull; <kbd>Space</kbd> to auto-play
+    </div>
+
+    <script>
+        let cur = 1, total = 10, playing = false, timer = null;
+
+        function show(n) {
+            document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+            document.querySelector(`[data-slide="${n}"]`).classList.add('active');
+            document.getElementById('num').textContent = n;
+            cur = n;
+
+            // Initialize wheel chart when slide 8 becomes active
+            if (n === 8) {
+                initWheelChart();
+            }
+        }
+
+        function next() { show(cur >= total ? 1 : cur + 1); }
+        function prev() { show(cur <= 1 ? total : cur - 1); }
+
+        function toggle() {
+            const btn = document.getElementById('playBtn');
+            if (playing) {
+                clearInterval(timer);
+                btn.innerHTML = '&#9654;';
+            } else {
+                timer = setInterval(next, 4000);
+                btn.innerHTML = '&#10074;&#10074;';
+            }
+            playing = !playing;
+        }
+
+        // Wheel chart data
+        const orgData = [
+            { name: 'Government', count: 769, pct: 39.8, color: '#3a8297' },
+            { name: 'Corporate', count: 669, pct: 34.6, color: '#318332' },
+            { name: 'Nonprofit', count: 153, pct: 7.9, color: '#8f499c' },
+            { name: 'Consulting', count: 151, pct: 7.8, color: '#58b0e2' },
+            { name: 'Tech / Vendor', count: 104, pct: 5.4, color: '#701e7d' },
+            { name: 'Health Plan', count: 87, pct: 4.5, color: '#8ac65a' }
+        ];
+
+        let activeSegment = null;
+
+        function initWheelChart() {
+            const svg = document.getElementById('wheelChart');
+            const legend = document.getElementById('legendGrid');
+
+            if (!svg || !legend) return;
+
+            svg.innerHTML = '';
+            legend.innerHTML = '';
+
+            const cx = 100, cy = 100, r = 85;
+            let startAngle = -90; // Start from top
+
+            orgData.forEach((item, index) => {
+                const angle = (item.pct / 100) * 360;
+                const endAngle = startAngle + angle;
+
+                // Calculate path
+                const x1 = cx + r * Math.cos(startAngle * Math.PI / 180);
+                const y1 = cy + r * Math.sin(startAngle * Math.PI / 180);
+                const x2 = cx + r * Math.cos(endAngle * Math.PI / 180);
+                const y2 = cy + r * Math.sin(endAngle * Math.PI / 180);
+
+                const largeArc = angle > 180 ? 1 : 0;
+
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z`);
+                path.setAttribute('fill', item.color);
+                path.setAttribute('class', 'wheel-segment');
+                path.setAttribute('data-index', index);
+                path.style.cursor = 'pointer';
+
+                path.addEventListener('click', () => selectSegment(index));
+                path.addEventListener('mouseenter', () => highlightSegment(index));
+                path.addEventListener('mouseleave', () => {
+                    if (activeSegment !== index) unhighlightSegment(index);
+                });
+
+                svg.appendChild(path);
+
+                startAngle = endAngle;
+            });
+
+            // Create legend cards
+            orgData.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'legend-card';
+                card.setAttribute('data-index', index);
+                card.innerHTML = `
+                    <div class="legend-card-header">
+                        <div class="legend-dot" style="background:${item.color}"></div>
+                        <span class="legend-card-name">${item.name}</span>
+                    </div>
+                    <div class="legend-card-pct">${item.pct}%</div>
+                    <div class="legend-card-count">${item.count.toLocaleString()} attendees</div>
+                `;
+                card.addEventListener('click', () => selectSegment(index));
+                legend.appendChild(card);
+            });
+        }
+
+        function selectSegment(index) {
+            // Remove active from all
+            document.querySelectorAll('.wheel-segment').forEach(seg => seg.classList.remove('active'));
+            document.querySelectorAll('.legend-card').forEach(card => card.classList.remove('active'));
+
+            // Add active to selected
+            const segment = document.querySelector(`.wheel-segment[data-index="${index}"]`);
+            const card = document.querySelector(`.legend-card[data-index="${index}"]`);
+
+            if (segment) segment.classList.add('active');
+            if (card) card.classList.add('active');
+
+            // Update center
+            const item = orgData[index];
+            document.getElementById('centerPct').textContent = item.pct + '%';
+            document.getElementById('centerLabel').textContent = item.name;
+
+            activeSegment = index;
+        }
+
+        function highlightSegment(index) {
+            const segment = document.querySelector(`.wheel-segment[data-index="${index}"]`);
+            if (segment && !segment.classList.contains('active')) {
+                segment.style.filter = 'brightness(1.15)';
+            }
+        }
+
+        function unhighlightSegment(index) {
+            const segment = document.querySelector(`.wheel-segment[data-index="${index}"]`);
+            if (segment && !segment.classList.contains('active')) {
+                segment.style.filter = '';
+            }
+        }
+
+        // Reset to default view
+        function resetWheel() {
+            document.querySelectorAll('.wheel-segment').forEach(seg => {
+                seg.classList.remove('active');
+                seg.style.filter = '';
+            });
+            document.querySelectorAll('.legend-card').forEach(card => card.classList.remove('active'));
+            document.getElementById('centerPct').textContent = '1,933';
+            document.getElementById('centerLabel').textContent = 'Total';
+            activeSegment = null;
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight') next();
+            else if (e.key === 'ArrowLeft') prev();
+            else if (e.key === ' ') { e.preventDefault(); toggle(); }
+        });
+
+        document.querySelector('.phone').addEventListener('click', e => {
+            // Don't navigate if clicking on interactive elements
+            if (e.target.closest('.wheel-segment') ||
+                e.target.closest('.legend-card') ||
+                e.target.closest('.wheel-center')) return;
+
+            const rect = e.currentTarget.getBoundingClientRect();
+            e.clientX - rect.left > rect.width / 2 ? next() : prev();
+        });
+
+        // Initialize wheel chart on page load if we're on slide 8
+        document.addEventListener('DOMContentLoaded', () => {
+            if (cur === 8) initWheelChart();
+        });
+    </script>
+</body>
+</html>
