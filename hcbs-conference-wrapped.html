@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 HCBS Conference Wrapped</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* ADvancing States Brand Colors */
+            --dark-blue: #006273;
+            --dark-green: #318332;
+            --dark-violet: #701e7d;
+            --blue: #3a8297;
+            --light-blue: #58b0e2;
+            --green: #8ac65a;
+            --violet: #8f499c;
+            --white: #FFFFFF;
+            --off-white: #F5F5F0;
+            --cream: #FFFEF5;
+        }
+
+        body {
+            font-family: 'Inter', Arial, Calibri, sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Global Animation Keyframes */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { filter: drop-shadow(0 0 20px currentColor); }
+            50% { filter: drop-shadow(0 0 40px currentColor); }
+        }
+
+        @keyframes slide-in-left {
+            from { transform: translateX(-100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slide-in-right {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes scale-in {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* Navigation Controls */
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+            background: rgba(0,0,0,0.8);
+            padding: 15px 25px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        .controls button {
+            background: var(--white);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .controls button:hover {
+            transform: scale(1.1);
+            background: var(--green);
+        }
+
+        .controls button.active {
+            background: var(--green);
+        }
+
+        .frame-indicator {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 1000;
+            background: rgba(0,0,0,0.5);
+            padding: 10px 20px;
+            border-radius: 20px;
+        }
+
+        /* Export Button */
+        .export-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: var(--dark-violet);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .export-btn:hover {
+            background: var(--violet);
+            transform: scale(1.05);
+        }
+
+        /* Frame Container */
+        .frames-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .frame {
+            width: 1080px;
+            height: 1920px;
+            position: absolute;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            transform-origin: center center;
+        }
+
+        .frame.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .frame.scale-to-fit {
+            transform-origin: center center;
+        }
+
+        /* SVG Patterns */
+        .pattern-circles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.15;
+        }
+
+        .pattern-dots {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle, currentColor 2px, transparent 2px);
+            background-size: 30px 30px;
+            opacity: 0.1;
+        }
+
+        /* Frame 1 - Cover */
+        .frame-1 {
+            background: var(--dark-blue);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .frame-1 .spiral-bg {
+            position: absolute;
+            width: 1600px;
+            height: 1600px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: spin-slow 120s linear infinite;
+        }
+
+        .frame-1 .bg-circles {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .frame-1 .year-watermark {
+            font-size: 400px;
+            font-weight: 900;
+            color: var(--green);
+            position: absolute;
+            top: -50px;
+            left: -80px;
+            opacity: 0.15;
+            letter-spacing: -30px;
+            line-height: 0.8;
+            z-index: 1;
+        }
+
+        .frame-1 .scribble-line {
+            position: absolute;
+            stroke: var(--white);
+            stroke-width: 3;
+            fill: none;
+            opacity: 0.4;
+        }
+
+        .frame-1 .title-container {
+            position: relative;
+            z-index: 10;
+            text-align: left;
+            padding-left: 100px;
+            width: 100%;
+        }
+
+        .frame-1 .main-title {
+            font-size: 82px;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -3px;
+            line-height: 0.95;
+            margin-bottom: 30px;
+        }
+
+        .frame-1 .wrapped-text {
+            font-size: 180px;
+            font-weight: 900;
+            color: var(--green);
+            font-style: italic;
+            line-height: 0.85;
+            transform: rotate(-3deg);
+            margin: 20px 0 40px -20px;
+            text-shadow: 8px 8px 0 rgba(0,0,0,0.2);
+        }
+
+        .frame-1 .subtitle {
+            font-size: 36px;
+            color: var(--light-blue);
+            font-weight: 700;
+            margin-top: 50px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        .frame-1 .attendee-count {
+            font-size: 26px;
+            color: rgba(255,255,255,0.6);
+            margin-top: 25px;
+            font-weight: 500;
+        }
+
+        .frame-1 .logo-container {
+            position: absolute;
+            bottom: 100px;
+            left: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .frame-1 .hcbs-logo {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--white);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .frame-1 .decorative-dots {
+            position: absolute;
+            right: 50px;
+            top: 100px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+        }
+
+        .frame-1 .decorative-dots span {
+            width: 25px;
+            height: 25px;
+            background: var(--white);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        /* Holiday Accent */
+        .holiday-accent {
+            position: absolute;
+        }
+
+        .star-tree {
+            width: 120px;
+            height: 180px;
+        }
+
+        .menorah-accent {
+            width: 140px;
+            height: 100px;
+        }
+
+        /* Frame 2 - Total Attendance */
+        .frame-2 {
+            background: var(--dark-green);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .frame-2 .op-art-bg {
+            position: absolute;
+            width: 2400px;
+            height: 2400px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .frame-2 .op-art-bg svg {
+            width: 100%;
+            height: 100%;
+            animation: spin-slow 90s linear infinite;
+        }
+
+        .frame-2 .giant-number {
+            font-size: 360px;
+            font-weight: 900;
+            color: var(--white);
+            position: relative;
+            z-index: 10;
+            line-height: 0.8;
+            text-shadow: 0 20px 80px rgba(0,0,0,0.4);
+            letter-spacing: -15px;
+        }
+
+        .frame-2 .label {
+            font-size: 64px;
+            color: var(--cream);
+            font-weight: 700;
+            position: relative;
+            z-index: 10;
+            margin-top: 40px;
+            text-transform: lowercase;
+            letter-spacing: 2px;
+        }
+
+        .frame-2 .gradient-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 20%, rgba(49,131,50,0.95) 70%);
+            z-index: 5;
+        }
+
+        /* Frame 3 - Executive Representation */
+        .frame-3 {
+            background: var(--dark-violet);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .frame-3 .concentric-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .stat-container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 0 60px;
+        }
+
+        .percentage-huge {
+            font-size: 280px;
+            font-weight: 900;
+            color: var(--white);
+            line-height: 0.9;
+        }
+
+        .percentage-symbol {
+            font-size: 120px;
+            vertical-align: super;
+        }
+
+        .stat-label {
+            font-size: 48px;
+            color: var(--cream);
+            font-weight: 600;
+            max-width: 800px;
+            line-height: 1.2;
+            margin-top: 30px;
+        }
+
+        .stat-secondary {
+            font-size: 36px;
+            color: rgba(255,255,255,0.6);
+            margin-top: 40px;
+            font-weight: 500;
+        }
+
+        /* Frame 4 - Budget Influence */
+        .frame-4 {
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--blue) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .frame-4 .wave-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.2;
+        }
+
+        /* Frame 5 - Government Representation */
+        .frame-5 {
+            background: var(--off-white);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .frame-5 .percentage-huge {
+            color: var(--dark-green);
+        }
+
+        .frame-5 .stat-label {
+            color: var(--dark-blue);
+        }
+
+        .frame-5 .stat-secondary {
+            color: rgba(0,0,0,0.5);
+        }
+
+        .frame-5 .dot-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle, var(--dark-green) 3px, transparent 3px);
+            background-size: 40px 40px;
+            opacity: 0.08;
+        }
+
+        /* Frame 6 - HCBS Experience */
+        .frame-6 {
+            background: var(--dark-green);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            padding-left: 80px;
+        }
+
+        .frame-6 .geometric-accent {
+            position: absolute;
+            right: -200px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 800px;
+            height: 800px;
+            border: 60px solid var(--green);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        .frame-6 .geometric-accent::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border: 40px solid var(--light-blue);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .frame-6 .percentage-huge {
+            text-align: left;
+        }
+
+        .frame-6 .stat-label {
+            text-align: left;
+            max-width: 700px;
+        }
+
+        /* Frame 7 - Title Seniority Distribution */
+        .frame-7 {
+            background: var(--cream);
+            display: flex;
+            flex-direction: column;
+            padding: 100px 80px;
+        }
+
+        .frame-7 .section-title {
+            font-size: 64px;
+            font-weight: 900;
+            color: var(--dark-violet);
+            text-transform: uppercase;
+            margin-bottom: 80px;
+            letter-spacing: -2px;
+        }
+
+        .seniority-rings {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .ring-container {
+            position: relative;
+            width: 700px;
+            height: 700px;
+        }
+
+        .ring {
+            position: absolute;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: 800;
+        }
+
+        .ring-1 {
+            width: 700px;
+            height: 700px;
+            background: var(--dark-violet);
+            color: white;
+            top: 0;
+            left: 0;
+        }
+
+        .ring-2 {
+            width: 540px;
+            height: 540px;
+            background: var(--violet);
+            color: white;
+            top: 80px;
+            left: 80px;
+        }
+
+        .ring-3 {
+            width: 380px;
+            height: 380px;
+            background: var(--light-blue);
+            color: var(--dark-blue);
+            top: 160px;
+            left: 160px;
+        }
+
+        .ring-4 {
+            width: 220px;
+            height: 220px;
+            background: var(--green);
+            color: var(--dark-green);
+            top: 240px;
+            left: 240px;
+        }
+
+        .ring-label {
+            position: absolute;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark-blue);
+        }
+
+        .ring-value {
+            font-size: 48px;
+            display: block;
+        }
+
+        .ring-text {
+            font-size: 18px;
+            font-weight: 600;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .ring-percent {
+            font-size: 28px;
+            opacity: 0.8;
+        }
+
+        .seniority-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .legend-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+
+        .legend-text {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--dark-blue);
+        }
+
+        /* Frame 8 - Decision Makers */
+        .frame-8 {
+            background: var(--dark-blue);
+            display: flex;
+            flex-direction: column;
+            padding: 100px 80px;
+        }
+
+        .frame-8 .section-title {
+            font-size: 56px;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            margin-bottom: 100px;
+            letter-spacing: -2px;
+        }
+
+        .decision-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .decision-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 30px;
+            padding: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .decision-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: var(--green);
+            transition: width 1s ease-out;
+        }
+
+        .decision-card.gov::before {
+            width: 52%;
+        }
+
+        .decision-card.health::before {
+            width: 73.6%;
+        }
+
+        .decision-card-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .decision-card .card-title {
+            font-size: 36px;
+            color: var(--white);
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .decision-card .card-percentage {
+            font-size: 120px;
+            color: var(--white);
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .decision-card .card-count {
+            font-size: 28px;
+            color: rgba(255,255,255,0.7);
+            margin-top: 15px;
+        }
+
+        /* Frame 9 - Audience Composition */
+        .frame-9 {
+            background: var(--off-white);
+            display: flex;
+            flex-direction: column;
+            padding: 80px 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .frame-9::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--light-blue) 0%, transparent 70%);
+            opacity: 0.1;
+        }
+
+        .frame-9 .section-title {
+            font-size: 58px;
+            font-weight: 900;
+            color: var(--dark-blue);
+            text-transform: uppercase;
+            margin-bottom: 50px;
+            letter-spacing: -3px;
+            line-height: 1;
+        }
+
+        .treemap {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(10, 1fr);
+            gap: 10px;
+            max-height: 1500px;
+        }
+
+        .treemap-item {
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 30px;
+            color: white;
+            font-weight: 700;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .treemap-item:hover {
+            transform: scale(1.02);
+        }
+
+        .treemap-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.3) 100%);
+        }
+
+        .treemap-item > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .treemap-item.government {
+            grid-column: 1 / 5;
+            grid-row: 1 / 7;
+            background: linear-gradient(135deg, var(--dark-blue) 0%, #004d5a 100%);
+        }
+
+        .treemap-item.corporate {
+            grid-column: 5 / 11;
+            grid-row: 1 / 6;
+            background: linear-gradient(135deg, var(--dark-green) 0%, #256626 100%);
+        }
+
+        .treemap-item.nonprofit {
+            grid-column: 1 / 4;
+            grid-row: 7 / 11;
+            background: linear-gradient(135deg, var(--violet) 0%, #6d3a7a 100%);
+        }
+
+        .treemap-item.consulting {
+            grid-column: 4 / 7;
+            grid-row: 7 / 11;
+            background: linear-gradient(135deg, var(--blue) 0%, #2d6a7d 100%);
+        }
+
+        .treemap-item.tech {
+            grid-column: 7 / 11;
+            grid-row: 6 / 9;
+            background: linear-gradient(135deg, var(--dark-violet) 0%, #5a1865 100%);
+        }
+
+        .treemap-item.health {
+            grid-column: 7 / 11;
+            grid-row: 9 / 11;
+            background: linear-gradient(135deg, var(--green) 0%, #6ba847 100%);
+            color: #1a4d1a;
+        }
+
+        .treemap-percent {
+            font-size: 80px;
+            font-weight: 900;
+            line-height: 0.9;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .treemap-label {
+            font-size: 24px;
+            margin-top: 12px;
+            opacity: 0.95;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .treemap-item.small .treemap-percent {
+            font-size: 52px;
+        }
+
+        .treemap-item.small .treemap-label {
+            font-size: 18px;
+        }
+
+        /* Frame 10 - Closing */
+        .frame-10 {
+            background: linear-gradient(160deg, var(--dark-violet) 0%, var(--dark-blue) 60%, #003d4a 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .frame-10 .bg-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.08;
+        }
+
+        .frame-10 .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .frame-10 .floating-shapes circle {
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .frame-10 .thanks-text {
+            font-size: 42px;
+            color: rgba(255,255,255,0.9);
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 10;
+        }
+
+        .frame-10 .conference-title {
+            font-size: 96px;
+            color: var(--green);
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            line-height: 0.95;
+            letter-spacing: -3px;
+            position: relative;
+            z-index: 10;
+            text-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .frame-10 .year-badge {
+            font-size: 72px;
+            font-weight: 900;
+            color: var(--white);
+            background: rgba(255,255,255,0.1);
+            padding: 15px 50px;
+            border-radius: 100px;
+            margin: 30px 0;
+            position: relative;
+            z-index: 10;
+            border: 3px solid rgba(255,255,255,0.2);
+        }
+
+        .frame-10 .year-watermark {
+            font-size: 350px;
+            font-weight: 900;
+            color: var(--white);
+            opacity: 0.03;
+            position: absolute;
+            bottom: 50px;
+            right: -50px;
+            line-height: 0.8;
+        }
+
+        .frame-10 .sponsor-text {
+            font-size: 30px;
+            color: rgba(255,255,255,0.75);
+            margin-top: 50px;
+            max-width: 750px;
+            line-height: 1.5;
+            position: relative;
+            z-index: 10;
+            font-weight: 500;
+        }
+
+        .frame-10 .logo-footer {
+            position: absolute;
+            bottom: 80px;
+            font-size: 22px;
+            color: rgba(255,255,255,0.6);
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .frame-10 .logo-footer .divider {
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+        }
+
+        /* Animated Number */
+        .animate-number {
+            display: inline-block;
+        }
+
+        /* Wave Pattern SVG */
+        .wave-svg {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            opacity: 0.1;
+        }
+
+        /* Line Decorations */
+        .line-decoration {
+            position: absolute;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+            opacity: 0.3;
+        }
+
+        /* Spiral Pattern */
+        .spiral-pattern {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+        }
+
+        /* Responsive Scaling */
+        @media (max-height: 1920px) {
+            .frame {
+                transform-origin: center center;
+            }
+        }
+
+        /* Export Modal */
+        .export-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .export-modal.active {
+            display: flex;
+        }
+
+        .export-content {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .export-content h2 {
+            font-size: 32px;
+            color: var(--dark-blue);
+            margin-bottom: 30px;
+        }
+
+        .export-content p {
+            font-size: 18px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .export-content code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .export-content button {
+            background: var(--dark-green);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 30px;
+        }
+
+        .export-content button:hover {
+            background: var(--green);
+        }
+
+        /* Auto-play indicator */
+        .autoplay-indicator {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .autoplay-indicator .dot {
+            width: 10px;
+            height: 10px;
+            background: #ff4444;
+            border-radius: 50%;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Auto-play indicator -->
+    <div class="autoplay-indicator" id="autoplayIndicator" style="display: none;">
+        <span class="dot"></span>
+        <span>Auto-playing</span>
+    </div>
+
+    <!-- Frame indicator -->
+    <div class="frame-indicator">
+        Frame <span id="currentFrame">1</span> / 10
+    </div>
+
+    <!-- Export button -->
+    <button class="export-btn" onclick="showExportModal()">Export Guide</button>
+
+    <!-- Frames Container -->
+    <div class="frames-wrapper">
+
+        <!-- Frame 1: Cover -->
+        <div class="frame frame-1 active" id="frame1">
+            <!-- Spiral Op-Art Background -->
+            <svg class="spiral-bg" viewBox="0 0 1600 1600">
+                <defs>
+                    <pattern id="spiral-pattern" x="0" y="0" width="100%" height="100%" patternUnits="userSpaceOnUse">
+                        <circle cx="800" cy="800" r="750" fill="none" stroke="#3a8297" stroke-width="25" opacity="0.15"/>
+                        <circle cx="800" cy="800" r="650" fill="none" stroke="#8ac65a" stroke-width="35" opacity="0.2"/>
+                        <circle cx="800" cy="800" r="550" fill="none" stroke="#58b0e2" stroke-width="20" opacity="0.15"/>
+                        <circle cx="800" cy="800" r="450" fill="none" stroke="#8f499c" stroke-width="30" opacity="0.2"/>
+                        <circle cx="800" cy="800" r="350" fill="none" stroke="#FFFFFF" stroke-width="15" opacity="0.1"/>
+                        <circle cx="800" cy="800" r="250" fill="none" stroke="#8ac65a" stroke-width="25" opacity="0.15"/>
+                        <circle cx="800" cy="800" r="150" fill="none" stroke="#3a8297" stroke-width="20" opacity="0.2"/>
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#spiral-pattern)"/>
+            </svg>
+
+            <!-- Year watermark -->
+            <div class="year-watermark">2025</div>
+
+            <!-- Scribble decorative lines -->
+            <svg class="scribble-line" style="top: 300px; right: 50px; width: 400px; height: 200px;" viewBox="0 0 400 200">
+                <path d="M0 100 Q100 20 200 100 T400 100" stroke-dasharray="10 5"/>
+            </svg>
+            <svg class="scribble-line" style="bottom: 400px; left: 30px; width: 300px; height: 150px;" viewBox="0 0 300 150">
+                <path d="M0 75 C50 0 100 150 150 75 S250 0 300 75"/>
+            </svg>
+
+            <!-- Decorative dots grid -->
+            <div class="decorative-dots">
+                <span></span><span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span><span></span>
+            </div>
+
+            <!-- Holiday Accent - Star Tree (top right) -->
+            <svg class="holiday-accent star-tree" style="top: 80px; right: 100px; width: 140px; height: 200px;" viewBox="0 0 120 180">
+                <polygon points="60,5 68,30 60,22 52,30" fill="#8ac65a"/>
+                <polygon points="60,22 88,85 72,80 60,70 48,80 32,85" fill="#318332"/>
+                <polygon points="60,65 98,145 78,140 60,125 42,140 22,145" fill="#006273"/>
+                <rect x="48" y="145" width="24" height="30" fill="#701e7d"/>
+            </svg>
+
+            <!-- Menorah accent (bottom right) -->
+            <svg class="holiday-accent menorah-accent" style="bottom: 300px; right: 80px; width: 160px; height: 110px;" viewBox="0 0 140 100">
+                <rect x="65" y="55" width="10" height="40" fill="#58b0e2"/>
+                <rect x="5" y="65" width="6" height="30" fill="#3a8297"/>
+                <rect x="22" y="65" width="6" height="30" fill="#3a8297"/>
+                <rect x="39" y="65" width="6" height="30" fill="#3a8297"/>
+                <rect x="56" y="65" width="6" height="30" fill="#3a8297"/>
+                <rect x="78" y="65" width="6" height="30" fill="#3a8297"/>
+                <rect x="95" y="65" width="6" height="30" fill="#3a8297"/>
+                <rect x="112" y="65" width="6" height="30" fill="#3a8297"/>
+                <rect x="129" y="65" width="6" height="30" fill="#3a8297"/>
+                <ellipse cx="8" cy="60" rx="6" ry="9" fill="#8ac65a"/>
+                <ellipse cx="25" cy="60" rx="6" ry="9" fill="#8ac65a"/>
+                <ellipse cx="42" cy="60" rx="6" ry="9" fill="#8ac65a"/>
+                <ellipse cx="59" cy="60" rx="6" ry="9" fill="#8ac65a"/>
+                <ellipse cx="70" cy="50" rx="8" ry="11" fill="#8ac65a"/>
+                <ellipse cx="81" cy="60" rx="6" ry="9" fill="#8ac65a"/>
+                <ellipse cx="98" cy="60" rx="6" ry="9" fill="#8ac65a"/>
+                <ellipse cx="115" cy="60" rx="6" ry="9" fill="#8ac65a"/>
+                <ellipse cx="132" cy="60" rx="6" ry="9" fill="#8ac65a"/>
+                <path d="M5 95 Q70 82 135 95" stroke="#58b0e2" stroke-width="5" fill="none"/>
+            </svg>
+
+            <div class="title-container">
+                <div class="main-title">2025 HCBS<br>Conference</div>
+                <div class="wrapped-text">Wrapped</div>
+                <div class="subtitle">A Year in Review</div>
+                <div class="attendee-count">Data snapshot from 1,933 attendee records</div>
+            </div>
+
+            <div class="logo-container">
+                <div class="hcbs-logo">HCBS Conference</div>
+            </div>
+        </div>
+
+        <!-- Frame 2: Total Attendance -->
+        <div class="frame frame-2" id="frame2">
+            <!-- Op-Art Spiral Background -->
+            <div class="op-art-bg">
+                <svg viewBox="0 0 2400 2400">
+                    <circle cx="1200" cy="1200" r="1150" fill="none" stroke="#FFFFFF" stroke-width="60" opacity="0.08"/>
+                    <circle cx="1200" cy="1200" r="1050" fill="none" stroke="#8ac65a" stroke-width="50" opacity="0.15"/>
+                    <circle cx="1200" cy="1200" r="950" fill="none" stroke="#FFFFFF" stroke-width="40" opacity="0.06"/>
+                    <circle cx="1200" cy="1200" r="850" fill="none" stroke="#8ac65a" stroke-width="55" opacity="0.12"/>
+                    <circle cx="1200" cy="1200" r="750" fill="none" stroke="#FFFFFF" stroke-width="35" opacity="0.08"/>
+                    <circle cx="1200" cy="1200" r="650" fill="none" stroke="#58b0e2" stroke-width="45" opacity="0.1"/>
+                    <circle cx="1200" cy="1200" r="550" fill="none" stroke="#FFFFFF" stroke-width="30" opacity="0.06"/>
+                    <circle cx="1200" cy="1200" r="450" fill="none" stroke="#8ac65a" stroke-width="40" opacity="0.12"/>
+                    <circle cx="1200" cy="1200" r="350" fill="none" stroke="#FFFFFF" stroke-width="25" opacity="0.08"/>
+                    <circle cx="1200" cy="1200" r="250" fill="none" stroke="#58b0e2" stroke-width="35" opacity="0.1"/>
+                    <circle cx="1200" cy="1200" r="150" fill="none" stroke="#FFFFFF" stroke-width="20" opacity="0.06"/>
+                </svg>
+            </div>
+
+            <!-- Gradient overlay -->
+            <div class="gradient-overlay"></div>
+
+            <div class="giant-number animate-number" data-target="1933">0</div>
+            <div class="label">registered attendees</div>
+        </div>
+
+        <!-- Frame 3: Executive Representation -->
+        <div class="frame frame-3" id="frame3">
+            <!-- Concentric circles background -->
+            <svg class="concentric-bg" width="1400" height="1400" viewBox="0 0 1400 1400">
+                <circle cx="700" cy="700" r="650" fill="none" stroke="#8f499c" stroke-width="40" opacity="0.3"/>
+                <circle cx="700" cy="700" r="550" fill="none" stroke="#FFFFFF" stroke-width="20" opacity="0.1"/>
+                <circle cx="700" cy="700" r="450" fill="none" stroke="#8ac65a" stroke-width="30" opacity="0.3"/>
+                <circle cx="700" cy="700" r="350" fill="none" stroke="#FFFFFF" stroke-width="15" opacity="0.1"/>
+                <circle cx="700" cy="700" r="250" fill="none" stroke="#58b0e2" stroke-width="25" opacity="0.3"/>
+            </svg>
+
+            <div class="stat-container">
+                <div class="percentage-huge">
+                    <span class="animate-number" data-target="59.8" data-decimal="1">0</span><span class="percentage-symbol">%</span>
+                </div>
+                <div class="stat-label">held executive or director-level titles</div>
+                <div class="stat-secondary">1,156 decision-makers in the room</div>
+            </div>
+        </div>
+
+        <!-- Frame 4: Budget Influence -->
+        <div class="frame frame-4" id="frame4">
+            <!-- Wave pattern -->
+            <svg class="wave-pattern" viewBox="0 0 1080 1920" preserveAspectRatio="none">
+                <defs>
+                    <pattern id="waves" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
+                        <path d="M0 100 Q50 50 100 100 T200 100" fill="none" stroke="white" stroke-width="2"/>
+                        <path d="M0 150 Q50 100 100 150 T200 150" fill="none" stroke="white" stroke-width="2"/>
+                        <path d="M0 50 Q50 0 100 50 T200 50" fill="none" stroke="white" stroke-width="2"/>
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#waves)"/>
+            </svg>
+
+            <div class="stat-container">
+                <div class="percentage-huge">
+                    <span class="animate-number" data-target="82.2" data-decimal="1">0</span><span class="percentage-symbol">%</span>
+                </div>
+                <div class="stat-label">reported budget authority or program influence</div>
+                <div class="stat-secondary">1,589 individuals who move the needle</div>
+            </div>
+        </div>
+
+        <!-- Frame 5: Government Representation -->
+        <div class="frame frame-5" id="frame5">
+            <div class="dot-grid"></div>
+
+            <!-- Decorative lines -->
+            <svg style="position: absolute; top: 100px; right: 100px; width: 300px; height: 300px;" viewBox="0 0 300 300">
+                <path d="M0 150 Q150 0 300 150 Q150 300 0 150" fill="none" stroke="#006273" stroke-width="3" opacity="0.2"/>
+                <path d="M50 150 Q150 50 250 150 Q150 250 50 150" fill="none" stroke="#318332" stroke-width="2" opacity="0.2"/>
+            </svg>
+
+            <div class="stat-container">
+                <div class="percentage-huge">
+                    <span class="animate-number" data-target="39.8" data-decimal="1">0</span><span class="percentage-symbol">%</span>
+                </div>
+                <div class="stat-label">represented federal, state, or local government</div>
+                <div class="stat-secondary">769 public sector voices</div>
+            </div>
+        </div>
+
+        <!-- Frame 6: HCBS Experience -->
+        <div class="frame frame-6" id="frame6">
+            <div class="geometric-accent"></div>
+
+            <div class="stat-container">
+                <div class="percentage-huge">
+                    <span class="animate-number" data-target="67.2" data-decimal="1">0</span><span class="percentage-symbol">%</span>
+                </div>
+                <div class="stat-label">had 5+ years of HCBS experience</div>
+                <div class="stat-secondary">1,299 seasoned professionals</div>
+            </div>
+
+            <!-- Holiday star accent -->
+            <svg class="holiday-accent" style="top: 150px; right: 150px; width: 80px; height: 80px;" viewBox="0 0 80 80">
+                <polygon points="40,0 50,30 80,30 55,50 65,80 40,60 15,80 25,50 0,30 30,30" fill="#8ac65a" opacity="0.6"/>
+            </svg>
+        </div>
+
+        <!-- Frame 7: Title Seniority Distribution -->
+        <div class="frame frame-7" id="frame7">
+            <div class="section-title">Title Seniority Distribution</div>
+
+            <div class="seniority-rings">
+                <div class="ring-container">
+                    <!-- Outer ring - Director/VP (largest segment) -->
+                    <div class="ring ring-1">
+                        <div>
+                            <span class="ring-value">750</span>
+                            <span class="ring-text">Director/VP</span>
+                            <span class="ring-percent">38.8%</span>
+                        </div>
+                    </div>
+                    <!-- Second ring - Manager/Sr Staff -->
+                    <div class="ring ring-2">
+                        <div>
+                            <span class="ring-value">433</span>
+                            <span class="ring-text">Manager/Sr Staff</span>
+                            <span class="ring-percent">22.4%</span>
+                        </div>
+                    </div>
+                    <!-- Third ring - C-Suite -->
+                    <div class="ring ring-3">
+                        <div>
+                            <span class="ring-value">406</span>
+                            <span class="ring-text">C-Suite/Executive</span>
+                            <span class="ring-percent">21%</span>
+                        </div>
+                    </div>
+                    <!-- Inner ring - Professional -->
+                    <div class="ring ring-4">
+                        <div>
+                            <span class="ring-value">344</span>
+                            <span class="ring-text">Professional</span>
+                            <span class="ring-percent">17.8%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="seniority-legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: var(--dark-violet);"></div>
+                    <span class="legend-text">Director/VP - 38.8%</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: var(--violet);"></div>
+                    <span class="legend-text">Manager/Sr Staff - 22.4%</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: var(--light-blue);"></div>
+                    <span class="legend-text">C-Suite/Executive - 21%</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: var(--green);"></div>
+                    <span class="legend-text">Professional - 17.8%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Frame 8: Decision-Makers by Segment -->
+        <div class="frame frame-8" id="frame8">
+            <!-- Background pattern -->
+            <svg style="position: absolute; width: 100%; height: 100%; opacity: 0.05;">
+                <defs>
+                    <pattern id="diagonal" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M0 40 L40 0" stroke="white" stroke-width="1"/>
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#diagonal)"/>
+            </svg>
+
+            <div class="section-title">Decision-Maker Representation</div>
+
+            <div class="decision-cards">
+                <div class="decision-card gov">
+                    <div class="decision-card-content">
+                        <div class="card-title">Government (State + Federal)</div>
+                        <div class="card-percentage"><span class="animate-number" data-target="52">0</span>%</div>
+                        <div class="card-count">400 decision-makers</div>
+                    </div>
+                </div>
+
+                <div class="decision-card health">
+                    <div class="decision-card-content">
+                        <div class="card-title">Health Plans / MCOs</div>
+                        <div class="card-percentage"><span class="animate-number" data-target="73.6" data-decimal="1">0</span>%</div>
+                        <div class="card-count">64 decision-makers</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Frame 9: Audience Composition -->
+        <div class="frame frame-9" id="frame9">
+            <div class="section-title">Audience by Organization Type</div>
+
+            <div class="treemap">
+                <div class="treemap-item government">
+                    <span class="treemap-percent">39.8%</span>
+                    <span class="treemap-label">Federal/State/Local Government</span>
+                </div>
+                <div class="treemap-item corporate">
+                    <span class="treemap-percent">34.6%</span>
+                    <span class="treemap-label">Corporate / Other</span>
+                </div>
+                <div class="treemap-item nonprofit small">
+                    <span class="treemap-percent">7.9%</span>
+                    <span class="treemap-label">Nonprofit / Association</span>
+                </div>
+                <div class="treemap-item consulting small">
+                    <span class="treemap-percent">7.8%</span>
+                    <span class="treemap-label">Consulting</span>
+                </div>
+                <div class="treemap-item tech small">
+                    <span class="treemap-percent">5.4%</span>
+                    <span class="treemap-label">Technology / Vendor</span>
+                </div>
+                <div class="treemap-item health small">
+                    <span class="treemap-percent">4.5%</span>
+                    <span class="treemap-label">Health Plan / MCO</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Frame 10: Closing -->
+        <div class="frame frame-10" id="frame10">
+            <!-- Background pattern -->
+            <svg class="bg-pattern" viewBox="0 0 1080 1920">
+                <defs>
+                    <pattern id="closing-dots" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+                        <circle cx="30" cy="30" r="3" fill="white"/>
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#closing-dots)"/>
+            </svg>
+
+            <!-- Floating decorative shapes -->
+            <svg class="floating-shapes" viewBox="0 0 1080 1920">
+                <circle cx="150" cy="300" r="80" fill="none" stroke="#8ac65a" stroke-width="3" opacity="0.3"/>
+                <circle cx="950" cy="200" r="120" fill="none" stroke="#58b0e2" stroke-width="4" opacity="0.2"/>
+                <circle cx="100" cy="1500" r="60" fill="none" stroke="#8f499c" stroke-width="3" opacity="0.3"/>
+                <circle cx="980" cy="1700" r="100" fill="none" stroke="#8ac65a" stroke-width="3" opacity="0.2"/>
+                <circle cx="200" cy="900" r="40" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="0.15"/>
+            </svg>
+
+            <!-- Year watermark -->
+            <div class="year-watermark">2025</div>
+
+            <!-- Holiday star tree (top center) -->
+            <svg style="position: absolute; top: 80px; width: 180px; height: 250px; z-index: 5;" viewBox="0 0 120 180">
+                <polygon points="60,5 68,28 60,20 52,28" fill="#8ac65a"/>
+                <polygon points="60,18 85,75 70,70 60,62 50,70 35,75" fill="#318332"/>
+                <polygon points="60,58 95,135 75,130 60,118 45,130 25,135" fill="#58b0e2" opacity="0.9"/>
+                <rect x="50" y="135" width="20" height="28" fill="#701e7d"/>
+            </svg>
+
+            <div class="thanks-text">Thank you to our</div>
+            <div class="conference-title">Sponsors<br>& Partners</div>
+            <div class="year-badge">2025</div>
+
+            <div class="sponsor-text">
+                Your support made the 2025 HCBS Conference a landmark gathering of nearly 2,000 HCBS professionals shaping the future of home and community-based services.
+            </div>
+
+            <div class="logo-footer">
+                <span>HCBS Conference</span>
+                <span class="divider"></span>
+                <span>ADvancing States</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="controls">
+        <button onclick="prevFrame()" title="Previous">&#8592;</button>
+        <button id="playPauseBtn" onclick="toggleAutoplay()" title="Play/Pause">&#9654;</button>
+        <button onclick="nextFrame()" title="Next">&#8594;</button>
+    </div>
+
+    <!-- Export Modal -->
+    <div class="export-modal" id="exportModal">
+        <div class="export-content">
+            <h2>Export Guide</h2>
+            <p><strong>To export as PNG images:</strong></p>
+            <p>1. Navigate to each frame using the arrow buttons</p>
+            <p>2. Use your browser's screenshot tool or press <code>Cmd+Shift+4</code> (Mac) or <code>Win+Shift+S</code> (Windows)</p>
+            <p>3. For best quality, zoom your browser to 100% (<code>Cmd+0</code> or <code>Ctrl+0</code>)</p>
+
+            <p style="margin-top: 30px;"><strong>To create MP4 video:</strong></p>
+            <p>1. Use screen recording software (OBS, QuickTime, or browser extension)</p>
+            <p>2. Click Play to auto-advance through all frames</p>
+            <p>3. Each frame displays for 4.5 seconds</p>
+            <p>4. Export recording at 1080x1920 resolution</p>
+
+            <p style="margin-top: 30px;"><strong>For high-quality PNG export:</strong></p>
+            <p>Use Puppeteer or html2canvas library for programmatic screenshot capture at exact 1080x1920 dimensions.</p>
+
+            <button onclick="closeExportModal()">Got it!</button>
+        </div>
+    </div>
+
+    <script>
+        let currentFrameIndex = 0;
+        const totalFrames = 10;
+        let isPlaying = false;
+        let autoplayInterval = null;
+        const frameDuration = 4500; // 4.5 seconds per frame
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateFrameDisplay();
+            scaleFrames();
+            window.addEventListener('resize', scaleFrames);
+        });
+
+        // Scale frames to fit viewport
+        function scaleFrames() {
+            const frames = document.querySelectorAll('.frame');
+            const viewportHeight = window.innerHeight;
+            const viewportWidth = window.innerWidth;
+
+            const frameWidth = 1080;
+            const frameHeight = 1920;
+
+            const scaleX = (viewportWidth * 0.9) / frameWidth;
+            const scaleY = (viewportHeight * 0.85) / frameHeight;
+            const scale = Math.min(scaleX, scaleY, 1);
+
+            frames.forEach(frame => {
+                if (frame.classList.contains('active')) {
+                    frame.style.transform = `scale(${scale})`;
+                } else {
+                    frame.style.transform = `scale(${scale * 0.95})`;
+                }
+            });
+        }
+
+        // Frame navigation
+        function showFrame(index) {
+            const frames = document.querySelectorAll('.frame');
+            frames.forEach((frame, i) => {
+                frame.classList.remove('active');
+                if (i === index) {
+                    frame.classList.add('active');
+                    animateNumbers(frame);
+                }
+            });
+            currentFrameIndex = index;
+            document.getElementById('currentFrame').textContent = index + 1;
+            scaleFrames();
+        }
+
+        function nextFrame() {
+            const nextIndex = (currentFrameIndex + 1) % totalFrames;
+            showFrame(nextIndex);
+        }
+
+        function prevFrame() {
+            const prevIndex = (currentFrameIndex - 1 + totalFrames) % totalFrames;
+            showFrame(prevIndex);
+        }
+
+        function updateFrameDisplay() {
+            showFrame(0);
+        }
+
+        // Autoplay
+        function toggleAutoplay() {
+            const btn = document.getElementById('playPauseBtn');
+            const indicator = document.getElementById('autoplayIndicator');
+
+            if (isPlaying) {
+                clearInterval(autoplayInterval);
+                btn.innerHTML = '&#9654;';
+                btn.classList.remove('active');
+                indicator.style.display = 'none';
+            } else {
+                autoplayInterval = setInterval(nextFrame, frameDuration);
+                btn.innerHTML = '&#10074;&#10074;';
+                btn.classList.add('active');
+                indicator.style.display = 'flex';
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Animate numbers
+        function animateNumbers(frame) {
+            const numbers = frame.querySelectorAll('.animate-number');
+            numbers.forEach(num => {
+                const target = parseFloat(num.dataset.target);
+                const decimal = parseInt(num.dataset.decimal) || 0;
+                const duration = 1200;
+                const startTime = performance.now();
+
+                function update(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+
+                    // Ease out cubic
+                    const easeOut = 1 - Math.pow(1 - progress, 3);
+                    const current = target * easeOut;
+
+                    num.textContent = current.toFixed(decimal);
+
+                    if (progress < 1) {
+                        requestAnimationFrame(update);
+                    } else {
+                        num.textContent = target.toFixed(decimal);
+                    }
+                }
+
+                requestAnimationFrame(update);
+            });
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextFrame();
+            } else if (e.key === 'ArrowLeft') {
+                prevFrame();
+            } else if (e.key === 'p' || e.key === 'P') {
+                toggleAutoplay();
+            }
+        });
+
+        // Export modal
+        function showExportModal() {
+            document.getElementById('exportModal').classList.add('active');
+        }
+
+        function closeExportModal() {
+            document.getElementById('exportModal').classList.remove('active');
+        }
+
+        // Close modal on outside click
+        document.getElementById('exportModal').addEventListener('click', (e) => {
+            if (e.target.id === 'exportModal') {
+                closeExportModal();
+            }
+        });
+    </script>
+</body>
+</html>
