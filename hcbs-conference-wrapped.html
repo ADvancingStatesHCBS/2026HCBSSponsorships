@@ -97,15 +97,15 @@
             height: 16px;
         }
 
-        /* ===== SLIDE 1: COVER ===== */
+        /* ===== SLIDE 1: COVER - Spotify Wrapped Style ===== */
         .slide-cover {
-            background: linear-gradient(160deg, var(--dark-blue) 0%, #003d4d 100%);
+            background: var(--off-white);
         }
 
         .slide-cover .status-bar .time,
         .slide-cover .status-bar .icons svg {
-            color: var(--white);
-            fill: var(--white);
+            color: var(--dark-blue);
+            fill: var(--dark-blue);
         }
 
         .cover-content {
@@ -114,184 +114,76 @@
             left: 0;
             right: 0;
             bottom: 0;
-            display: flex;
-            flex-direction: column;
-            padding: 50px 24px 40px;
             overflow: hidden;
         }
 
-        /* Large Wrapped title at top */
-        .wrapped-header {
-            position: relative;
-            z-index: 20;
-            margin-bottom: 30px;
-        }
-
-        .header-logo {
+        /* Giant 2025 in background */
+        .bg-year {
             position: absolute;
-            top: 0;
-            right: 0;
-            width: 60px;
-            height: 60px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-8deg);
+            font-size: 200px;
+            font-weight: 900;
+            font-style: italic;
+            color: var(--green);
+            opacity: 0.85;
+            letter-spacing: -0.02em;
+            line-height: 0.85;
+            white-space: nowrap;
+            z-index: 1;
         }
 
-        .wrapped-text {
-            font-size: 72px;
+        /* Starburst on left */
+        .starburst {
+            position: absolute;
+            top: 80px;
+            left: -30px;
+            width: 140px;
+            height: 140px;
+            z-index: 2;
+        }
+
+        /* Warped checker circle on right */
+        .checker-warp {
+            position: absolute;
+            top: 50%;
+            right: -80px;
+            transform: translateY(-50%);
+            width: 280px;
+            height: 280px;
+            z-index: 2;
+        }
+
+        /* Main text container */
+        .cover-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+        }
+
+        .wrapped-main {
+            font-size: 64px;
             font-weight: 900;
             font-style: italic;
             color: var(--white);
-            letter-spacing: 0.03em;
+            letter-spacing: 0.02em;
             line-height: 1;
-        }
-
-        /* Main section with outline text */
-        .main-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        /* Animated background rings - smaller and centered */
-        .cover-rings {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 400px;
-            height: 400px;
-            pointer-events: none;
-        }
-
-        .cover-ring {
-            position: absolute;
-            border-radius: 50%;
-            border: 1px solid;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .cover-ring:nth-child(1) {
-            width: 120px;
-            height: 120px;
-            border-color: rgba(138,198,90,0.25);
-            animation: ringPulse 4s ease-in-out infinite;
-        }
-
-        .cover-ring:nth-child(2) {
-            width: 200px;
-            height: 200px;
-            border-color: rgba(88,176,226,0.2);
-            animation: ringPulse 4s ease-in-out infinite 0.5s;
-        }
-
-        .cover-ring:nth-child(3) {
-            width: 280px;
-            height: 280px;
-            border-color: rgba(255,255,255,0.12);
-            animation: ringPulse 4s ease-in-out infinite 1s;
-        }
-
-        .cover-ring:nth-child(4) {
-            width: 360px;
-            height: 360px;
-            border-color: rgba(138,198,90,0.08);
-            animation: ringPulse 4s ease-in-out infinite 1.5s;
-        }
-
-        @keyframes ringPulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-            50% { transform: translate(-50%, -50%) scale(1.03); opacity: 0.5; }
-        }
-
-        /* Conference outline text - properly spaced */
-        .conference-outline {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-        }
-
-        .conference-outline .year-text {
-            font-size: 32px;
-            font-weight: 900;
-            color: transparent;
-            -webkit-text-stroke: 1.5px var(--green);
-            letter-spacing: 0.15em;
-            display: block;
-            margin-bottom: 15px;
-        }
-
-        .conference-outline .hcbs-text {
-            font-size: 58px;
-            font-weight: 900;
-            font-style: italic;
-            color: transparent;
-            -webkit-text-stroke: 2px var(--white);
-            letter-spacing: 0.08em;
-            display: block;
+            text-shadow: 2px 2px 0 var(--dark-blue),
+                         -1px -1px 0 var(--dark-blue),
+                         1px -1px 0 var(--dark-blue),
+                         -1px 1px 0 var(--dark-blue);
             margin-bottom: 8px;
         }
 
-        .conference-outline .conf-text {
-            font-size: 48px;
-            font-weight: 900;
-            font-style: italic;
-            color: transparent;
-            -webkit-text-stroke: 2px var(--green);
+        .cover-subtitle {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--dark-blue);
             letter-spacing: 0.06em;
-            display: block;
-        }
-
-        /* Floating stars - small and subtle */
-        .float-element {
-            position: absolute;
-            z-index: 5;
-        }
-
-        .float-star {
-            width: 20px;
-            height: 20px;
-            opacity: 0.5;
-        }
-
-        .float-star-1 { top: 30%; left: 8%; animation: floatStar 3s ease-in-out infinite; }
-        .float-star-2 { top: 55%; right: 8%; animation: floatStar 3.5s ease-in-out infinite 0.3s; }
-        .float-star-3 { bottom: 25%; left: 12%; animation: floatStar 4s ease-in-out infinite 0.7s; }
-
-        @keyframes floatStar {
-            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.5; }
-            50% { transform: translateY(-8px) rotate(10deg); opacity: 0.7; }
-        }
-
-        /* Floating dots */
-        .float-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--green);
-            opacity: 0.4;
-        }
-
-        .float-dot-1 { top: 40%; right: 15%; animation: floatDot 2.5s ease-in-out infinite; }
-        .float-dot-2 { bottom: 35%; right: 10%; animation: floatDot 3s ease-in-out infinite 0.4s; }
-
-        @keyframes floatDot {
-            0%, 100% { transform: scale(1); opacity: 0.4; }
-            50% { transform: scale(1.2); opacity: 0.6; }
-        }
-
-        /* Checker pattern bottom */
-        .checker-bottom {
-            position: absolute;
-            bottom: -40px;
-            right: -60px;
-            width: 200px;
-            height: 200px;
-            z-index: 2;
-            opacity: 0.8;
         }
 
         /* Brand footer */
@@ -313,7 +205,7 @@
         .brand-footer-text {
             font-size: 11px;
             font-weight: 700;
-            color: var(--white);
+            color: var(--dark-blue);
             text-transform: uppercase;
             letter-spacing: 0.12em;
         }
@@ -411,8 +303,23 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 500px;
-            height: 500px;
+            width: 350px;
+            height: 350px;
+        }
+
+        /* Animated constellation rings for slide 3 */
+        .circles-bg circle {
+            animation: ringPulse 4s ease-in-out infinite;
+        }
+
+        .circles-bg circle:nth-child(1) { animation-delay: 0s; }
+        .circles-bg circle:nth-child(2) { animation-delay: 0.5s; }
+        .circles-bg circle:nth-child(3) { animation-delay: 1s; }
+        .circles-bg circle:nth-child(4) { animation-delay: 1.5s; }
+
+        @keyframes ringPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.02); opacity: 0.6; }
         }
 
         .stat-number {
@@ -1353,7 +1260,7 @@
     </svg>
 
     <div class="phone">
-        <!-- SLIDE 1: COVER -->
+        <!-- SLIDE 1: COVER - Spotify Wrapped Style -->
         <div class="slide slide-cover active" data-slide="1">
             <div class="status-bar">
                 <span class="time">9:41</span>
@@ -1363,48 +1270,50 @@
                 </div>
             </div>
             <div class="cover-content">
-                <!-- Large Wrapped at top -->
-                <div class="wrapped-header">
-                    <svg class="header-logo" viewBox="0 0 100 100"><use href="#starLogo"/></svg>
-                    <div class="wrapped-text">Wrapped</div>
-                </div>
+                <!-- Giant 2025 in background -->
+                <div class="bg-year">2025</div>
 
-                <div class="main-section">
-                    <!-- Animated background rings -->
-                    <div class="cover-rings">
-                        <div class="cover-ring"></div>
-                        <div class="cover-ring"></div>
-                        <div class="cover-ring"></div>
-                        <div class="cover-ring"></div>
-                    </div>
-
-                    <!-- Floating stars -->
-                    <svg class="float-element float-star float-star-1" viewBox="0 0 100 100"><use href="#starLogo"/></svg>
-                    <svg class="float-element float-star float-star-2" viewBox="0 0 100 100"><use href="#starLogo"/></svg>
-                    <svg class="float-element float-star float-star-3" viewBox="0 0 100 100"><use href="#starLogo"/></svg>
-
-                    <!-- Floating dots -->
-                    <div class="float-element float-dot float-dot-1"></div>
-                    <div class="float-element float-dot float-dot-2"></div>
-
-                    <!-- 2025 HCBS Conference in outline text -->
-                    <div class="conference-outline">
-                        <span class="year-text">2025</span>
-                        <span class="hcbs-text">HCBS</span>
-                        <span class="conf-text">Conference</span>
-                    </div>
-                </div>
-
-                <svg class="checker-bottom" viewBox="0 0 300 300">
-                    <defs>
-                        <pattern id="check" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(-15)">
-                            <rect width="9" height="9" fill="rgba(138,198,90,0.3)"/>
-                            <rect x="9" y="9" width="9" height="9" fill="rgba(138,198,90,0.3)"/>
-                        </pattern>
-                    </defs>
-                    <ellipse cx="150" cy="150" rx="140" ry="120" fill="url(#check)"/>
+                <!-- Starburst graphic on left -->
+                <svg class="starburst" viewBox="0 0 100 100">
+                    <g stroke="var(--dark-blue)" stroke-width="2" fill="none">
+                        <line x1="50" y1="50" x2="50" y2="0"/>
+                        <line x1="50" y1="50" x2="85" y2="10"/>
+                        <line x1="50" y1="50" x2="100" y2="30"/>
+                        <line x1="50" y1="50" x2="100" y2="50"/>
+                        <line x1="50" y1="50" x2="100" y2="70"/>
+                        <line x1="50" y1="50" x2="85" y2="90"/>
+                        <line x1="50" y1="50" x2="50" y2="100"/>
+                        <line x1="50" y1="50" x2="15" y2="90"/>
+                        <line x1="50" y1="50" x2="0" y2="70"/>
+                        <line x1="50" y1="50" x2="0" y2="50"/>
+                        <line x1="50" y1="50" x2="0" y2="30"/>
+                        <line x1="50" y1="50" x2="15" y2="10"/>
+                    </g>
                 </svg>
 
+                <!-- Warped checker circle on right -->
+                <svg class="checker-warp" viewBox="0 0 200 200">
+                    <defs>
+                        <pattern id="warpCheck" width="16" height="16" patternUnits="userSpaceOnUse">
+                            <rect width="8" height="8" fill="var(--dark-blue)"/>
+                            <rect x="8" y="8" width="8" height="8" fill="var(--dark-blue)"/>
+                        </pattern>
+                        <mask id="warpMask">
+                            <ellipse cx="100" cy="100" rx="95" ry="95" fill="white"/>
+                        </mask>
+                    </defs>
+                    <g mask="url(#warpMask)">
+                        <ellipse cx="100" cy="100" rx="95" ry="95" fill="url(#warpCheck)" transform="skewX(-10)"/>
+                    </g>
+                </svg>
+
+                <!-- Main text overlay -->
+                <div class="cover-text">
+                    <div class="wrapped-main">Wrapped</div>
+                    <div class="cover-subtitle">HCBS Conference</div>
+                </div>
+
+                <!-- Brand footer -->
                 <div class="brand-footer">
                     <svg class="brand-footer-logo" viewBox="0 0 100 100"><use href="#starLogo"/></svg>
                     <span class="brand-footer-text">ADvancing States</span>
