@@ -151,19 +151,107 @@
             height: 1920px;
             position: absolute;
             opacity: 0;
-            transform: scale(0.95);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
             transform-origin: center center;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
 
         .frame.active {
             opacity: 1;
-            transform: scale(1);
         }
 
-        .frame.scale-to-fit {
-            transform-origin: center center;
+        /* Preview Mode - fits on screen */
+        body.preview-mode .frame {
+            width: 405px;
+            height: 720px;
+        }
+
+        body.preview-mode .frame-1 .year-watermark { font-size: 150px; top: -20px; left: -30px; }
+        body.preview-mode .frame-1 .main-title { font-size: 32px; }
+        body.preview-mode .frame-1 .wrapped-text { font-size: 68px; margin: 10px 0 20px -10px; }
+        body.preview-mode .frame-1 .subtitle { font-size: 14px; margin-top: 20px; }
+        body.preview-mode .frame-1 .attendee-count { font-size: 10px; }
+        body.preview-mode .frame-1 .title-container { padding-left: 40px; }
+        body.preview-mode .frame-1 .logo-container { bottom: 40px; left: 40px; }
+        body.preview-mode .frame-1 .hcbs-logo { font-size: 12px; }
+        body.preview-mode .frame-1 .decorative-dots { right: 20px; top: 40px; gap: 8px; }
+        body.preview-mode .frame-1 .decorative-dots span { width: 10px; height: 10px; }
+        body.preview-mode .frame-1 .holiday-accent.star-tree { width: 52px; height: 75px; top: 30px; right: 40px; }
+        body.preview-mode .frame-1 .holiday-accent.menorah-accent { width: 60px; height: 40px; bottom: 110px; right: 30px; }
+        body.preview-mode .frame-1 .scribble-line { display: none; }
+
+        body.preview-mode .frame-2 .giant-number { font-size: 135px; letter-spacing: -6px; }
+        body.preview-mode .frame-2 .label { font-size: 24px; margin-top: 15px; }
+
+        body.preview-mode .percentage-huge { font-size: 105px; }
+        body.preview-mode .percentage-symbol { font-size: 45px; }
+        body.preview-mode .stat-label { font-size: 18px; margin-top: 10px; }
+        body.preview-mode .stat-secondary { font-size: 14px; margin-top: 15px; }
+        body.preview-mode .stat-container { padding: 0 25px; }
+
+        body.preview-mode .frame-6 { padding-left: 30px; }
+        body.preview-mode .frame-6 .geometric-accent { width: 300px; height: 300px; right: -75px; border-width: 22px; }
+        body.preview-mode .frame-6 .geometric-accent::before { width: 225px; height: 225px; border-width: 15px; }
+
+        body.preview-mode .frame-7 { padding: 40px 30px; }
+        body.preview-mode .frame-7 .section-title { font-size: 24px; margin-bottom: 30px; }
+        body.preview-mode .ring-container { width: 260px; height: 260px; }
+        body.preview-mode .ring-1 { width: 260px; height: 260px; }
+        body.preview-mode .ring-2 { width: 200px; height: 200px; top: 30px; left: 30px; }
+        body.preview-mode .ring-3 { width: 140px; height: 140px; top: 60px; left: 60px; }
+        body.preview-mode .ring-4 { width: 80px; height: 80px; top: 90px; left: 90px; }
+        body.preview-mode .ring-value { font-size: 18px; }
+        body.preview-mode .ring-text { font-size: 7px; }
+        body.preview-mode .ring-percent { font-size: 10px; }
+        body.preview-mode .seniority-legend { gap: 10px; margin-top: 20px; }
+        body.preview-mode .legend-color { width: 12px; height: 12px; }
+        body.preview-mode .legend-text { font-size: 9px; }
+
+        body.preview-mode .frame-8 { padding: 40px 30px; }
+        body.preview-mode .frame-8 .section-title { font-size: 21px; margin-bottom: 40px; }
+        body.preview-mode .decision-card { padding: 22px; border-radius: 12px; }
+        body.preview-mode .decision-card .card-title { font-size: 14px; margin-bottom: 8px; }
+        body.preview-mode .decision-card .card-percentage { font-size: 45px; }
+        body.preview-mode .decision-card .card-count { font-size: 11px; margin-top: 6px; }
+
+        body.preview-mode .frame-9 { padding: 30px 20px; }
+        body.preview-mode .frame-9 .section-title { font-size: 22px; margin-bottom: 20px; }
+        body.preview-mode .treemap { gap: 4px; }
+        body.preview-mode .treemap-item { padding: 12px; border-radius: 6px; }
+        body.preview-mode .treemap-percent { font-size: 30px; }
+        body.preview-mode .treemap-label { font-size: 9px; margin-top: 5px; }
+        body.preview-mode .treemap-item.small .treemap-percent { font-size: 20px; }
+        body.preview-mode .treemap-item.small .treemap-label { font-size: 7px; }
+
+        body.preview-mode .frame-10 .thanks-text { font-size: 16px; margin-bottom: 8px; }
+        body.preview-mode .frame-10 .conference-title { font-size: 36px; }
+        body.preview-mode .frame-10 .year-badge { font-size: 27px; padding: 6px 20px; margin: 12px 0; }
+        body.preview-mode .frame-10 .sponsor-text { font-size: 11px; margin-top: 20px; max-width: 280px; }
+        body.preview-mode .frame-10 .year-watermark { font-size: 130px; bottom: 20px; right: -20px; }
+        body.preview-mode .frame-10 .logo-footer { bottom: 30px; font-size: 8px; gap: 8px; }
+
+        /* Mode Toggle Button */
+        .mode-toggle {
+            position: fixed;
+            top: 30px;
+            left: 160px;
+            background: var(--dark-green);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .mode-toggle:hover {
+            background: var(--green);
+            transform: scale(1.05);
         }
 
         /* SVG Patterns */
@@ -1110,6 +1198,9 @@
     <!-- Export button -->
     <button class="export-btn" onclick="showExportModal()">Export Guide</button>
 
+    <!-- Mode toggle -->
+    <button class="mode-toggle" id="modeToggle" onclick="toggleViewMode()">Full Size Mode</button>
+
     <!-- Frames Container -->
     <div class="frames-wrapper">
 
@@ -1507,34 +1598,27 @@
         let isPlaying = false;
         let autoplayInterval = null;
         const frameDuration = 4500; // 4.5 seconds per frame
+        let isPreviewMode = true;
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
+            // Start in preview mode (fits on screen)
+            document.body.classList.add('preview-mode');
             updateFrameDisplay();
-            scaleFrames();
-            window.addEventListener('resize', scaleFrames);
         });
 
-        // Scale frames to fit viewport
-        function scaleFrames() {
-            const frames = document.querySelectorAll('.frame');
-            const viewportHeight = window.innerHeight;
-            const viewportWidth = window.innerWidth;
+        // Toggle between preview and full-size mode
+        function toggleViewMode() {
+            const btn = document.getElementById('modeToggle');
+            isPreviewMode = !isPreviewMode;
 
-            const frameWidth = 1080;
-            const frameHeight = 1920;
-
-            const scaleX = (viewportWidth * 0.9) / frameWidth;
-            const scaleY = (viewportHeight * 0.85) / frameHeight;
-            const scale = Math.min(scaleX, scaleY, 1);
-
-            frames.forEach(frame => {
-                if (frame.classList.contains('active')) {
-                    frame.style.transform = `scale(${scale})`;
-                } else {
-                    frame.style.transform = `scale(${scale * 0.95})`;
-                }
-            });
+            if (isPreviewMode) {
+                document.body.classList.add('preview-mode');
+                btn.textContent = 'Full Size Mode';
+            } else {
+                document.body.classList.remove('preview-mode');
+                btn.textContent = 'Preview Mode';
+            }
         }
 
         // Frame navigation
@@ -1549,7 +1633,6 @@
             });
             currentFrameIndex = index;
             document.getElementById('currentFrame').textContent = index + 1;
-            scaleFrames();
         }
 
         function nextFrame() {
