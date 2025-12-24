@@ -122,122 +122,122 @@
         .wrapped-header {
             background: var(--dark-blue);
             padding: 55px 24px 28px;
+            position: relative;
         }
 
-        .wrapped-title {
-            font-size: 15px;
+        .header-logo {
+            position: absolute;
+            top: 55px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+        }
+
+        .wrapped-year {
+            font-size: 14px;
             font-weight: 700;
-            color: rgba(255,255,255,0.8);
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            margin-bottom: 6px;
-        }
-
-        .wrapped-conference {
-            font-size: 32px;
-            font-weight: 800;
             color: var(--green);
-            letter-spacing: 0.06em;
-            line-height: 1.1;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
             margin-bottom: 8px;
         }
 
         .wrapped-text {
-            font-size: 48px;
+            font-size: 52px;
             font-weight: 900;
             font-style: italic;
             color: var(--white);
             letter-spacing: 0.04em;
+            line-height: 1;
         }
 
-        /* Year section */
-        .year-section {
+        /* Main section */
+        .main-section {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
-            padding: 20px;
+            padding: 30px 24px;
         }
 
-        .year-display {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .year-outline {
-            font-size: 110px;
+        .conference-outline {
+            font-size: 42px;
             font-weight: 900;
             font-style: italic;
             color: transparent;
+            -webkit-text-stroke: 2.5px var(--dark-blue);
+            letter-spacing: 0.04em;
+            line-height: 1.1;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .conference-outline .line2 {
+            font-size: 48px;
             -webkit-text-stroke: 3px var(--green);
-            letter-spacing: 0.05em;
-            line-height: 1;
         }
 
-        /* Star figures - celebration */
-        .star-celebration {
+        /* Decorative elements */
+        .deco-dots {
             position: absolute;
-            top: -80px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
+            top: 20px;
+            left: 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 8px);
+            gap: 6px;
         }
 
-        .star-person {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .deco-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--dark-blue);
+            opacity: 0.15;
         }
 
-        .star-person svg {
-            width: 55px;
-            height: 75px;
-        }
-
-        /* Holiday decorations scattered */
-        .holiday-decorations {
+        .deco-line {
             position: absolute;
-            inset: 0;
-            pointer-events: none;
-        }
-
-        .ornament-float {
-            position: absolute;
+            bottom: 140px;
+            left: 24px;
+            width: 60px;
+            height: 3px;
+            background: var(--dark-blue);
+            opacity: 0.2;
         }
 
         /* Checker pattern bottom */
         .checker-bottom {
             position: absolute;
-            bottom: -40px;
-            right: -90px;
-            width: 300px;
-            height: 300px;
-        }
-
-        /* Scribble decoration */
-        .scribble-deco {
-            position: absolute;
-            bottom: 120px;
-            left: 20px;
-            width: 80px;
-            height: 25px;
+            bottom: -20px;
+            right: -60px;
+            width: 240px;
+            height: 240px;
         }
 
         /* Brand footer */
         .brand-footer {
             position: absolute;
-            bottom: 40px;
+            bottom: 35px;
             left: 24px;
-            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-footer-logo {
+            width: 32px;
+            height: 32px;
+        }
+
+        .brand-footer-text {
+            font-size: 11px;
             font-weight: 700;
             color: var(--dark-blue);
             text-transform: uppercase;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.12em;
         }
 
         /* ===== SLIDE 2: TOTAL ATTENDANCE ===== */
@@ -518,10 +518,6 @@
             gap: 16px;
         }
 
-        .bar-item {
-            /* Each bar */
-        }
-
         .bar-header {
             display: flex;
             justify-content: space-between;
@@ -639,7 +635,6 @@
             margin-left: 0;
         }
 
-        /* Checker bars animation area */
         .checker-bars {
             position: absolute;
             top: 270px;
@@ -661,7 +656,6 @@
             );
         }
 
-        /* Results card */
         .leader-card {
             position: absolute;
             bottom: 35px;
@@ -769,7 +763,6 @@
             margin-bottom: 20px;
         }
 
-        /* Interactive wheel */
         .wheel-container {
             flex: 1;
             position: relative;
@@ -791,7 +784,6 @@
 
         .wheel-segment:hover {
             filter: brightness(1.15);
-            transform-origin: center;
         }
 
         .wheel-segment.active {
@@ -832,7 +824,6 @@
             margin-top: 2px;
         }
 
-        /* Legend cards */
         .radial-legend {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -893,7 +884,6 @@
             letter-spacing: 0.06em;
         }
 
-        /* Pulse animation for hint */
         @keyframes pulseHint {
             0%, 100% { opacity: 0.5; }
             50% { opacity: 1; }
@@ -964,9 +954,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: rgba(255,255,255,0.4);
-            font-size: 12px;
-            letter-spacing: 0.08em;
+        }
+
+        .summary-logo {
+            width: 80px;
+            height: 80px;
+            opacity: 0.9;
         }
 
         .summary-year {
@@ -1095,7 +1088,7 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 60px 30px 100px;
+            padding: 80px 30px 120px;
         }
 
         .dots-bg {
@@ -1103,6 +1096,14 @@
             inset: 0;
             background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
             background-size: 20px 20px;
+        }
+
+        .close-logo {
+            width: 70px;
+            height: 70px;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 10;
         }
 
         .close-thanks {
@@ -1134,7 +1135,7 @@
             padding: 12px 36px;
             border: 3px solid rgba(255,255,255,0.35);
             border-radius: 50px;
-            margin-top: 28px;
+            margin-top: 24px;
             position: relative;
             z-index: 10;
             letter-spacing: 0.06em;
@@ -1144,7 +1145,7 @@
             font-size: 14px;
             color: rgba(255,255,255,0.8);
             line-height: 1.6;
-            margin-top: 28px;
+            margin-top: 24px;
             max-width: 300px;
             position: relative;
             z-index: 10;
@@ -1153,7 +1154,7 @@
 
         .close-footer {
             position: absolute;
-            bottom: 45px;
+            bottom: 40px;
             left: 0;
             right: 0;
             text-align: center;
@@ -1223,101 +1224,42 @@
             font-size: 11px;
         }
 
-        /* Animation */
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
         .floating { animation: float 3s ease-in-out infinite; }
-        .pulsing { animation: pulse 2s ease-in-out infinite; }
-
-        @keyframes sparkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.7; }
-        }
-
-        .sparkle { animation: sparkle 2s ease-in-out infinite; }
-
-        @keyframes slideIn {
-            from { transform: translateX(-20px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
     </style>
 </head>
 <body>
     <!-- SVG Definitions -->
     <svg style="position:absolute;width:0;height:0;">
         <defs>
-            <!-- Star person - stick figure with star head -->
-            <symbol id="starPerson" viewBox="0 0 50 80">
-                <!-- Star head -->
-                <polygon points="25,0 28,10 38,10 30,16 33,26 25,20 17,26 20,16 12,10 22,10" fill="#8ac65a"/>
-                <!-- Body line -->
-                <line x1="25" y1="26" x2="25" y2="55" stroke="rgb(0,98,117)" stroke-width="3" stroke-linecap="round"/>
-                <!-- Arms -->
-                <line x1="10" y1="38" x2="40" y2="38" stroke="rgb(0,98,117)" stroke-width="3" stroke-linecap="round"/>
-                <!-- Legs -->
-                <line x1="25" y1="55" x2="15" y2="75" stroke="rgb(0,98,117)" stroke-width="3" stroke-linecap="round"/>
-                <line x1="25" y1="55" x2="35" y2="75" stroke="rgb(0,98,117)" stroke-width="3" stroke-linecap="round"/>
+            <!-- ADvancing States Star Logo -->
+            <symbol id="starLogo" viewBox="0 0 100 100">
+                <!-- Outer green star -->
+                <polygon points="50,5 61,35 95,35 68,55 79,90 50,70 21,90 32,55 5,35 39,35"
+                    fill="none" stroke="#8ac65a" stroke-width="6" stroke-linejoin="round"/>
+                <!-- Inner blue star -->
+                <polygon points="50,15 58,38 85,38 64,53 72,80 50,65 28,80 36,53 15,38 42,38"
+                    fill="none" stroke="#58b0e2" stroke-width="5" stroke-linejoin="round"/>
+                <!-- Overlap shadows for depth -->
+                <polygon points="50,15 58,38 85,38 64,53 72,80 50,65 28,80 36,53 15,38 42,38"
+                    fill="none" stroke="#3a8297" stroke-width="2" stroke-linejoin="round" opacity="0.5"/>
             </symbol>
 
-            <!-- Star person celebrating - arms up -->
-            <symbol id="starPersonCelebrate" viewBox="0 0 50 80">
-                <!-- Star head -->
-                <polygon points="25,0 28,10 38,10 30,16 33,26 25,20 17,26 20,16 12,10 22,10" fill="#8ac65a"/>
-                <!-- Body line -->
-                <line x1="25" y1="26" x2="25" y2="55" stroke="rgb(0,98,117)" stroke-width="3" stroke-linecap="round"/>
-                <!-- Arms up -->
-                <line x1="8" y1="28" x2="25" y2="42" stroke="rgb(0,98,117)" stroke-width="3" stroke-linecap="round"/>
-                <line x1="42" y1="28" x2="25" y2="42" stroke="rgb(0,98,117)" stroke-width="3" stroke-linecap="round"/>
-                <!-- Legs -->
-                <line x1="25" y1="55" x2="15" y2="75" stroke="rgb(0,98,117)" stroke-width="3" stroke-linecap="round"/>
-                <line x1="25" y1="55" x2="35" y2="75" stroke="rgb(0,98,117)" stroke-width="3" stroke-linecap="round"/>
-            </symbol>
-
-            <!-- Ornament -->
-            <symbol id="ornament" viewBox="0 0 30 35">
-                <rect x="12" y="0" width="6" height="5" fill="rgb(0,98,117)"/>
-                <circle cx="15" cy="20" r="14" fill="currentColor"/>
-                <path d="M8 15 Q15 25 22 15" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
-            </symbol>
-
-            <!-- Snowflake -->
-            <symbol id="snowflake" viewBox="0 0 24 24">
-                <path d="M12 0v24M0 12h24M3.5 3.5l17 17M20.5 3.5l-17 17" stroke="currentColor" stroke-width="1.5" fill="none"/>
-                <circle cx="12" cy="12" r="2" fill="currentColor"/>
-            </symbol>
-
-            <!-- Gift -->
-            <symbol id="gift" viewBox="0 0 40 45">
-                <rect x="2" y="15" width="36" height="28" rx="3" fill="#701e7d"/>
-                <rect x="17" y="15" width="6" height="28" fill="#8ac65a"/>
-                <rect x="0" y="10" width="40" height="8" rx="2" fill="#8f499c"/>
-                <path d="M20 10 Q10 0 5 10" fill="none" stroke="#8ac65a" stroke-width="3"/>
-                <path d="M20 10 Q30 0 35 10" fill="none" stroke="#8ac65a" stroke-width="3"/>
-            </symbol>
-
-            <!-- Candy cane -->
-            <symbol id="candyCane" viewBox="0 0 30 50">
-                <path d="M15 50 L15 20 Q15 5 25 5 Q30 5 30 10" fill="none" stroke="#e74c3c" stroke-width="5" stroke-linecap="round"/>
-                <path d="M15 45 L15 35" stroke="#fff" stroke-width="5"/>
-                <path d="M15 30 L15 20" stroke="#fff" stroke-width="5"/>
-            </symbol>
-
-            <!-- Star -->
-            <symbol id="starIcon" viewBox="0 0 24 24">
-                <polygon points="12,0 15,9 24,9 17,14.5 19.5,24 12,18.5 4.5,24 7,14.5 0,9 9,9" fill="currentColor"/>
+            <!-- HCBS Pentagon Logo -->
+            <symbol id="hcbsLogo" viewBox="0 0 100 100">
+                <!-- Outer green pentagon -->
+                <polygon points="50,5 95,35 80,90 20,90 5,35"
+                    fill="none" stroke="#8ac65a" stroke-width="6" stroke-linejoin="round"/>
+                <!-- Inner blue pentagon -->
+                <polygon points="50,18 82,42 70,82 30,82 18,42"
+                    fill="none" stroke="#58b0e2" stroke-width="5" stroke-linejoin="round"/>
+                <!-- Depth effect -->
+                <polygon points="50,18 82,42 70,82 30,82 18,42"
+                    fill="none" stroke="#3a8297" stroke-width="2" stroke-linejoin="round" opacity="0.5"/>
             </symbol>
         </defs>
     </svg>
@@ -1334,38 +1276,24 @@
             </div>
             <div class="cover-content">
                 <div class="wrapped-header">
-                    <div class="wrapped-title">ADvancing States</div>
-                    <div class="wrapped-conference">HCBS Conference</div>
+                    <svg class="header-logo" viewBox="0 0 100 100"><use href="#starLogo"/></svg>
+                    <div class="wrapped-year">2025</div>
                     <div class="wrapped-text">Wrapped</div>
                 </div>
-                <div class="year-section">
-                    <!-- Holiday decorations scattered -->
-                    <div class="holiday-decorations">
-                        <svg class="ornament-float sparkle" style="top:15px;left:25px;width:28px;height:32px;color:#e74c3c;" viewBox="0 0 30 35"><use href="#ornament"/></svg>
-                        <svg class="ornament-float floating" style="top:80px;right:25px;width:24px;height:28px;color:#58b0e2;animation-delay:0.3s;" viewBox="0 0 30 35"><use href="#ornament"/></svg>
-                        <svg class="ornament-float sparkle" style="top:150px;left:40px;width:20px;height:24px;color:#8ac65a;animation-delay:0.6s;" viewBox="0 0 30 35"><use href="#ornament"/></svg>
-                        <svg class="ornament-float" style="top:30px;right:80px;width:22px;height:26px;color:#8f499c;" viewBox="0 0 30 35"><use href="#ornament"/></svg>
-
-                        <!-- Snowflakes -->
-                        <svg class="sparkle" style="position:absolute;top:60px;left:60px;width:16px;height:16px;color:var(--dark-blue);opacity:0.2;" viewBox="0 0 24 24"><use href="#snowflake"/></svg>
-                        <svg class="sparkle" style="position:absolute;top:120px;right:50px;width:14px;height:14px;color:var(--dark-blue);opacity:0.15;animation-delay:0.7s;" viewBox="0 0 24 24"><use href="#snowflake"/></svg>
-
-                        <!-- Gift -->
-                        <svg style="position:absolute;bottom:180px;right:30px;width:32px;height:36px;" viewBox="0 0 40 45"><use href="#gift"/></svg>
-
-                        <!-- Candy cane -->
-                        <svg class="floating" style="position:absolute;bottom:200px;left:25px;width:25px;height:42px;animation-delay:0.4s;" viewBox="0 0 30 50"><use href="#candyCane"/></svg>
+                <div class="main-section">
+                    <!-- Decorative dots -->
+                    <div class="deco-dots">
+                        <div class="deco-dot"></div><div class="deco-dot"></div><div class="deco-dot"></div><div class="deco-dot"></div>
+                        <div class="deco-dot"></div><div class="deco-dot"></div><div class="deco-dot"></div><div class="deco-dot"></div>
+                        <div class="deco-dot"></div><div class="deco-dot"></div><div class="deco-dot"></div><div class="deco-dot"></div>
                     </div>
 
-                    <div class="year-display">
-                        <!-- Star people celebrating above the year -->
-                        <div class="star-celebration">
-                            <svg class="floating" style="animation-delay:0s;" viewBox="0 0 50 80"><use href="#starPersonCelebrate"/></svg>
-                            <svg class="floating" style="animation-delay:0.2s;" viewBox="0 0 50 80"><use href="#starPerson"/></svg>
-                            <svg class="floating" style="animation-delay:0.4s;" viewBox="0 0 50 80"><use href="#starPersonCelebrate"/></svg>
-                        </div>
-                        <div class="year-outline">2025</div>
+                    <div class="conference-outline">
+                        <div>HCBS</div>
+                        <div class="line2">Conference</div>
                     </div>
+
+                    <div class="deco-line"></div>
                 </div>
 
                 <svg class="checker-bottom" viewBox="0 0 300 300">
@@ -1378,11 +1306,10 @@
                     <ellipse cx="150" cy="150" rx="140" ry="120" fill="url(#check)"/>
                 </svg>
 
-                <svg class="scribble-deco" viewBox="0 0 100 30">
-                    <path d="M5 15 Q25 5 50 15 Q75 25 95 15" fill="none" stroke="rgb(0,98,117)" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-
-                <div class="brand-footer">ADvancing States</div>
+                <div class="brand-footer">
+                    <svg class="brand-footer-logo" viewBox="0 0 100 100"><use href="#hcbsLogo"/></svg>
+                    <span class="brand-footer-text">ADvancing States</span>
+                </div>
             </div>
         </div>
 
@@ -1602,7 +1529,7 @@
             </div>
         </div>
 
-        <!-- SLIDE 8: INTERACTIVE RADIAL CHART -->
+        <!-- SLIDE 8: INTERACTIVE RADIAL -->
         <div class="slide slide-radial" data-slide="8">
             <div class="status-bar">
                 <span class="time">9:41</span>
@@ -1616,9 +1543,7 @@
                 <div class="radial-subtitle">Tap to explore each segment</div>
 
                 <div class="wheel-container">
-                    <svg class="wheel-svg" viewBox="0 0 200 200" id="wheelChart">
-                        <!-- Segments will be generated by JS -->
-                    </svg>
+                    <svg class="wheel-svg" viewBox="0 0 200 200" id="wheelChart"></svg>
                     <div class="wheel-center">
                         <span class="wheel-center-pct" id="centerPct">1,933</span>
                         <span class="wheel-center-label" id="centerLabel">Total</span>
@@ -1627,9 +1552,7 @@
 
                 <div class="tap-hint">Tap segments or cards to explore</div>
 
-                <div class="radial-legend" id="legendGrid">
-                    <!-- Legend cards generated by JS -->
-                </div>
+                <div class="radial-legend" id="legendGrid"></div>
             </div>
         </div>
 
@@ -1646,7 +1569,7 @@
                 <div class="summary-border"></div>
                 <div class="summary-card">
                     <div class="summary-image">
-                        [Sponsor Image]
+                        <svg class="summary-logo" viewBox="0 0 100 100"><use href="#hcbsLogo"/></svg>
                         <span class="summary-year">2025</span>
                     </div>
                     <div class="summary-stats">
@@ -1702,6 +1625,7 @@
             </div>
             <div class="dots-bg"></div>
             <div class="close-content">
+                <svg class="close-logo" viewBox="0 0 100 100"><use href="#starLogo"/></svg>
                 <div class="close-thanks">Thank you to our</div>
                 <div class="close-title">Sponsors &<br>Partners</div>
                 <div class="close-year">2025</div>
@@ -1731,11 +1655,7 @@
             document.querySelector(`[data-slide="${n}"]`).classList.add('active');
             document.getElementById('num').textContent = n;
             cur = n;
-
-            // Initialize wheel chart when slide 8 becomes active
-            if (n === 8) {
-                initWheelChart();
-            }
+            if (n === 8) initWheelChart();
         }
 
         function next() { show(cur >= total ? 1 : cur + 1); }
@@ -1753,7 +1673,6 @@
             playing = !playing;
         }
 
-        // Wheel chart data
         const orgData = [
             { name: 'Government', count: 769, pct: 39.8, color: '#3a8297' },
             { name: 'Corporate', count: 669, pct: 34.6, color: '#318332' },
@@ -1768,25 +1687,21 @@
         function initWheelChart() {
             const svg = document.getElementById('wheelChart');
             const legend = document.getElementById('legendGrid');
-
             if (!svg || !legend) return;
 
             svg.innerHTML = '';
             legend.innerHTML = '';
 
             const cx = 100, cy = 100, r = 85;
-            let startAngle = -90; // Start from top
+            let startAngle = -90;
 
             orgData.forEach((item, index) => {
                 const angle = (item.pct / 100) * 360;
                 const endAngle = startAngle + angle;
-
-                // Calculate path
                 const x1 = cx + r * Math.cos(startAngle * Math.PI / 180);
                 const y1 = cy + r * Math.sin(startAngle * Math.PI / 180);
                 const x2 = cx + r * Math.cos(endAngle * Math.PI / 180);
                 const y2 = cy + r * Math.sin(endAngle * Math.PI / 180);
-
                 const largeArc = angle > 180 ? 1 : 0;
 
                 const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -1794,20 +1709,11 @@
                 path.setAttribute('fill', item.color);
                 path.setAttribute('class', 'wheel-segment');
                 path.setAttribute('data-index', index);
-                path.style.cursor = 'pointer';
-
                 path.addEventListener('click', () => selectSegment(index));
-                path.addEventListener('mouseenter', () => highlightSegment(index));
-                path.addEventListener('mouseleave', () => {
-                    if (activeSegment !== index) unhighlightSegment(index);
-                });
-
                 svg.appendChild(path);
-
                 startAngle = endAngle;
             });
 
-            // Create legend cards
             orgData.forEach((item, index) => {
                 const card = document.createElement('div');
                 card.className = 'legend-card';
@@ -1826,49 +1732,18 @@
         }
 
         function selectSegment(index) {
-            // Remove active from all
             document.querySelectorAll('.wheel-segment').forEach(seg => seg.classList.remove('active'));
             document.querySelectorAll('.legend-card').forEach(card => card.classList.remove('active'));
 
-            // Add active to selected
             const segment = document.querySelector(`.wheel-segment[data-index="${index}"]`);
             const card = document.querySelector(`.legend-card[data-index="${index}"]`);
-
             if (segment) segment.classList.add('active');
             if (card) card.classList.add('active');
 
-            // Update center
             const item = orgData[index];
             document.getElementById('centerPct').textContent = item.pct + '%';
             document.getElementById('centerLabel').textContent = item.name;
-
             activeSegment = index;
-        }
-
-        function highlightSegment(index) {
-            const segment = document.querySelector(`.wheel-segment[data-index="${index}"]`);
-            if (segment && !segment.classList.contains('active')) {
-                segment.style.filter = 'brightness(1.15)';
-            }
-        }
-
-        function unhighlightSegment(index) {
-            const segment = document.querySelector(`.wheel-segment[data-index="${index}"]`);
-            if (segment && !segment.classList.contains('active')) {
-                segment.style.filter = '';
-            }
-        }
-
-        // Reset to default view
-        function resetWheel() {
-            document.querySelectorAll('.wheel-segment').forEach(seg => {
-                seg.classList.remove('active');
-                seg.style.filter = '';
-            });
-            document.querySelectorAll('.legend-card').forEach(card => card.classList.remove('active'));
-            document.getElementById('centerPct').textContent = '1,933';
-            document.getElementById('centerLabel').textContent = 'Total';
-            activeSegment = null;
         }
 
         document.addEventListener('keydown', e => {
@@ -1878,18 +1753,9 @@
         });
 
         document.querySelector('.phone').addEventListener('click', e => {
-            // Don't navigate if clicking on interactive elements
-            if (e.target.closest('.wheel-segment') ||
-                e.target.closest('.legend-card') ||
-                e.target.closest('.wheel-center')) return;
-
+            if (e.target.closest('.wheel-segment') || e.target.closest('.legend-card') || e.target.closest('.wheel-center')) return;
             const rect = e.currentTarget.getBoundingClientRect();
             e.clientX - rect.left > rect.width / 2 ? next() : prev();
-        });
-
-        // Initialize wheel chart on page load if we're on slide 8
-        document.addEventListener('DOMContentLoaded', () => {
-            if (cur === 8) initWheelChart();
         });
     </script>
 </body>
