@@ -97,125 +97,172 @@
             height: 16px;
         }
 
-        /* ===== SLIDE 1: COVER - Spotify-Style Professional Design ===== */
+        /* ===== SLIDE 1: COVER - Header + Card Layout ===== */
         .slide-cover {
-            background: var(--off-white);
+            background: var(--dark-blue);
         }
 
         .slide-cover .status-bar .time,
         .slide-cover .status-bar .icons svg {
-            color: var(--dark-blue);
-            fill: var(--dark-blue);
+            color: var(--white);
+            fill: var(--white);
         }
 
-        .cover-content {
+        /* Dark blue header section */
+        .cover-header {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            overflow: hidden;
-        }
-
-        /* Large 2025 watermark - very subtle, deep in background */
-        .bg-year {
-            position: absolute;
-            top: 42%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 200px;
-            font-weight: 900;
-            font-style: italic;
-            color: var(--green);
-            opacity: 0.08;
-            letter-spacing: -0.02em;
-            line-height: 0.8;
-            z-index: 1;
-            pointer-events: none;
-            white-space: nowrap;
-        }
-
-        /* Starburst - top left, partially off-screen */
-        .starburst {
-            position: absolute;
-            top: 80px;
-            left: -30px;
-            width: 140px;
-            height: 140px;
-            z-index: 3;
-            opacity: 0.9;
-        }
-
-        /* Checker ellipse - right side, creates visual interest */
-        .checker-warp {
-            position: absolute;
-            top: 50%;
-            right: -80px;
-            transform: translateY(-50%);
-            width: 200px;
-            height: 280px;
-            z-index: 2;
-            opacity: 0.85;
-        }
-
-        /* Main text block - positioned to avoid all decorative elements */
-        .cover-text {
-            position: absolute;
-            top: 50%;
-            left: 28px;
-            right: 130px;
-            transform: translateY(-50%);
-            z-index: 10;
-        }
-
-        .cover-year {
-            font-size: 16px;
-            font-weight: 800;
-            color: var(--dark-blue);
-            letter-spacing: 0.2em;
-            margin-bottom: 6px;
-            opacity: 0.65;
-        }
-
-        .wrapped-main {
-            font-size: 72px;
-            font-weight: 900;
-            font-style: italic;
-            color: var(--dark-blue);
-            letter-spacing: -0.02em;
-            line-height: 0.9;
-            margin-bottom: 8px;
-        }
-
-        .cover-subtitle {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--dark-green);
-            letter-spacing: 0.06em;
-        }
-
-        /* Brand footer - bottom left */
-        .brand-footer {
-            position: absolute;
-            bottom: 55px;
-            left: 28px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            top: 50px;
+            left: 24px;
+            right: 24px;
             z-index: 20;
         }
 
-        .brand-footer-logo {
-            width: 26px;
-            height: 26px;
+        .cover-header-brand {
+            font-size: 11px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.8);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 6px;
         }
 
-        .brand-footer-text {
-            font-size: 9px;
+        .cover-header-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--light-blue);
+            letter-spacing: 0.04em;
+            margin-bottom: 4px;
+        }
+
+        .cover-header-wrapped {
+            font-size: 52px;
+            font-weight: 900;
+            font-style: italic;
+            color: var(--green);
+            letter-spacing: -0.01em;
+            line-height: 1;
+        }
+
+        /* Off-white card area */
+        .cover-card {
+            position: absolute;
+            top: 220px;
+            left: 16px;
+            right: 16px;
+            bottom: 16px;
+            background: var(--off-white);
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
+        .cover-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+        }
+
+        /* Decorative ornaments - reduced set */
+        .ornament {
+            position: absolute;
+            z-index: 5;
+        }
+
+        .ornament-ball {
+            width: 20px;
+            height: 24px;
+        }
+
+        .ornament-ball-inner {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        .ornament-ball-cap {
+            width: 8px;
+            height: 6px;
+            background: var(--dark-blue);
+            border-radius: 2px 2px 0 0;
+            margin: 0 auto -2px;
+        }
+
+        .ornament-spark {
+            font-size: 18px;
+            color: var(--blue);
+            opacity: 0.6;
+        }
+
+        /* 2025 outline text - more visible, repeated */
+        .year-outline {
+            position: absolute;
+            font-size: 100px;
+            font-weight: 900;
+            font-style: italic;
+            color: transparent;
+            -webkit-text-stroke: 2px var(--green);
+            letter-spacing: -0.02em;
+            line-height: 0.85;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .year-outline-1 {
+            top: 120px;
+            left: -10px;
+        }
+
+        .year-outline-2 {
+            top: 200px;
+            left: 40px;
+            opacity: 0.5;
+            font-size: 80px;
+        }
+
+        /* Accent line */
+        .accent-line {
+            position: absolute;
+            left: 20px;
+            top: 280px;
+            width: 60px;
+            height: 3px;
+            background: var(--blue);
+            border-radius: 2px;
+            z-index: 10;
+        }
+
+        /* Checker circle - bottom right, matching reference */
+        .checker-circle {
+            position: absolute;
+            bottom: -40px;
+            right: -40px;
+            width: 200px;
+            height: 200px;
+            z-index: 3;
+        }
+
+        /* Brand footer in card */
+        .cover-card-footer {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .cover-card-footer-logo {
+            width: 22px;
+            height: 22px;
+        }
+
+        .cover-card-footer-text {
+            font-size: 10px;
             font-weight: 700;
             color: var(--dark-blue);
             text-transform: uppercase;
-            letter-spacing: 0.12em;
+            letter-spacing: 0.1em;
         }
 
         /* ===== SLIDE 2: TOTAL ATTENDANCE ===== */
@@ -311,8 +358,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 350px;
-            height: 350px;
+            width: 500px;
+            height: 500px;
         }
 
         /* Animated constellation rings for slide 3 */
@@ -1268,7 +1315,7 @@
     </svg>
 
     <div class="phone">
-        <!-- SLIDE 1: COVER - Spotify-Style Tight Composition -->
+        <!-- SLIDE 1: COVER - Header + Card Layout -->
         <div class="slide slide-cover active" data-slide="1">
             <div class="status-bar">
                 <span class="time">9:41</span>
@@ -1277,50 +1324,64 @@
                     <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/></svg>
                 </div>
             </div>
-            <div class="cover-content">
-                <!-- Background watermark year -->
-                <div class="bg-year">2025</div>
 
-                <!-- Starburst - top left -->
-                <svg class="starburst" viewBox="0 0 100 100">
-                    <g stroke="var(--dark-blue)" stroke-width="2.5" fill="none">
-                        <line x1="50" y1="50" x2="50" y2="0"/>
-                        <line x1="50" y1="50" x2="85" y2="10"/>
-                        <line x1="50" y1="50" x2="100" y2="30"/>
-                        <line x1="50" y1="50" x2="100" y2="50"/>
-                        <line x1="50" y1="50" x2="100" y2="70"/>
-                        <line x1="50" y1="50" x2="85" y2="90"/>
-                        <line x1="50" y1="50" x2="50" y2="100"/>
-                        <line x1="50" y1="50" x2="15" y2="90"/>
-                        <line x1="50" y1="50" x2="0" y2="70"/>
-                        <line x1="50" y1="50" x2="0" y2="50"/>
-                        <line x1="50" y1="50" x2="0" y2="30"/>
-                        <line x1="50" y1="50" x2="15" y2="10"/>
-                    </g>
-                </svg>
+            <!-- Dark blue header section -->
+            <div class="cover-header">
+                <div class="cover-header-brand">ADvancing States</div>
+                <div class="cover-header-title">HCBS Conference</div>
+                <div class="cover-header-wrapped">Wrapped</div>
+            </div>
 
-                <!-- Checker ellipse - right side -->
-                <svg class="checker-warp" viewBox="0 0 200 300" preserveAspectRatio="none">
-                    <defs>
-                        <pattern id="warpCheck" width="14" height="14" patternUnits="userSpaceOnUse">
-                            <rect width="7" height="7" fill="var(--dark-blue)"/>
-                            <rect x="7" y="7" width="7" height="7" fill="var(--dark-blue)"/>
-                        </pattern>
-                    </defs>
-                    <ellipse cx="100" cy="150" rx="95" ry="140" fill="url(#warpCheck)"/>
-                </svg>
+            <!-- Off-white card area -->
+            <div class="cover-card">
+                <div class="cover-card-inner">
+                    <!-- Reduced ornaments (3 instead of 6) -->
+                    <div class="ornament" style="top: 15px; left: 20px;">
+                        <div class="ornament-ball">
+                            <div class="ornament-ball-cap"></div>
+                            <div class="ornament-ball-inner" style="background: #e07850;"></div>
+                        </div>
+                    </div>
+                    <div class="ornament" style="top: 10px; right: 80px;">
+                        <div class="ornament-ball">
+                            <div class="ornament-ball-cap"></div>
+                            <div class="ornament-ball-inner" style="background: var(--violet);"></div>
+                        </div>
+                    </div>
+                    <div class="ornament" style="top: 60px; right: 30px;">
+                        <div class="ornament-ball">
+                            <div class="ornament-ball-cap"></div>
+                            <div class="ornament-ball-inner" style="background: var(--light-blue);"></div>
+                        </div>
+                    </div>
 
-                <!-- Main text block - clear positioning, no overlap -->
-                <div class="cover-text">
-                    <div class="cover-year">2025</div>
-                    <div class="wrapped-main">Wrapped</div>
-                    <div class="cover-subtitle">HCBS Conference</div>
-                </div>
+                    <!-- Sparkle accents -->
+                    <div class="ornament ornament-spark" style="top: 50px; left: 70px;">✦</div>
+                    <div class="ornament ornament-spark" style="top: 85px; right: 90px; font-size: 14px;">✦</div>
 
-                <!-- Brand footer -->
-                <div class="brand-footer">
-                    <svg class="brand-footer-logo" viewBox="0 0 100 100"><use href="#starLogo"/></svg>
-                    <span class="brand-footer-text">ADvancing States</span>
+                    <!-- 2025 outline text - visible and repeated -->
+                    <div class="year-outline year-outline-1">2025</div>
+                    <div class="year-outline year-outline-2">2025</div>
+
+                    <!-- Accent line -->
+                    <div class="accent-line"></div>
+
+                    <!-- Checkerboard circle - bottom right -->
+                    <svg class="checker-circle" viewBox="0 0 200 200">
+                        <defs>
+                            <pattern id="coverCheck" width="12" height="12" patternUnits="userSpaceOnUse">
+                                <rect width="6" height="6" fill="var(--dark-blue)"/>
+                                <rect x="6" y="6" width="6" height="6" fill="var(--dark-blue)"/>
+                            </pattern>
+                        </defs>
+                        <circle cx="100" cy="100" r="95" fill="url(#coverCheck)"/>
+                    </svg>
+
+                    <!-- Brand footer -->
+                    <div class="cover-card-footer">
+                        <svg class="cover-card-footer-logo" viewBox="0 0 100 100"><use href="#starLogo"/></svg>
+                        <span class="cover-card-footer-text">ADvancing States</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1367,10 +1428,10 @@
                 </div>
             </div>
             <svg class="circles-bg" viewBox="0 0 500 500">
-                <circle cx="250" cy="250" r="230" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="40"/>
-                <circle cx="250" cy="250" r="170" fill="none" stroke="rgba(138,198,90,0.15)" stroke-width="35"/>
-                <circle cx="250" cy="250" r="110" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="30"/>
-                <circle cx="250" cy="250" r="50" fill="none" stroke="rgba(138,198,90,0.12)" stroke-width="25"/>
+                <circle cx="250" cy="250" r="240" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="55"/>
+                <circle cx="250" cy="250" r="180" fill="none" stroke="rgba(138,198,90,0.2)" stroke-width="50"/>
+                <circle cx="250" cy="250" r="120" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="45"/>
+                <circle cx="250" cy="250" r="60" fill="none" stroke="rgba(138,198,90,0.15)" stroke-width="35"/>
             </svg>
             <div class="exec-content">
                 <div class="stat-number">59.8<span class="stat-percent">%</span></div>
