@@ -97,7 +97,7 @@
             height: 16px;
         }
 
-        /* ===== SLIDE 1: COVER - Spotify Wrapped Style ===== */
+        /* ===== SLIDE 1: COVER - Clean Layout ===== */
         .slide-cover {
             background: var(--off-white);
         }
@@ -114,76 +114,66 @@
             left: 0;
             right: 0;
             bottom: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 60px 24px 100px;
             overflow: hidden;
         }
 
-        /* Giant 2025 in background */
-        .bg-year {
+        /* Starburst in top left - decorative only */
+        .starburst {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-8deg);
-            font-size: 200px;
-            font-weight: 900;
-            font-style: italic;
-            color: var(--green);
-            opacity: 0.85;
-            letter-spacing: -0.02em;
-            line-height: 0.85;
-            white-space: nowrap;
+            top: 60px;
+            left: -20px;
+            width: 100px;
+            height: 100px;
             z-index: 1;
         }
 
-        /* Starburst on left */
-        .starburst {
-            position: absolute;
-            top: 80px;
-            left: -30px;
-            width: 140px;
-            height: 140px;
-            z-index: 2;
-        }
-
-        /* Warped checker circle on right */
+        /* Checker circle in bottom right - decorative only */
         .checker-warp {
             position: absolute;
-            top: 50%;
-            right: -80px;
-            transform: translateY(-50%);
-            width: 280px;
-            height: 280px;
-            z-index: 2;
+            bottom: -60px;
+            right: -60px;
+            width: 180px;
+            height: 180px;
+            z-index: 1;
         }
 
-        /* Main text container */
+        /* Main text area - centered, no overlap */
         .cover-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
             z-index: 10;
         }
 
+        .cover-year {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--green);
+            letter-spacing: 0.2em;
+            margin-bottom: 20px;
+        }
+
         .wrapped-main {
-            font-size: 64px;
+            font-size: 72px;
             font-weight: 900;
             font-style: italic;
-            color: var(--white);
+            color: var(--dark-blue);
             letter-spacing: 0.02em;
             line-height: 1;
-            text-shadow: 2px 2px 0 var(--dark-blue),
-                         -1px -1px 0 var(--dark-blue),
-                         1px -1px 0 var(--dark-blue),
-                         -1px 1px 0 var(--dark-blue);
-            margin-bottom: 8px;
+            margin-bottom: 16px;
         }
 
         .cover-subtitle {
-            font-size: 22px;
+            font-size: 28px;
             font-weight: 700;
-            color: var(--dark-blue);
-            letter-spacing: 0.06em;
+            color: var(--green);
+            letter-spacing: 0.08em;
         }
 
         /* Brand footer */
@@ -1260,7 +1250,7 @@
     </svg>
 
     <div class="phone">
-        <!-- SLIDE 1: COVER - Spotify Wrapped Style -->
+        <!-- SLIDE 1: COVER - Clean Layout -->
         <div class="slide slide-cover active" data-slide="1">
             <div class="status-bar">
                 <span class="time">9:41</span>
@@ -1270,10 +1260,7 @@
                 </div>
             </div>
             <div class="cover-content">
-                <!-- Giant 2025 in background -->
-                <div class="bg-year">2025</div>
-
-                <!-- Starburst graphic on left -->
+                <!-- Starburst - top left corner only -->
                 <svg class="starburst" viewBox="0 0 100 100">
                     <g stroke="var(--dark-blue)" stroke-width="2" fill="none">
                         <line x1="50" y1="50" x2="50" y2="0"/>
@@ -1291,24 +1278,20 @@
                     </g>
                 </svg>
 
-                <!-- Warped checker circle on right -->
+                <!-- Checker - bottom right corner only -->
                 <svg class="checker-warp" viewBox="0 0 200 200">
                     <defs>
                         <pattern id="warpCheck" width="16" height="16" patternUnits="userSpaceOnUse">
                             <rect width="8" height="8" fill="var(--dark-blue)"/>
                             <rect x="8" y="8" width="8" height="8" fill="var(--dark-blue)"/>
                         </pattern>
-                        <mask id="warpMask">
-                            <ellipse cx="100" cy="100" rx="95" ry="95" fill="white"/>
-                        </mask>
                     </defs>
-                    <g mask="url(#warpMask)">
-                        <ellipse cx="100" cy="100" rx="95" ry="95" fill="url(#warpCheck)" transform="skewX(-10)"/>
-                    </g>
+                    <circle cx="100" cy="100" r="95" fill="url(#warpCheck)"/>
                 </svg>
 
-                <!-- Main text overlay -->
+                <!-- Main text - centered, clear, no overlap -->
                 <div class="cover-text">
+                    <div class="cover-year">2025</div>
                     <div class="wrapped-main">Wrapped</div>
                     <div class="cover-subtitle">HCBS Conference</div>
                 </div>
