@@ -99,13 +99,13 @@
 
         /* ===== SLIDE 1: COVER ===== */
         .slide-cover {
-            background: var(--off-white);
+            background: linear-gradient(160deg, var(--dark-blue) 0%, #003d4d 100%);
         }
 
         .slide-cover .status-bar .time,
         .slide-cover .status-bar .icons svg {
-            color: var(--dark-blue);
-            fill: var(--dark-blue);
+            color: var(--white);
+            fill: var(--white);
         }
 
         .cover-content {
@@ -116,34 +116,35 @@
             bottom: 0;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
 
         /* Wrapped header bar */
         .wrapped-header {
-            background: var(--dark-blue);
-            padding: 55px 24px 28px;
+            padding: 55px 24px 20px;
             position: relative;
+            z-index: 20;
         }
 
         .header-logo {
             position: absolute;
-            top: 55px;
+            top: 50px;
             right: 20px;
-            width: 50px;
-            height: 50px;
+            width: 55px;
+            height: 55px;
         }
 
         .wrapped-year {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 700;
             color: var(--green);
-            letter-spacing: 0.2em;
+            letter-spacing: 0.25em;
             text-transform: uppercase;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .wrapped-text {
-            font-size: 52px;
+            font-size: 58px;
             font-weight: 900;
             font-style: italic;
             color: var(--white);
@@ -159,62 +160,129 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            padding: 30px 24px;
+            padding: 0 24px;
+        }
+
+        /* Animated background rings */
+        .cover-rings {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            pointer-events: none;
+        }
+
+        .cover-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .cover-ring:nth-child(1) {
+            width: 180px;
+            height: 180px;
+            border-color: rgba(138,198,90,0.3);
+            animation: ringPulse 4s ease-in-out infinite;
+        }
+
+        .cover-ring:nth-child(2) {
+            width: 280px;
+            height: 280px;
+            border-color: rgba(88,176,226,0.25);
+            animation: ringPulse 4s ease-in-out infinite 0.5s;
+        }
+
+        .cover-ring:nth-child(3) {
+            width: 380px;
+            height: 380px;
+            border-color: rgba(255,255,255,0.15);
+            animation: ringPulse 4s ease-in-out infinite 1s;
+        }
+
+        .cover-ring:nth-child(4) {
+            width: 480px;
+            height: 480px;
+            border-color: rgba(138,198,90,0.1);
+            animation: ringPulse 4s ease-in-out infinite 1.5s;
+        }
+
+        @keyframes ringPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.6; }
         }
 
         .conference-outline {
-            font-size: 42px;
+            font-size: 52px;
             font-weight: 900;
             font-style: italic;
             color: transparent;
-            -webkit-text-stroke: 2.5px var(--dark-blue);
-            letter-spacing: 0.04em;
-            line-height: 1.1;
+            -webkit-text-stroke: 2.5px var(--white);
+            letter-spacing: 0.05em;
+            line-height: 1.15;
             text-align: center;
             position: relative;
             z-index: 10;
         }
 
         .conference-outline .line2 {
-            font-size: 48px;
+            font-size: 54px;
             -webkit-text-stroke: 3px var(--green);
+            display: block;
+            margin-top: 5px;
         }
 
-        /* Decorative elements */
-        .deco-dots {
+        /* Floating decorative elements */
+        .float-element {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            display: grid;
-            grid-template-columns: repeat(4, 8px);
-            gap: 6px;
+            z-index: 5;
         }
 
-        .deco-dot {
-            width: 8px;
-            height: 8px;
+        .float-star {
+            width: 24px;
+            height: 24px;
+            opacity: 0.6;
+        }
+
+        .float-star-1 { top: 180px; left: 30px; animation: floatStar 3s ease-in-out infinite; }
+        .float-star-2 { top: 350px; right: 25px; animation: floatStar 3.5s ease-in-out infinite 0.3s; }
+        .float-star-3 { bottom: 200px; left: 50px; animation: floatStar 4s ease-in-out infinite 0.7s; }
+        .float-star-4 { top: 280px; left: 15px; animation: floatStar 3.2s ease-in-out infinite 1s; }
+
+        @keyframes floatStar {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(15deg); }
+        }
+
+        .float-dot {
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
-            background: var(--dark-blue);
-            opacity: 0.15;
+            background: var(--green);
+            opacity: 0.5;
         }
 
-        .deco-line {
-            position: absolute;
-            bottom: 140px;
-            left: 24px;
-            width: 60px;
-            height: 3px;
-            background: var(--dark-blue);
-            opacity: 0.2;
+        .float-dot-1 { top: 220px; right: 50px; animation: floatDot 2.5s ease-in-out infinite; }
+        .float-dot-2 { bottom: 280px; right: 35px; animation: floatDot 3s ease-in-out infinite 0.4s; }
+        .float-dot-3 { top: 400px; left: 40px; animation: floatDot 2.8s ease-in-out infinite 0.8s; }
+
+        @keyframes floatDot {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.3); opacity: 0.8; }
         }
 
         /* Checker pattern bottom */
         .checker-bottom {
             position: absolute;
-            bottom: -20px;
-            right: -60px;
-            width: 240px;
-            height: 240px;
+            bottom: -30px;
+            right: -50px;
+            width: 220px;
+            height: 220px;
+            z-index: 2;
         }
 
         /* Brand footer */
@@ -225,6 +293,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            z-index: 20;
         }
 
         .brand-footer-logo {
@@ -235,9 +304,31 @@
         .brand-footer-text {
             font-size: 11px;
             font-weight: 700;
-            color: var(--dark-blue);
+            color: var(--white);
             text-transform: uppercase;
             letter-spacing: 0.12em;
+        }
+
+        /* Decorative corner accents */
+        .corner-accent {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            z-index: 3;
+        }
+
+        .corner-accent-tl {
+            top: 130px;
+            left: 0;
+            border-top: 3px solid rgba(138,198,90,0.4);
+            border-left: 3px solid rgba(138,198,90,0.4);
+        }
+
+        .corner-accent-br {
+            bottom: 100px;
+            right: 0;
+            border-bottom: 3px solid rgba(88,176,226,0.3);
+            border-right: 3px solid rgba(88,176,226,0.3);
         }
 
         /* ===== SLIDE 2: TOTAL ATTENDANCE ===== */
@@ -1117,6 +1208,22 @@
             z-index: 10;
         }
 
+        /* Christmas tree text arrangement */
+        .close-tree {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+        }
+
+        .close-year-top {
+            font-size: 26px;
+            font-weight: 900;
+            color: var(--green);
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+            text-shadow: 0 0 20px rgba(138,198,90,0.5);
+        }
+
         .close-title {
             font-size: 44px;
             font-weight: 900;
@@ -1127,18 +1234,53 @@
             letter-spacing: 0.05em;
         }
 
+        .close-title-line1 {
+            display: block;
+            font-size: 38px;
+        }
+
+        .close-title-amp {
+            display: block;
+            font-size: 28px;
+            color: var(--light-blue);
+            margin: 6px 0;
+        }
+
+        .close-title-line2 {
+            display: block;
+            font-size: 48px;
+        }
+
+        /* Light blue tree outline */
+        .tree-outline {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 260px;
+            height: 320px;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .tree-outline svg {
+            width: 100%;
+            height: 100%;
+        }
+
         .close-year {
             display: inline-block;
             font-size: 34px;
             font-weight: 900;
             color: var(--white);
             padding: 12px 36px;
-            border: 3px solid rgba(255,255,255,0.35);
+            border: 3px solid var(--light-blue);
             border-radius: 50px;
-            margin-top: 24px;
+            margin-top: 20px;
             position: relative;
             z-index: 10;
             letter-spacing: 0.06em;
+            box-shadow: 0 0 25px rgba(88,176,226,0.3);
         }
 
         .close-msg {
@@ -1281,26 +1423,40 @@
                     <div class="wrapped-text">Wrapped</div>
                 </div>
                 <div class="main-section">
-                    <!-- Decorative dots -->
-                    <div class="deco-dots">
-                        <div class="deco-dot"></div><div class="deco-dot"></div><div class="deco-dot"></div><div class="deco-dot"></div>
-                        <div class="deco-dot"></div><div class="deco-dot"></div><div class="deco-dot"></div><div class="deco-dot"></div>
-                        <div class="deco-dot"></div><div class="deco-dot"></div><div class="deco-dot"></div><div class="deco-dot"></div>
+                    <!-- Animated background rings -->
+                    <div class="cover-rings">
+                        <div class="cover-ring"></div>
+                        <div class="cover-ring"></div>
+                        <div class="cover-ring"></div>
+                        <div class="cover-ring"></div>
                     </div>
+
+                    <!-- Floating stars -->
+                    <svg class="float-element float-star float-star-1" viewBox="0 0 100 100"><use href="#starLogo"/></svg>
+                    <svg class="float-element float-star float-star-2" viewBox="0 0 100 100"><use href="#starLogo"/></svg>
+                    <svg class="float-element float-star float-star-3" viewBox="0 0 100 100"><use href="#starLogo"/></svg>
+                    <svg class="float-element float-star float-star-4" viewBox="0 0 100 100"><use href="#starLogo"/></svg>
+
+                    <!-- Floating dots -->
+                    <div class="float-element float-dot float-dot-1"></div>
+                    <div class="float-element float-dot float-dot-2"></div>
+                    <div class="float-element float-dot float-dot-3"></div>
+
+                    <!-- Corner accents -->
+                    <div class="corner-accent corner-accent-tl"></div>
+                    <div class="corner-accent corner-accent-br"></div>
 
                     <div class="conference-outline">
-                        <div>HCBS</div>
-                        <div class="line2">Conference</div>
+                        <span>HCBS</span>
+                        <span class="line2">Conference</span>
                     </div>
-
-                    <div class="deco-line"></div>
                 </div>
 
                 <svg class="checker-bottom" viewBox="0 0 300 300">
                     <defs>
                         <pattern id="check" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(-15)">
-                            <rect width="9" height="9" fill="rgb(0,98,117)"/>
-                            <rect x="9" y="9" width="9" height="9" fill="rgb(0,98,117)"/>
+                            <rect width="9" height="9" fill="rgba(138,198,90,0.3)"/>
+                            <rect x="9" y="9" width="9" height="9" fill="rgba(138,198,90,0.3)"/>
                         </pattern>
                     </defs>
                     <ellipse cx="150" cy="150" rx="140" ry="120" fill="url(#check)"/>
@@ -1627,8 +1783,27 @@
             <div class="close-content">
                 <svg class="close-logo" viewBox="0 0 100 100"><use href="#starLogo"/></svg>
                 <div class="close-thanks">Thank you to our</div>
-                <div class="close-title">Sponsors &<br>Partners</div>
-                <div class="close-year">2025</div>
+
+                <!-- Tree outline behind text -->
+                <div class="tree-outline">
+                    <svg viewBox="0 0 260 320" fill="none">
+                        <path d="M130 10 L230 130 L190 130 L250 250 L10 250 L70 130 L30 130 Z"
+                              stroke="rgba(88,176,226,0.25)" stroke-width="2" fill="none"/>
+                        <rect x="105" y="250" width="50" height="40" rx="4"
+                              stroke="rgba(88,176,226,0.2)" stroke-width="2" fill="none"/>
+                    </svg>
+                </div>
+
+                <!-- Christmas tree text arrangement -->
+                <div class="close-tree">
+                    <div class="close-year-top">2025</div>
+                    <div class="close-title">
+                        <span class="close-title-line1">Sponsors</span>
+                        <span class="close-title-amp">&</span>
+                        <span class="close-title-line2">Partners</span>
+                    </div>
+                </div>
+
                 <div class="close-msg">Your support made the 2025 HCBS Conference a landmark gathering of nearly 2,000 professionals shaping the future of home and community-based services.</div>
             </div>
             <div class="close-footer">HCBS Conference &bull; ADvancing States</div>
