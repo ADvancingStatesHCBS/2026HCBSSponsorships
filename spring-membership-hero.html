@@ -1,0 +1,193 @@
+<style>
+.full-width-section {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.full-width-section > div {
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+.hero-wrapper {
+    background-color: #006273;
+    width: 100%;
+}
+
+.hero-container {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #ffffff;
+    padding: 60px 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5%;
+    min-height: 400px;
+    position: relative;
+}
+
+.hero-content {
+    flex: 0 0 42%;
+    max-width: 500px;
+    z-index: 2;
+}
+
+.hero-image {
+    flex: 0 0 50%;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-image img {
+    width: 100%;
+    max-width: 650px;
+    max-height: 350px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 12px;
+    display: block;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+}
+
+.hero-logo {
+    margin-bottom: 30px;
+}
+
+.hero-logo img {
+    height: 120px;
+    width: auto;
+}
+
+.hero-location {
+    display: inline-block;
+    background-color: rgba(255,255,255,0.1);
+    padding: 8px 14px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+    border-radius: 4px;
+}
+
+.hero-location::before {
+    content: '●';
+    color: #8ac65a;
+    margin-right: 10px;
+}
+
+.hero-title {
+    font-size: 48px;
+    font-weight: bold;
+    line-height: 1.05;
+    margin: 0 0 25px 0;
+}
+
+.hero-highlight {
+    color: #8ac65a;
+    font-style: italic;
+}
+
+.hero-subtitle {
+    font-size: 17px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.7;
+    margin-bottom: 35px;
+}
+
+.hero-cta {
+    display: inline-block;
+    background-color: #8ac65a;
+    color: #006273;
+    padding: 16px 32px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(138, 198, 90, 0.3);
+}
+
+.hero-cta:hover {
+    background-color: #9dd66f;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(138, 198, 90, 0.4);
+}
+
+.hero-event-details {
+    display: inline-block;
+    background-color: rgba(0,0,0,0.25);
+    padding: 16px 24px;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.hero-event-details strong {
+    color: #8ac65a;
+    display: block;
+    margin-bottom: 4px;
+}
+
+@media (max-width: 900px) {
+    .hero-container {
+        flex-direction: column;
+        padding: 40px 5%;
+        text-align: center;
+    }
+
+    .hero-content {
+        max-width: 100%;
+    }
+
+    .hero-title {
+        font-size: 34px;
+    }
+
+    .hero-logo img {
+        height: 80px;
+    }
+
+    .hero-image {
+        margin-top: 40px;
+    }
+
+    .hero-image img {
+        max-width: 100%;
+        max-height: 300px;
+    }
+}
+</style>
+
+<div class="hero-wrapper">
+    <div class="hero-container">
+        <div class="hero-content">
+            <div class="hero-logo">
+                <img src="https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/b800eabb1d584306ad9faf23c3571ea2.png" alt="ADvancing States">
+            </div>
+            <div class="hero-location">Minneapolis, MN</div>
+            <h1 class="hero-title">
+                2026 ADvancing States<br>
+                <span class="hero-highlight">Spring Membership</span><br>
+                Meeting
+            </h1>
+            <p class="hero-subtitle">
+                Join state leaders in aging and disability services at the Minneapolis Marriott City Center, April 27–29, 2026. Three days of sessions, networking, and collaboration with 50+ state agencies.
+            </p>
+            <a href="#" class="hero-cta">Register Now</a>
+            <div class="hero-event-details">
+                <strong>April 27–29, 2026</strong>
+                Minneapolis Marriott City Center
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/26db4849f12240a98ae60f6db54796c3.png" alt="Minneapolis Skyline">
+        </div>
+    </div>
+</div>
