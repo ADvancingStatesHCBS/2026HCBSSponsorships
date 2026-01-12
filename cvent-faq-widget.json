@@ -1,0 +1,150 @@
+{
+  "widgetType": "faq",
+  "version": "1.0",
+  "settings": {
+    "layout": "sidebar-content",
+    "theme": {
+      "backgroundColor": "#f5f3ef",
+      "primaryColor": "#c9a227",
+      "textColor": "#333333",
+      "fontFamily": "inherit"
+    }
+  },
+  "categories": [
+    {
+      "id": "general",
+      "label": "GENERAL QUESTIONS",
+      "isDefault": true,
+      "questions": [
+        {
+          "id": "q1",
+          "question": "Where is the venue located?",
+          "answer": "The Future Tech Summit 2024 will be held at the Grand Convention Center, 123 Innovation Blvd, San Francisco, CA. It is accessible via BART and Muni."
+        },
+        {
+          "id": "q2",
+          "question": "Is the venue wheelchair accessible?",
+          "answer": "Yes, the entire venue is fully WCAG and ADA compliant, featuring ramps, elevators, and accessible restrooms on every floor. We also have designated seating areas."
+        },
+        {
+          "id": "q3",
+          "question": "Can I get a refund if I can't attend?",
+          "answer": "Tickets are refundable up to 30 days before the event. After that, you may transfer your ticket to another attendee by contacting support@futuretech.com."
+        },
+        {
+          "id": "q4",
+          "question": "Are meals included?",
+          "answer": "Standard and VIP tickets include daily lunch and coffee breaks. Student tickets include access to coffee breaks but lunch must be purchased separately."
+        }
+      ]
+    },
+    {
+      "id": "registration",
+      "label": "REGISTRATION & TICKETS",
+      "isDefault": false,
+      "questions": [
+        {
+          "id": "r1",
+          "question": "[YOUR QUESTION HERE]",
+          "answer": "[YOUR ANSWER HERE]"
+        },
+        {
+          "id": "r2",
+          "question": "[YOUR QUESTION HERE]",
+          "answer": "[YOUR ANSWER HERE]"
+        }
+      ]
+    },
+    {
+      "id": "accessibility",
+      "label": "ACCESSIBILITY",
+      "isDefault": false,
+      "questions": [
+        {
+          "id": "a1",
+          "question": "[YOUR QUESTION HERE]",
+          "answer": "[YOUR ANSWER HERE]"
+        },
+        {
+          "id": "a2",
+          "question": "[YOUR QUESTION HERE]",
+          "answer": "[YOUR ANSWER HERE]"
+        }
+      ]
+    },
+    {
+      "id": "travel",
+      "label": "TRAVEL & VENUE",
+      "isDefault": false,
+      "questions": [
+        {
+          "id": "t1",
+          "question": "[YOUR QUESTION HERE]",
+          "answer": "[YOUR ANSWER HERE]"
+        },
+        {
+          "id": "t2",
+          "question": "[YOUR QUESTION HERE]",
+          "answer": "[YOUR ANSWER HERE]"
+        }
+      ]
+    }
+  ],
+  "display": {
+    "title": "FAQ",
+    "showCategoryCount": false,
+    "expandFirstQuestion": true,
+    "showDividers": true,
+    "sidebarWidth": "250px",
+    "contentPadding": "40px"
+  },
+  "styling": {
+    "header": {
+      "fontSize": "32px",
+      "fontWeight": "bold",
+      "color": "#333333",
+      "marginBottom": "30px"
+    },
+    "categoryNav": {
+      "activeIndicator": {
+        "type": "border-left",
+        "color": "#c9a227",
+        "width": "4px"
+      },
+      "item": {
+        "fontSize": "12px",
+        "fontWeight": "600",
+        "letterSpacing": "0.5px",
+        "textTransform": "uppercase",
+        "padding": "15px 20px",
+        "color": "#333333",
+        "hoverColor": "#c9a227"
+      }
+    },
+    "questionItem": {
+      "question": {
+        "fontSize": "18px",
+        "fontWeight": "600",
+        "color": "#333333",
+        "padding": "20px 0"
+      },
+      "answer": {
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "color": "#666666",
+        "lineHeight": "1.6",
+        "padding": "0 0 20px 0"
+      },
+      "divider": {
+        "color": "#c9a227",
+        "width": "3px",
+        "style": "solid"
+      }
+    }
+  },
+  "accessibility": {
+    "ariaLabel": "Frequently Asked Questions",
+    "expandButtonAriaLabel": "Toggle answer visibility",
+    "keyboardNavigation": true
+  }
+}
