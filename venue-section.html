@@ -1,0 +1,309 @@
+<style>
+    .full-width-section {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    .full-width-section > div {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+    .venue-wrapper {
+        background-color: #006273;
+        width: 100%;
+    }
+    .venue-container {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        color: #ffffff;
+        padding: 60px 6% 40px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;
+        align-items: flex-start;
+    }
+    .venue-content {
+        flex: 1;
+        min-width: 300px;
+    }
+    .venue-label {
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #FFFFFF;
+        margin-bottom: 10px;
+    }
+    .venue-title {
+        font-size: 42px;
+        font-weight: bold;
+        margin: 0 0 20px 0;
+        line-height: 1.1;
+        color: #ffffff;
+    }
+    .venue-description {
+        font-size: 24px;
+        color: rgba(255,255,255,0.75);
+        line-height: 1.7;
+        margin-bottom: 25px;
+        max-width: 550px;
+    }
+    .venue-location {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    .venue-icon {
+        width: 50px;
+        height: 50px;
+        background-color: rgba(88,176,226,0.2);
+        border: 2px solid #58b0e2;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        overflow: hidden;
+        padding: 6px;
+    }
+    .venue-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    .venue-location-text {
+        padding-top: 3px;
+    }
+    .venue-location-text strong {
+        display: block;
+        font-size: 24px;
+        margin-bottom: 4px;
+        color: #ffffff;
+    }
+    .venue-location-text span {
+        font-size: 24px;
+        color: rgba(255,255,255,0.7);
+        display: block;
+        line-height: 1.4;
+    }
+
+    /* Map Section */
+    .venue-map {
+        flex: 1;
+        min-width: 300px;
+        max-width: 500px;
+        border-radius: 15px;
+        overflow: hidden;
+        position: relative;
+        height: 420px;
+    }
+    .venue-map-bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+    }
+    .venue-map-bg img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .venue-map-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(0,74,87,0.8) 0%, rgba(0,98,115,0.7) 100%);
+        z-index: 1;
+    }
+    .venue-map-content {
+        position: relative;
+        z-index: 2;
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        text-align: center;
+    }
+    .venue-map-pin {
+        width: 50px;
+        height: 50px;
+        background-color: #3a8297;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+        font-size: 22px;
+    }
+    .venue-hotel-name {
+        font-size: 22px;
+        font-weight: bold;
+        color: #ffffff;
+        margin-bottom: 8px;
+    }
+    .venue-hotel-address {
+        font-size: 14px;
+        color: rgba(255,255,255,0.8);
+        margin-bottom: 25px;
+    }
+    .venue-stats-row {
+        display: flex;
+        gap: 15px;
+        width: 100%;
+    }
+    .venue-stat-card {
+        flex: 1;
+        background-color: rgba(255,255,255,0.95);
+        color: #006273;
+        padding: 18px;
+        border-radius: 10px;
+        text-align: center;
+    }
+    .stat-number {
+        font-size: 32px;
+        font-weight: bold;
+        color: #3a8297;
+    }
+    .stat-label {
+        font-size: 11px;
+        color: #404041;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* 2x2 Grid Amenities - Now full width below */
+    .venue-amenities-row {
+        width: 100%;
+        padding: 0 6% 60px;
+    }
+    .venue-amenities {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        max-width: 100%;
+    }
+    .amenity-tag {
+        background-color: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+        padding: 16px 20px;
+        border-radius: 10px;
+        font-size: 22px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        color: #ffffff;
+    }
+    .amenity-icon {
+        width: 42px;
+        height: 42px;
+        flex-shrink: 0;
+    }
+    .amenity-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    @media (max-width: 1100px) {
+        .venue-amenities {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    @media (max-width: 900px) {
+        .venue-container {
+            flex-direction: column;
+            padding: 40px 5% 30px;
+        }
+        .venue-map {
+            max-width: 100%;
+            width: 100%;
+        }
+        .venue-title {
+            font-size: 32px;
+        }
+        .venue-amenities-row {
+            padding: 0 5% 40px;
+        }
+    }
+    @media (max-width: 600px) {
+        .venue-amenities {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="venue-wrapper">
+    <div class="venue-container">
+        <div class="venue-content">
+            <div class="venue-label">Meeting Location</div>
+            <h2 class="venue-title">Venue Details</h2>
+            <p class="venue-description">
+                Join us at the Minneapolis Marriott City Center, located in the heart of downtown Minneapolis. The hotel offers modern amenities, convenient access to local attractions, and an ideal setting for collaboration.
+            </p>
+            <div class="venue-location">
+                <div class="venue-icon">
+                    <img src="https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/a5b83c1f9d904852a8a2042e5ad30809.png" alt="Minneapolis Marriott City Center">
+                </div>
+                <div class="venue-location-text">
+                    <strong>Minneapolis Marriott City Center</strong>
+                    <span>30 South 7th Street</span>
+                    <span>Minneapolis, MN 55402</span>
+                </div>
+            </div>
+            <div class="venue-location">
+                <div class="venue-icon">
+                    <img src="https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/25c9787a2f7c44f3a059258754d595e8.png" alt="Calendar">
+                </div>
+                <div class="venue-location-text">
+                    <strong>Event Dates</strong>
+                    <span>April 27–29, 2026</span>
+                </div>
+            </div>
+        </div>
+        <div class="venue-map">
+            <div class="venue-map-bg">
+                <img src="https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/6b714eb86a2e4806af8187527d4ed5cb.png" alt="Map">
+            </div>
+            <div class="venue-map-overlay"></div>
+            <div class="venue-map-content">
+                <div class="venue-map-pin">📍</div>
+                <div class="venue-hotel-name">Minneapolis Marriott City Center</div>
+                <div class="venue-hotel-address">30 South 7th Street, Minneapolis, MN 55402</div>
+                <div class="venue-stats-row">
+                    <div class="venue-stat-card">
+                        <div class="stat-number">Meals</div>
+                        <div class="stat-label">Included</div>
+                    </div>
+                    <div class="venue-stat-card">
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">Days of Sessions</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Amenities moved below as a full-width row -->
+    <div class="venue-amenities-row">
+        <div class="venue-amenities">
+            <div class="amenity-tag">
+                <div class="amenity-icon"><img src="https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/4c91887568aa43dc8743402ffb0777a8.png" alt="Fitness"></div>
+                <span>Fitness Center</span>
+            </div>
+            <div class="amenity-tag">
+                <div class="amenity-icon"><img src="https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/ffbd94c9b6b946b783a44c6fa3a4e68f.png" alt="Restaurant"></div>
+                <span>Restaurant On-Site</span>
+            </div>
+            <div class="amenity-tag">
+                <div class="amenity-icon"><img src="https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/066ecbd5b4fa41cf87cf25a2e9f51881.png" alt="Parking"></div>
+                <span>On-Site Parking</span>
+            </div>
+            <div class="amenity-tag">
+                <div class="amenity-icon"><img src="https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/7248fce173784358ae29d9e28c05259b.png" alt="Valet"></div>
+                <span>Valet Service</span>
+            </div>
+        </div>
+    </div>
+</div>
