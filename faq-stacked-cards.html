@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Stacked Cards</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .faq-container {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            width: 100%;
+            min-height: 100vh;
+            padding: 60px 5%;
+            display: flex;
+            gap: 60px;
+        }
+
+        /* Left Sidebar */
+        .faq-sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 60px;
+            height: fit-content;
+        }
+
+        .faq-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #1a2e35;
+            margin-bottom: 12px;
+        }
+
+        .faq-subtitle {
+            font-size: 15px;
+            color: #6b7c85;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .faq-categories {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .faq-category-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1a2e35;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: left;
+        }
+
+        .faq-category-btn:hover {
+            background-color: rgba(0, 98, 115, 0.08);
+        }
+
+        .faq-category-btn.active {
+            background-color: #006273;
+            color: #ffffff;
+        }
+
+        .faq-category-btn .arrow {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.25s ease;
+        }
+
+        .faq-category-btn.active .arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .faq-category-btn .arrow svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        /* Right Content - Card Stack */
+        .faq-content {
+            flex: 1;
+            position: relative;
+            min-height: 500px;
+        }
+
+        .faq-card-stack {
+            position: relative;
+            height: 100%;
+            perspective: 1000px;
+        }
+
+        .faq-card {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 32px 36px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center top;
+            border-left: 4px solid transparent;
+        }
+
+        .faq-card:hover {
+            border-left-color: #006273;
+        }
+
+        .faq-card.active {
+            border-left-color: #318332;
+        }
+
+        /* Card stacking positions */
+        .faq-card[data-position="0"] {
+            z-index: 100;
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .faq-card[data-position="1"] {
+            z-index: 99;
+            transform: translateY(calc(100% + 20px)) scale(1);
+            opacity: 1;
+        }
+
+        .faq-card[data-position="2"] {
+            z-index: 98;
+            transform: translateY(calc(200% + 40px)) scale(1);
+            opacity: 1;
+        }
+
+        .faq-card[data-position="3"] {
+            z-index: 97;
+            transform: translateY(calc(300% + 60px)) scale(1);
+            opacity: 1;
+        }
+
+        .faq-card[data-position="4"] {
+            z-index: 96;
+            transform: translateY(calc(400% + 80px)) scale(1);
+            opacity: 0.7;
+        }
+
+        .faq-card[data-position="hidden"] {
+            z-index: 90;
+            transform: translateY(calc(500% + 100px)) scale(0.95);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .faq-card[data-position="exiting"] {
+            z-index: 101;
+            transform: translateY(-120%) scale(0.9);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .faq-card-question {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a2e35;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .faq-card-answer {
+            font-size: 15px;
+            color: #5a6a72;
+            line-height: 1.7;
+        }
+
+        .faq-card-answer a {
+            color: #006273;
+            text-decoration: underline;
+        }
+
+        .faq-card-answer ul {
+            margin: 12px 0 0 20px;
+            padding: 0;
+        }
+
+        .faq-card-answer li {
+            margin-bottom: 6px;
+        }
+
+        /* Scroll indicator */
+        .faq-scroll-indicator {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .faq-scroll-indicator:hover {
+            opacity: 1;
+        }
+
+        .faq-scroll-dots {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .faq-scroll-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #d0d5d8;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .faq-scroll-dot.active {
+            background-color: #006273;
+            transform: scale(1.3);
+        }
+
+        .faq-scroll-hint {
+            font-size: 11px;
+            color: #8a9aa3;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+        }
+
+        /* Navigation arrows */
+        .faq-nav {
+            position: absolute;
+            bottom: -60px;
+            left: 0;
+            display: flex;
+            gap: 12px;
+        }
+
+        .faq-nav-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px solid #e0e5e8;
+            background: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+        }
+
+        .faq-nav-btn:hover:not(:disabled) {
+            border-color: #006273;
+            background-color: #006273;
+        }
+
+        .faq-nav-btn:hover:not(:disabled) svg {
+            stroke: #ffffff;
+        }
+
+        .faq-nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .faq-nav-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: #1a2e35;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .faq-counter {
+            position: absolute;
+            bottom: -50px;
+            right: 0;
+            font-size: 14px;
+            color: #8a9aa3;
+        }
+
+        .faq-counter span {
+            color: #1a2e35;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .faq-container {
+                flex-direction: column;
+                padding: 40px 5%;
+                gap: 40px;
+            }
+
+            .faq-sidebar {
+                width: 100%;
+                position: relative;
+                top: 0;
+            }
+
+            .faq-title {
+                font-size: 36px;
+            }
+
+            .faq-categories {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .faq-category-btn {
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+
+            .faq-content {
+                min-height: 400px;
+            }
+
+            .faq-card {
+                padding: 24px;
+            }
+
+            .faq-card-question {
+                font-size: 16px;
+            }
+
+            .faq-card-answer {
+                font-size: 14px;
+            }
+
+            .faq-scroll-indicator {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="faq-container">
+        <!-- Left Sidebar -->
+        <div class="faq-sidebar">
+            <h1 class="faq-title">FAQ</h1>
+            <p class="faq-subtitle">Everything you need to know about the summit, from accessibility to logistics.</p>
+
+            <div class="faq-categories">
+                <button class="faq-category-btn active" data-category="general">
+                    General Questions
+                    <span class="arrow">
+                        <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+                    </span>
+                </button>
+                <button class="faq-category-btn" data-category="registration">
+                    Registration & Payment
+                    <span class="arrow">
+                        <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+                    </span>
+                </button>
+                <button class="faq-category-btn" data-category="health">
+                    Health & Safety
+                    <span class="arrow">
+                        <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+                    </span>
+                </button>
+                <button class="faq-category-btn" data-category="travel">
+                    Travel & Venue
+                    <span class="arrow">
+                        <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Right Content -->
+        <div class="faq-content">
+            <div class="faq-card-stack" id="cardStack">
+                <!-- Cards will be dynamically inserted -->
+            </div>
+
+            <div class="faq-nav">
+                <button class="faq-nav-btn" id="prevBtn" disabled>
+                    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <button class="faq-nav-btn" id="nextBtn">
+                    <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+                </button>
+            </div>
+
+            <div class="faq-counter">
+                <span id="currentIndex">1</span> / <span id="totalCount">9</span>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="faq-scroll-indicator">
+            <div class="faq-scroll-dots" id="scrollDots">
+                <!-- Dots will be dynamically inserted -->
+            </div>
+            <span class="faq-scroll-hint">Scroll</span>
+        </div>
+    </div>
+
+    <script>
+        // FAQ Data organized by category
+        const faqData = {
+            general: [
+                {
+                    question: "What is the Spring Membership Meeting?",
+                    answer: "The Spring Meeting is an opportunity for you to engage with state aging and disabilities directors, Medicaid LTSS directors, federal officials, and other key service delivery partners who will share promising practices, present unique program ideas, and participate in problem-solving sessions with peer state agencies."
+                },
+                {
+                    question: "Who should attend and why?",
+                    answer: "ADvancing States members and partnering sponsors are encouraged to attend. This meeting provides valuable networking opportunities and insights into the latest developments in aging and disability services."
+                },
+                {
+                    question: "What if I am not able to attend in-person?",
+                    answer: "Please reach out to <a href=\"mailto:info@advancingstates.org\">info@advancingstates.org</a> for assistance with alternative participation options."
+                },
+                {
+                    question: "Are meals included?",
+                    answer: "Yes! Conference meals include:<ul><li><strong>Monday, April 27:</strong> Lunch at the conference venue; dinner off-site</li><li><strong>Tuesday, April 28:</strong> Breakfast and lunch at the hotel; dinner off-site</li><li><strong>Wednesday, April 29:</strong> Breakfast and lunch at the hotel</li></ul>"
+                },
+                {
+                    question: "How can I indicate dietary restrictions?",
+                    answer: "Vegetarian and vegan options will be provided at all conference meals; however, quantities will be limited. To ensure we can accommodate your dietary needs, please indicate any restrictions on your registration form."
+                },
+                {
+                    question: "I requested a special meal. Who should I see?",
+                    answer: "Please visit the registration help desk at the Minneapolis Marriott City Center, and one of our staff members will be happy to assist."
+                },
+                {
+                    question: "Will I be able to select or register for sessions?",
+                    answer: "All sessions are open to registered attendees unless otherwise noted in the agenda; no advance registration for specific sessions is required."
+                },
+                {
+                    question: "What is the recommended dress code?",
+                    answer: "We suggest business casual attire for all conference sessions and events."
+                },
+                {
+                    question: "I am a speaker with questions. Who should I talk to?",
+                    answer: "Please visit the registration help desk at the Minneapolis Marriott City Center, and one of our staff members will be able to assist with any speaker-related inquiries."
+                }
+            ],
+            registration: [
+                {
+                    question: "How do I pay for my registration?",
+                    answer: "All attendees have the option to pay via credit card. Credit card payments include a 5% service fee added to the registration fee.<br><br>State, government, and non-profit attendees also have the option to pay by check or purchase order. If paying by check, please address it to:<br><br><strong>ADvancing States</strong><br>Re: 2026 ADvancing States Spring Meeting<br>241 18th St. S, Suite 403<br>Arlington, VA 22202"
+                },
+                {
+                    question: "What is the registration deadline?",
+                    answer: "Early bird registration ends March 15, 2026. Standard registration is available until April 15, 2026. On-site registration may be available depending on capacity."
+                },
+                {
+                    question: "Can I transfer my registration to someone else?",
+                    answer: "Yes, registration transfers are permitted. Please contact <a href=\"mailto:info@advancingstates.org\">info@advancingstates.org</a> with the details of the transfer request."
+                },
+                {
+                    question: "What is the cancellation policy?",
+                    answer: "Cancellations received by April 1, 2026 will receive a full refund minus a $50 processing fee. No refunds will be issued for cancellations after April 1, 2026."
+                }
+            ],
+            health: [
+                {
+                    question: "What are the health and safety protocols?",
+                    answer: "ADvancing States is committed to supporting the health and safety of all participants at the 2026 Spring Meeting. We ask that attendees monitor their health and avoid in-person participation if experiencing any signs of illness."
+                },
+                {
+                    question: "What safety tips should I keep in mind?",
+                    answer: "For safety while away from the conference hotel, we advise attendees to:<ul><li>Walk in pairs or groups whenever possible</li><li>Remove name badges when outside the conference venue</li><li>Avoid dark or isolated areas</li><li>Plan routes ahead of time</li><li>Walk with confidence and remain aware of your surroundings</li></ul>"
+                },
+                {
+                    question: "Is there a Code of Conduct?",
+                    answer: "Yes, all attendees are expected to follow our Code of Conduct which promotes a respectful, inclusive, and harassment-free environment for everyone."
+                }
+            ],
+            travel: [
+                {
+                    question: "Where is the venue located?",
+                    answer: "The 2026 ADvancing States Spring Meeting will be held at the Minneapolis Marriott City Center, located at 30 South 7th Street, Minneapolis, MN 55402."
+                },
+                {
+                    question: "What is the nearest airport?",
+                    answer: "Minneapolis–Saint Paul International Airport (MSP) is the nearest major airport, approximately 15 miles from the venue."
+                },
+                {
+                    question: "How do I book my hotel room?",
+                    answer: "Please check back for hotel booking information. A room block will be available at a discounted rate for conference attendees."
+                },
+                {
+                    question: "What is the price of a hotel room?",
+                    answer: "Please check back for hotel pricing information. We are working to secure competitive rates for all attendees."
+                },
+                {
+                    question: "Where can I view the hotel floor plan?",
+                    answer: "<a href=\"#\">Click here to view the floor plan</a> for the Minneapolis Marriott City Center."
+                },
+                {
+                    question: "Is parking available at the venue?",
+                    answer: "Yes, the Minneapolis Marriott City Center offers valet and self-parking options. Nearby public parking garages are also available."
+                }
+            ]
+        };
+
+        // State
+        let currentCategory = 'general';
+        let currentIndex = 0;
+        let isAnimating = false;
+
+        // DOM Elements
+        const cardStack = document.getElementById('cardStack');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const currentIndexEl = document.getElementById('currentIndex');
+        const totalCountEl = document.getElementById('totalCount');
+        const scrollDots = document.getElementById('scrollDots');
+        const categoryBtns = document.querySelectorAll('.faq-category-btn');
+
+        // Initialize
+        function init() {
+            renderCards(currentCategory);
+            setupEventListeners();
+        }
+
+        // Render cards for a category
+        function renderCards(category) {
+            const faqs = faqData[category];
+            cardStack.innerHTML = '';
+            scrollDots.innerHTML = '';
+
+            faqs.forEach((faq, index) => {
+                // Create card
+                const card = document.createElement('div');
+                card.className = 'faq-card';
+                card.dataset.index = index;
+                card.innerHTML = `
+                    <div class="faq-card-question">${faq.question}</div>
+                    <div class="faq-card-answer">${faq.answer}</div>
+                `;
+                card.addEventListener('click', () => handleCardClick(index));
+                cardStack.appendChild(card);
+
+                // Create dot
+                const dot = document.createElement('div');
+                dot.className = 'faq-scroll-dot';
+                dot.dataset.index = index;
+                dot.addEventListener('click', () => goToCard(index));
+                scrollDots.appendChild(dot);
+            });
+
+            // Update counter
+            totalCountEl.textContent = faqs.length;
+
+            // Reset to first card
+            currentIndex = 0;
+            updateCardPositions();
+        }
+
+        // Update card positions based on current index
+        function updateCardPositions() {
+            const cards = cardStack.querySelectorAll('.faq-card');
+            const dots = scrollDots.querySelectorAll('.faq-scroll-dot');
+
+            cards.forEach((card, index) => {
+                const relativePos = index - currentIndex;
+
+                if (relativePos < 0) {
+                    card.dataset.position = 'exiting';
+                } else if (relativePos <= 4) {
+                    card.dataset.position = relativePos;
+                } else {
+                    card.dataset.position = 'hidden';
+                }
+
+                // Mark active card
+                card.classList.toggle('active', relativePos === 0);
+            });
+
+            // Update dots
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentIndex);
+            });
+
+            // Update counter
+            currentIndexEl.textContent = currentIndex + 1;
+
+            // Update nav buttons
+            const totalCards = faqData[currentCategory].length;
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex >= totalCards - 1;
+        }
+
+        // Handle card click - advance to next
+        function handleCardClick(index) {
+            if (isAnimating) return;
+
+            if (index === currentIndex) {
+                // Clicking current card advances to next
+                goToCard(currentIndex + 1);
+            } else {
+                goToCard(index);
+            }
+        }
+
+        // Go to specific card
+        function goToCard(index) {
+            if (isAnimating) return;
+
+            const totalCards = faqData[currentCategory].length;
+            if (index < 0 || index >= totalCards) return;
+
+            isAnimating = true;
+            currentIndex = index;
+            updateCardPositions();
+
+            setTimeout(() => {
+                isAnimating = false;
+            }, 400);
+        }
+
+        // Handle category change
+        function changeCategory(category) {
+            if (category === currentCategory) return;
+
+            // Update button states
+            categoryBtns.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.category === category);
+            });
+
+            // Animate out current cards
+            const cards = cardStack.querySelectorAll('.faq-card');
+            cards.forEach(card => {
+                card.style.transform = 'translateX(100%) scale(0.9)';
+                card.style.opacity = '0';
+            });
+
+            // After animation, render new category
+            setTimeout(() => {
+                currentCategory = category;
+                renderCards(category);
+            }, 300);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Category buttons
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', () => changeCategory(btn.dataset.category));
+            });
+
+            // Nav buttons
+            prevBtn.addEventListener('click', () => goToCard(currentIndex - 1));
+            nextBtn.addEventListener('click', () => goToCard(currentIndex + 1));
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                    goToCard(currentIndex + 1);
+                } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                    goToCard(currentIndex - 1);
+                }
+            });
+
+            // Mouse wheel scrolling on card stack
+            cardStack.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                if (e.deltaY > 0) {
+                    goToCard(currentIndex + 1);
+                } else {
+                    goToCard(currentIndex - 1);
+                }
+            }, { passive: false });
+
+            // Touch swipe support
+            let touchStartY = 0;
+            cardStack.addEventListener('touchstart', (e) => {
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+
+            cardStack.addEventListener('touchend', (e) => {
+                const touchEndY = e.changedTouches[0].clientY;
+                const diff = touchStartY - touchEndY;
+
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) {
+                        goToCard(currentIndex + 1);
+                    } else {
+                        goToCard(currentIndex - 1);
+                    }
+                }
+            }, { passive: true });
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
