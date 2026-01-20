@@ -28,17 +28,15 @@
         .sponsor-banner-wrapper {
             padding: 20px 0;
             background-color: #d4e4d2;
-            overflow-x: hidden;
-            overflow-y: visible;
+            overflow: hidden;
             width: 100%;
         }
 
         .sponsor-banner {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: #d4e4d2;
-            padding: 25px 0 40px 0;
-            overflow-x: hidden;
-            overflow-y: visible;
+            padding: 25px 0 25px 0;
+            overflow: hidden;
             width: 100%;
         }
 
@@ -59,11 +57,8 @@
         }
 
         .sponsor-track-container {
-            overflow-x: hidden;
-            overflow-y: visible;
+            overflow: hidden;
             position: relative;
-            padding: 20px 0;
-            margin: -20px 0;
         }
 
         .sponsor-track {
@@ -78,147 +73,22 @@
             animation-play-state: paused;
         }
 
-        /* Flip Card Styles */
-        .sponsor-card {
+        /* Sponsor Logo Styles */
+        .sponsor-logo {
             flex-shrink: 0;
-            width: 300px;
-            height: 180px;
-            margin: 0 20px;
-            perspective: 1000px;
+            padding: 20px 40px;
             cursor: pointer;
-            transition: height 0.4s ease;
-        }
-
-        .sponsor-card.flipped {
-            height: auto;
-            min-height: 220px;
-        }
-
-        .sponsor-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-style: preserve-3d;
-        }
-
-        .sponsor-card.flipped .sponsor-card-inner {
-            transform: rotateY(180deg);
-        }
-
-        .sponsor-card-front,
-        .sponsor-card-back {
-            width: 100%;
-            backface-visibility: hidden;
-        }
-
-        .sponsor-card-front {
-            position: absolute;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
             transition: transform 0.2s ease;
         }
 
-        .sponsor-card:hover:not(.flipped) .sponsor-card-front {
-            transform: scale(1.05);
+        .sponsor-logo:hover {
+            transform: scale(1.08);
         }
 
-        .sponsor-card-front img {
-            max-height: 120px;
-            max-width: 250px;
+        .sponsor-logo img {
+            max-height: 100px;
+            max-width: 220px;
             object-fit: contain;
-            cursor: pointer;
-        }
-
-        .sponsor-card-back {
-            position: absolute;
-            min-height: 100%;
-            background: linear-gradient(135deg, #1a4a5e 0%, #2d6a7a 100%);
-            transform: rotateY(180deg);
-            padding: 18px;
-            display: flex;
-            flex-direction: column;
-            color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-        }
-
-        .sponsor-card-back-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .sponsor-card-back-logo {
-            width: 50px;
-            height: 50px;
-            background-color: white;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .sponsor-card-back-logo img {
-            max-width: 40px;
-            max-height: 40px;
-            object-fit: contain;
-        }
-
-        .sponsor-card-back-name {
-            font-size: 14px;
-            font-weight: 600;
-            line-height: 1.2;
-        }
-
-        .sponsor-card-back-bio {
-            font-size: 12px;
-            line-height: 1.5;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 12px;
-        }
-
-        .sponsor-social-links {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            padding-top: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .social-link {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-        .social-link:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
-        }
-
-        .social-link svg {
-            width: 16px;
-            height: 16px;
-            fill: white;
-        }
-
-        .social-link.disabled {
-            opacity: 0.3;
-            pointer-events: none;
         }
 
         @keyframes scroll {
@@ -226,56 +96,209 @@
             100% { transform: translateX(-50%); }
         }
 
+        /* Modal Overlay */
+        .sponsor-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .sponsor-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Modal Content */
+        .sponsor-modal {
+            background: white;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .sponsor-modal-overlay.active .sponsor-modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .sponsor-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            border: 1px solid #e0e0e0;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            z-index: 1;
+        }
+
+        .sponsor-modal-close:hover {
+            background: #f5f5f5;
+            border-color: #ccc;
+        }
+
+        .sponsor-modal-close svg {
+            width: 18px;
+            height: 18px;
+            stroke: #666;
+            stroke-width: 2;
+        }
+
+        .sponsor-modal-header {
+            padding: 30px 30px 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .sponsor-modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a4a5e;
+            margin-bottom: 16px;
+            padding-right: 40px;
+        }
+
+        .sponsor-modal-badge-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sponsor-modal-logo {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sponsor-modal-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .sponsor-modal-badge {
+            background: linear-gradient(135deg, #1a4a5e 0%, #2d6a7a 100%);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .sponsor-modal-body {
+            padding: 24px 30px;
+        }
+
+        .sponsor-modal-section-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .sponsor-modal-bio {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #444;
+            margin-bottom: 28px;
+        }
+
+        .sponsor-modal-connect {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .sponsor-modal-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .sponsor-modal-link:hover {
+            background: #f8f8f8;
+            border-color: #1a4a5e;
+            color: #1a4a5e;
+        }
+
+        .sponsor-modal-link.disabled {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .sponsor-modal-link svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
         /* Responsive Styles */
         @media (max-width: 768px) {
-            .sponsor-banner-wrapper { padding: 15px 4%; }
+            .sponsor-banner-wrapper { padding: 15px 0; }
             .sponsor-label { font-size: 22px; margin-bottom: 20px; }
 
-            .sponsor-card {
-                width: 240px;
-                height: 120px;
-                margin: 0 10px;
+            .sponsor-logo {
+                padding: 15px 25px;
             }
 
-            .sponsor-card.flipped {
-                min-height: 180px;
+            .sponsor-logo img {
+                max-height: 60px;
+                max-width: 150px;
             }
 
-            .sponsor-card-front img {
-                max-height: 80px;
-                max-width: 180px;
+            .sponsor-modal {
+                width: 95%;
+                margin: 10px;
             }
 
-            .sponsor-card-back {
-                padding: 12px;
+            .sponsor-modal-header {
+                padding: 24px 20px 16px;
             }
 
-            .sponsor-card-back-logo {
-                width: 35px;
-                height: 35px;
+            .sponsor-modal-title {
+                font-size: 20px;
             }
 
-            .sponsor-card-back-logo img {
-                max-width: 28px;
-                max-height: 28px;
+            .sponsor-modal-body {
+                padding: 20px;
             }
 
-            .sponsor-card-back-name {
-                font-size: 12px;
-            }
-
-            .sponsor-card-back-bio {
-                font-size: 10px;
-            }
-
-            .social-link {
-                width: 28px;
-                height: 28px;
-            }
-
-            .social-link svg {
-                width: 14px;
-                height: 14px;
+            .sponsor-modal-bio {
+                font-size: 14px;
             }
         }
     </style>
@@ -293,13 +316,38 @@
         </div>
     </div>
 
+    <!-- Modal Overlay -->
+    <div class="sponsor-modal-overlay" id="sponsorModal">
+        <div class="sponsor-modal">
+            <button class="sponsor-modal-close" id="modalClose">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="sponsor-modal-header">
+                <div class="sponsor-modal-title" id="modalTitle"></div>
+                <div class="sponsor-modal-badge-row">
+                    <div class="sponsor-modal-logo" id="modalLogo"></div>
+                    <span class="sponsor-modal-badge">Platinum Sponsor</span>
+                </div>
+            </div>
+            <div class="sponsor-modal-body">
+                <div class="sponsor-modal-section-title">About</div>
+                <div class="sponsor-modal-bio" id="modalBio"></div>
+                <div class="sponsor-modal-section-title">Connect</div>
+                <div class="sponsor-modal-connect" id="modalConnect"></div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Sponsor Data - Edit this array to update sponsor information
         const sponsors = [
             {
                 name: "Acentra Health",
                 logo: "https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/0e4bdbb6eea744f9b753fb1c5b2bea9f.png",
-                bio: "Acentra Health combines public health management expertise with technology to help government agencies improve health outcomes.",
+                bio: "Acentra Health combines public health management expertise with technology to help government agencies improve health outcomes. Their innovative solutions support states in delivering quality care to vulnerable populations.",
                 website: "https://acentra.com",
                 linkedin: "https://linkedin.com/company/acentra-health",
                 facebook: "",
@@ -308,7 +356,7 @@
             {
                 name: "Centene Corporation",
                 logo: "https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/72ac70b4672847bc9fc4114d941f31d0.png",
-                bio: "Centene is a leading healthcare enterprise committed to helping people live healthier lives through innovative programs and services.",
+                bio: "Centene is a leading healthcare enterprise committed to helping people live healthier lives through innovative programs and services. They provide a portfolio of services to government-sponsored healthcare programs.",
                 website: "https://centene.com",
                 linkedin: "https://linkedin.com/company/centene-corporation",
                 facebook: "https://facebook.com/CenteneCorp",
@@ -317,7 +365,7 @@
             {
                 name: "Elevance Health",
                 logo: "https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/436bbd74457b4a8a914d171d27def7ec.png",
-                bio: "Elevance Health is a health company dedicated to improving lives and communities through better health outcomes.",
+                bio: "Elevance Health is a health company dedicated to improving lives and communities through better health outcomes. They serve more than 118 million people through their family of health plans.",
                 website: "https://elevancehealth.com",
                 linkedin: "https://linkedin.com/company/elevancehealth",
                 facebook: "",
@@ -326,7 +374,7 @@
             {
                 name: "FEI Systems",
                 logo: "https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/85b9efd938814dc190020fa2b4d4e690.png",
-                bio: "FEI Systems delivers technology solutions that empower health and human services organizations to improve outcomes.",
+                bio: "For more than 25 years, FEI Systems has provided innovative IT solutions that assist federal, state and local health and human services agencies in caring for the most vulnerable members of their communities. FEI's Blue Compass suite of solutions includes a host of modules designed to address common requirements while meeting the unique and complex needs of each of the agencies and organizations we serve.",
                 website: "https://feisystems.com",
                 linkedin: "https://linkedin.com/company/fei-systems",
                 facebook: "",
@@ -335,7 +383,7 @@
             {
                 name: "GT Independence",
                 logo: "https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/53ea7eea9cd14b46af19af1becf5bf19.png",
-                bio: "GT Independence empowers people with disabilities to live independently through self-directed support services.",
+                bio: "GT Independence empowers people with disabilities to live independently through self-directed support services. They provide financial management services that give individuals control over their care.",
                 website: "https://gtindependence.com",
                 linkedin: "https://linkedin.com/company/gt-independence",
                 facebook: "https://facebook.com/gtindependence",
@@ -344,7 +392,7 @@
             {
                 name: "Humana Healthy Horizons",
                 logo: "https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/5e10fbeeb2e345fe9475f529b5369dde.png",
-                bio: "Humana Healthy Horizons provides Medicaid and Medicare services focused on whole-person health and community support.",
+                bio: "Humana Healthy Horizons provides Medicaid and Medicare services focused on whole-person health and community support. They integrate medical care with social services to improve member outcomes.",
                 website: "https://humana.com",
                 linkedin: "https://linkedin.com/company/humana",
                 facebook: "https://facebook.com/humana",
@@ -353,7 +401,7 @@
             {
                 name: "Mathematica",
                 logo: "https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/e05a6ccde3ec48849a9f0c5124ead9c0.png",
-                bio: "Mathematica applies data analytics and research to improve public well-being through evidence-based policy solutions.",
+                bio: "Mathematica applies data analytics and research to improve public well-being through evidence-based policy solutions. They partner with governments to evaluate and improve programs serving vulnerable populations.",
                 website: "https://mathematica.org",
                 linkedin: "https://linkedin.com/company/mathematica-policy-research",
                 facebook: "",
@@ -362,16 +410,16 @@
             {
                 name: "Maximus",
                 logo: "https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/654e9b65ec244f668a24e559591884f9.png",
-                bio: "Maximus helps government serve the people through technology and services that improve health and employment outcomes.",
+                bio: "Maximus helps government serve the people through technology and services that improve health and employment outcomes. They operate programs that connect citizens with essential services.",
                 website: "https://maximus.com",
                 linkedin: "https://linkedin.com/company/maximus",
                 facebook: "https://facebook.com/maximusinc",
-                twitter: "https://twitter.com/Aborel"
+                twitter: "https://twitter.com/Maximus"
             },
             {
                 name: "Mercer",
                 logo: "https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/7ec99940a6a5440ba93435991c126ab2.png",
-                bio: "Mercer delivers advice and technology-driven solutions to help organizations meet the health and financial needs of their people.",
+                bio: "Mercer delivers advice and technology-driven solutions to help organizations meet the health and financial needs of their people. They provide consulting services to government health programs.",
                 website: "https://mercer.com",
                 linkedin: "https://linkedin.com/company/mercer",
                 facebook: "https://facebook.com/mercer",
@@ -380,7 +428,7 @@
             {
                 name: "Molina Healthcare",
                 logo: "https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/acd4db92635e4badac1f93176d9833e2.png",
-                bio: "Molina Healthcare provides quality healthcare to people receiving government assistance with a focus on HCBS programs.",
+                bio: "Molina Healthcare provides quality healthcare to people receiving government assistance with a focus on HCBS programs. They serve millions of members through Medicaid and Medicare programs.",
                 website: "https://molinahealthcare.com",
                 linkedin: "https://linkedin.com/company/molina-healthcare",
                 facebook: "https://facebook.com/MolinaHealthcare",
@@ -389,7 +437,7 @@
             {
                 name: "Mon Ami",
                 logo: "https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/83b9b1cb3a944a36bcc28eb32fea4167.png",
-                bio: "Mon Ami connects older adults and people with disabilities to community resources and volunteer support services.",
+                bio: "Mon Ami connects older adults and people with disabilities to community resources and volunteer support services. Their platform enables meaningful connections that reduce isolation.",
                 website: "https://monami.io",
                 linkedin: "https://linkedin.com/company/mon-ami",
                 facebook: "",
@@ -398,7 +446,7 @@
             {
                 name: "Pulselight",
                 logo: "https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/a9b7815265ed42ddbb5d6007499cd3e3.png",
-                bio: "Pulselight provides innovative technology solutions for healthcare organizations to improve care coordination and outcomes.",
+                bio: "Pulselight provides innovative technology solutions for healthcare organizations to improve care coordination and outcomes. Their tools help agencies manage complex care delivery.",
                 website: "https://pulselight.com",
                 linkedin: "https://linkedin.com/company/pulselight",
                 facebook: "",
@@ -407,7 +455,7 @@
             {
                 name: "Therap Services",
                 logo: "https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/1c7bc967a427486d8aef0c61f2be4781.png",
-                bio: "Therap provides comprehensive electronic documentation and communication solutions for disability service providers.",
+                bio: "Therap provides comprehensive electronic documentation and communication solutions for disability service providers. Their platform supports person-centered care across all settings.",
                 website: "https://therapservices.net",
                 linkedin: "https://linkedin.com/company/therap-services",
                 facebook: "https://facebook.com/therapservices",
@@ -416,7 +464,7 @@
             {
                 name: "WellSky",
                 logo: "https://custom.cvent.com/4DC85802658B432AB1FD735BC8F5B457/pix/d7f4cc5669a348fe853433d714bb236e.jpg",
-                bio: "WellSky provides technology solutions enabling healthcare providers to deliver better care and improve outcomes.",
+                bio: "WellSky provides technology solutions enabling healthcare providers to deliver better care and improve outcomes. They serve the continuum of care from acute to post-acute settings.",
                 website: "https://wellsky.com",
                 linkedin: "https://linkedin.com/company/wellsky",
                 facebook: "https://facebook.com/wellsky",
@@ -432,63 +480,77 @@
             twitter: `<svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`
         };
 
-        // Create sponsor cards
-        function createSponsorCard(sponsor) {
-            const card = document.createElement('div');
-            card.className = 'sponsor-card';
+        const linkLabels = {
+            website: 'Website',
+            linkedin: 'LinkedIn',
+            facebook: 'Facebook',
+            twitter: 'X (Twitter)'
+        };
 
-            card.innerHTML = `
-                <div class="sponsor-card-inner">
-                    <div class="sponsor-card-front">
-                        <img src="${sponsor.logo}" alt="${sponsor.name}">
-                    </div>
-                    <div class="sponsor-card-back">
-                        <div class="sponsor-card-back-header">
-                            <div class="sponsor-card-back-logo">
-                                <img src="${sponsor.logo}" alt="${sponsor.name}">
-                            </div>
-                            <div class="sponsor-card-back-name">${sponsor.name}</div>
-                        </div>
-                        <div class="sponsor-card-back-bio">${sponsor.bio}</div>
-                        <div class="sponsor-social-links">
-                            <a href="${sponsor.website}" target="_blank" rel="noopener noreferrer" class="social-link ${!sponsor.website ? 'disabled' : ''}" title="Website" onclick="event.stopPropagation();">
-                                ${icons.website}
-                            </a>
-                            <a href="${sponsor.linkedin}" target="_blank" rel="noopener noreferrer" class="social-link ${!sponsor.linkedin ? 'disabled' : ''}" title="LinkedIn" onclick="event.stopPropagation();">
-                                ${icons.linkedin}
-                            </a>
-                            <a href="${sponsor.facebook}" target="_blank" rel="noopener noreferrer" class="social-link ${!sponsor.facebook ? 'disabled' : ''}" title="Facebook" onclick="event.stopPropagation();">
-                                ${icons.facebook}
-                            </a>
-                            <a href="${sponsor.twitter}" target="_blank" rel="noopener noreferrer" class="social-link ${!sponsor.twitter ? 'disabled' : ''}" title="X (Twitter)" onclick="event.stopPropagation();">
-                                ${icons.twitter}
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            `;
+        // Modal elements
+        const modalOverlay = document.getElementById('sponsorModal');
+        const modalClose = document.getElementById('modalClose');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalLogo = document.getElementById('modalLogo');
+        const modalBio = document.getElementById('modalBio');
+        const modalConnect = document.getElementById('modalConnect');
 
-            // Toggle flip on click
-            card.addEventListener('click', function(e) {
-                // Don't flip if clicking a social link
-                if (e.target.closest('.social-link')) return;
+        // Open modal with sponsor data
+        function openModal(sponsor) {
+            modalTitle.textContent = sponsor.name;
+            modalLogo.innerHTML = `<img src="${sponsor.logo}" alt="${sponsor.name}">`;
+            modalBio.textContent = sponsor.bio;
 
-                const isFlipping = !this.classList.contains('flipped');
-                const backCard = this.querySelector('.sponsor-card-back');
+            // Build connect links
+            let connectHTML = '';
+            ['website', 'linkedin', 'facebook', 'twitter'].forEach(type => {
+                const url = sponsor[type];
+                const disabled = !url ? 'disabled' : '';
+                connectHTML += `
+                    <a href="${url || '#'}" target="_blank" rel="noopener noreferrer"
+                       class="sponsor-modal-link ${disabled}"
+                       ${disabled ? 'tabindex="-1"' : ''}>
+                        ${icons[type]}
+                        ${linkLabels[type]}
+                    </a>
+                `;
+            });
+            modalConnect.innerHTML = connectHTML;
 
-                if (isFlipping) {
-                    // Calculate needed height for back content
-                    const backHeight = backCard.scrollHeight;
-                    this.style.height = Math.max(backHeight, 180) + 'px';
-                } else {
-                    // Reset to original height
-                    this.style.height = '180px';
-                }
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
 
-                this.classList.toggle('flipped');
+        // Close modal
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Event listeners for modal
+        modalClose.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) {
+                closeModal();
+            }
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // Create sponsor logo element
+        function createSponsorLogo(sponsor) {
+            const logoDiv = document.createElement('div');
+            logoDiv.className = 'sponsor-logo';
+            logoDiv.innerHTML = `<img src="${sponsor.logo}" alt="${sponsor.name}">`;
+
+            logoDiv.addEventListener('click', function() {
+                openModal(sponsor);
             });
 
-            return card;
+            return logoDiv;
         }
 
         // Initialize the sponsor track
@@ -497,7 +559,7 @@
 
             // Add sponsors twice for seamless infinite scroll
             [...sponsors, ...sponsors].forEach(sponsor => {
-                track.appendChild(createSponsorCard(sponsor));
+                track.appendChild(createSponsorLogo(sponsor));
             });
         }
 
