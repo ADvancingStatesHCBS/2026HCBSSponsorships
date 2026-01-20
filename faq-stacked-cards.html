@@ -15,7 +15,6 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: #f8f9fa;
             width: 100%;
-            min-height: 100vh;
             padding: 60px 5%;
             display: flex;
             gap: 60px;
@@ -101,13 +100,15 @@
         .faq-content {
             flex: 1;
             position: relative;
-            min-height: 500px;
+            height: 600px;
+            overflow: hidden;
         }
 
         .faq-card-stack {
             position: relative;
             height: 100%;
             perspective: 1000px;
+            overflow: hidden;
         }
 
         .faq-card {
@@ -342,7 +343,7 @@
             }
 
             .faq-content {
-                min-height: 400px;
+                height: 500px;
             }
 
             .faq-card {
